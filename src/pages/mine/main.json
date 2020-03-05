@@ -1,3 +1,11 @@
 {
-  "navigationBarTitleText": "我的"
+  "navigationBarBackgroundColor": "#97D700",
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "van-grid": "/static/vant/grid/index",
+    "van-grid-item": "/static/vant/grid-item/index",
+    "van-cell": "/static/vant/cell/index",
+    "van-button": "/static/vant/button/index",
+    "van-icon": "/static/vant/icon/index"
+  }
 }
