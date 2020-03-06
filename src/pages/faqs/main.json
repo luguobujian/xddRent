@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "常见问题",
+  "usingComponents": {
+    "van-cell": "/static/vant/cell/index",
+    "van-icon": "/static/vant/icon/index"
+  }
+}

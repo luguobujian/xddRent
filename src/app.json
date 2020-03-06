@@ -3,7 +3,13 @@
     "pages/index/main",
     "pages/order/main",
     "pages/mine/main",
-    "pages/user/main"
+    "pages/user/main",
+    "pages/feedback/main",
+    "pages/about/main",
+    "pages/about/detail/main",
+    "pages/faqs/main",
+    "pages/faqs/detail/main",
+    "pages/contact/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

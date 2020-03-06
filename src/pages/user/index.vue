@@ -19,7 +19,7 @@
                        right-icon="arrow"
                        placeholder="请输入"
                        input-align="right" />
-            <van-field v-model="value1"
+            <van-field v-model="value"
                        label="选择地区"
                        right-icon="arrow"
                        placeholder="请选择"
@@ -29,12 +29,6 @@
                        name="area"
                        :value="value"
                        @click="showArea = true" />
-            <van-popup v-model="showArea"
-                       position="bottom">
-              <van-area :area-list="areaList"
-                        @confirm="onConfirm"
-                        @cancel="showArea = false" />
-            </van-popup>
             <van-field v-model="value1"
                        label="性别"
                        right-icon="arrow"
@@ -50,7 +44,15 @@
                        placeholder="请输入"
                        input-align="right" />
           </van-cell-group>
+          <van-popup :show="showArea"
+                     position="bottom"
+                     @cancel="showArea = false">
+            <van-area :area-list="areaList"
+                      @confirm="onConfirm"
+                      @cancel="showArea = false" />
+          </van-popup>
         </div>
+
       </div>
     </div>
     <div class="bottom-btn-box">
@@ -65,16 +67,18 @@
 </template>
 
 <script>
+import AreaList from '../../../static/vant/area/area'
 export default {
   data () {
     return {
       value: '',
       showArea: false,
-      areaList: {} // 数据格式见 Area 组件文档
+      areaList: AreaList // 数据格式见 Area 组件文档
     }
   },
   methods: {
-    onConfirm (values) {
+    onConfirm (e) {
+      let values = e.target.values
       this.value = values.map(item => item.name).join('/')
       this.showArea = false
     }
@@ -102,11 +106,10 @@ export default {
 }
 .bottom-btn-box {
   height: 49px;
-
   background-color: #fff;
 }
 .bottom-btn-margin {
-  margin: 7px 15px !important;
+  margin: 30px 15px !important;
 }
 </style>
 
@@ -122,5 +125,10 @@ export default {
 .van-button--small {
   color: #fff;
   height: 35px !important;
+}
+
+.van-picker__cancel,
+.van-picker__confirm {
+  color: #97d700 !important;
 }
 </style>

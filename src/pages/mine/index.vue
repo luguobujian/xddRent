@@ -42,7 +42,8 @@
                   v-for="(item, index) in cellItems"
                   :key="index"
                   :title="item.text"
-                  is-link />
+                  is-link
+                  @click="goNextPage(index)" />
       </div>
       <div class="bottom-btn-box">
         <van-button color="#97D700"
@@ -75,10 +76,10 @@ export default {
         icon: '/static/icons/m-invite.png'
       }],
       cellItems: [
-        { text: '意见反馈' },
-        { text: '关于我们' },
-        { text: '常见问题' },
-        { text: '联系我们' }
+        { text: '意见反馈', path: '/pages/feedback/main' },
+        { text: '关于我们', path: '/pages/about/main' },
+        { text: '常见问题', path: '/pages/faqs/main' },
+        { text: '联系我们', path: '/pages/contact/main' }
       ]
     }
   },
@@ -88,9 +89,9 @@ export default {
   },
 
   methods: {
-    goNextPage () {
+    goNextPage (e) {
       wx.navigateTo({
-        url: '/pages/user/main'
+        url: this.cellItems[e].path
       })
     }
   }
@@ -101,7 +102,8 @@ export default {
 
 <style scoped>
 .container {
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   background-color: #97d700;
 }
 
@@ -169,7 +171,7 @@ export default {
 }
 
 .bottom-btn-box {
-  margin: 50px 25px 0;
+  margin: 50px 25px 25px;
 }
 </style>
 
