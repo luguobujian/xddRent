@@ -34,7 +34,8 @@
                          v-for="(item, index) in gridItems"
                          :key="index"
                          :icon="item.icon"
-                         :text="item.text" />
+                         :text="item.text"
+                         @click="goNextPage('gridItems',index)" />
         </van-grid>
       </div>
       <div class="cell-group-box">
@@ -43,7 +44,7 @@
                   :key="index"
                   :title="item.text"
                   is-link
-                  @click="goNextPage(index)" />
+                  @click="goNextPage('cellItems',index)" />
       </div>
       <div class="bottom-btn-box">
         <van-button color="#97D700"
@@ -70,10 +71,12 @@ export default {
         icon: '/static/icons/m-address.png'
       }, {
         text: '我的余额',
-        icon: '/static/icons/m-balance.png'
+        icon: '/static/icons/m-balance.png',
+        path: '/pages/billing/main'
       }, {
         text: '我的邀请',
-        icon: '/static/icons/m-invite.png'
+        icon: '/static/icons/m-invite.png',
+        path: '/pages/invite/main'
       }],
       cellItems: [
         { text: '意见反馈', path: '/pages/feedback/main' },
@@ -89,9 +92,10 @@ export default {
   },
 
   methods: {
-    goNextPage (e) {
+    goNextPage (t, i) {
+      console.log(this[t][i].path)
       wx.navigateTo({
-        url: this.cellItems[e].path
+        url: this[t][i].path
       })
     }
   }

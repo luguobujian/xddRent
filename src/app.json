@@ -4,6 +4,8 @@
     "pages/order/main",
     "pages/mine/main",
     "pages/user/main",
+    "pages/billing/main",
+    "pages/invite/main",
     "pages/feedback/main",
     "pages/about/main",
     "pages/about/detail/main",
