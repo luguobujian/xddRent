@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "我的钱包",
+  "navigationBarTitleText": "提现记录",
   "usingComponents": {
     "van-cell": "/static/vant/cell/index",
     "van-button": "/static/vant/button/index",

@@ -58,13 +58,36 @@ page {
   float: right;
 }
 
-.clearfix::before, .clearfix::after {
-  content: '';
+.clearfix::before,
+.clearfix::after {
+  content: "";
   display: block;
   clear: both;
 }
 
 .clearfix {
   zoom: 1;
+}
+
+.van-cell:after {
+  width: 90% !important;
+}
+[class*="van-hairline"] {
+  position: relative;
+}
+[class*="van-hairline"]::after {
+  position: absolute;
+  box-sizing: border-box;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+  content: " ";
+  pointer-events: none;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid #ebedf0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
 }
 </style>

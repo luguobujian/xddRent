@@ -9,27 +9,54 @@
                       size="small"
                       round
                       block
-                      @click="submit">提现</van-button>
+                      @click="goNextPage('payoutBtn',0)">提现</van-button>
         </div>
       </div>
-      <div>
-
+      <div class="cell-group-box">
+        <van-cell :class="index !=2 ?'no-border': ''"
+                  v-for="(item, index) in cellItems"
+                  :key="index"
+                  :title="item.text"
+                  is-link
+                  @click="goNextPage('cellItems',index)" />
       </div>
     </div>
-    <div class="bottom-box">管理提现账户</div>
+    <div class="bottom-box"
+         @click="goNextPage('bottomBtn',0)">{{bottomBtn[0].text}}</div>
   </div>
 </template>
 <script>
 export default {
-
+  data () {
+    return {
+      payoutBtn: [{ text: '提现', path: '/pages/billing/payout/main' }],
+      cellItems: [
+        { text: '查看明细', path: '/pages/billing/detail/main' },
+        { text: '提现记录', path: '/pages/billing/history/main' }
+      ],
+      bottomBtn: [{ text: '管理提现账户', path: '/pages/billing/affiliate/main' }]
+    }
+  },
+  mounted () {
+    console.log(getCurrentPages())
+  },
+  methods: {
+    goNextPage (t, i) {
+      console.log(this[t][i].path)
+      wx.navigateTo({
+        url: this[t][i].path
+      })
+    }
+  }
 }
 </script>
 <style scope>
 .main-box {
   flex: 1;
-  text-align: center;
+  /* text-align: center; */
 }
 .top-box {
+  text-align: center;
   background: #fff;
 }
 .top-tit-box {
@@ -50,11 +77,18 @@ export default {
   line-height: 51px;
   margin-top: 5px;
 }
+.cell-group-box {
+  margin-top: 30px;
+}
 .bottom-btn-margin {
+  text-align: center;
   padding: 30px 15px 15px !important;
 }
 </style>
 <style >
+.van-cell {
+  padding: 16px 15px !important;
+}
 .van-button--small {
   color: #fff;
   height: 39px !important;
