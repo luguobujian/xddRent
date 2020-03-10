@@ -2,47 +2,38 @@
   <div class="container">
     <div class="main-top-box">
       <div class="main-form-box">
-        <div class="update-avatar-box clearfix"
-             @click="goNextPage">
-          <div class="fl">头像</div>
-          <div class="fr">
-            <van-icon name="arrow" />
+        <div class="update-avatar-box van-hairline ">
+          <div class="clearfix">
+            <div class="fl">上传营业执照</div>
+            <div class="fr">
+              <van-icon name="arrow" />
+            </div>
+            <div class="fr">
+              <img class="avatar"
+                   src="/static/images/upload.png"
+                   alt=""></div>
           </div>
-          <div class="fr">
-            <img class="avatar"
-                 src="/static/images/user.png"
-                 alt=""></div>
         </div>
         <div>
           <van-cell-group>
             <van-field v-model="value1"
-                       label="账户名"
+                       label="公司全称"
                        right-icon="arrow"
                        placeholder="请输入"
                        input-align="right" />
             <van-field v-model="value"
-                       label="选择地区"
+                       label="联系地址"
                        right-icon="arrow"
-                       placeholder="请选择"
+                       placeholder="请填写"
                        input-align="right"
-                       readonly
-                       clickable
-                       name="area"
-                       :value="value"
-                       @click="showArea = true" />
+                       :value="value" />
             <van-field v-model="value1"
-                       label="性别"
-                       right-icon="arrow"
-                       placeholder="请选择"
-                       input-align="right" />
-            <van-field :value="tel"
-                       label="绑定手机"
-                       placeholder="显示图标"
+                       label="联系方式"
+                       placeholder="输入联系方式"
                        input-align="right" />
             <van-field v-model="value1"
-                       label="个人简介"
-                       right-icon="arrow"
-                       placeholder="请输入"
+                       label="邮箱（选填）"
+                       placeholder="输入邮箱"
                        input-align="right" />
           </van-cell-group>
           <van-popup :show="showArea"
@@ -61,7 +52,8 @@
         <van-button color="#97D700"
                     size="small"
                     round
-                    block>保存</van-button>
+                    block
+                    @click="goNextPage">提交</van-button>
       </div>
     </div>
   </div>
@@ -73,7 +65,6 @@ export default {
   data () {
     return {
       value: '',
-      tel: '133333333',
       showArea: false,
       areaList: AreaList // 数据格式见 Area 组件文档
     }
@@ -86,7 +77,7 @@ export default {
     },
     goNextPage () {
       wx.navigateTo({
-        url: '/pages/upload/main'
+        url: '/pages/company/verify/main'
       })
     }
   }
@@ -95,34 +86,35 @@ export default {
 
 <style scope>
 .main-top-box {
-  flex: 1;
+  /* flex: 1; */
 }
 
 .main-form-box {
   background-color: #fff;
 }
 .update-avatar-box {
-  line-height: 56px;
+  line-height: 108px;
   margin: 0 15px;
 }
 .avatar {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  vertical-align: middle;
+  width: 75px;
+  height: 75px;
+  border-radius: 8px;
+  vertical-align: -28%;
 }
+
 .bottom-btn-box {
   /* height: 49px; */
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 .bottom-btn-margin {
-  margin: 7px 15px !important;
+  margin: 30px 15px !important;
 }
 </style>
 
 <style>
 .van-cell {
-  padding: 16px 15px !important;
+  padding: 17px 15px !important;
 }
 .van-cell:after {
   width: 90% !important;
@@ -131,6 +123,9 @@ export default {
   color: #969799;
   margin-top: 22px !important;
   margin-left: 5px !important;
+}
+.van-field__icon-container {
+  padding-left: 6px !important;
 }
 .van-button--small {
   color: #fff;

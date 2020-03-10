@@ -14,11 +14,34 @@
       </div>
       <div class="tip-box">当前余额：¥300.00 <span class="colorBtn">全部提现</span></div>
     </div>
+    <div class="bottom-btn-box">
+      <div class="bottom-btn-margin">
+        <van-button color="#97D700"
+                    size="small"
+                    round
+                    block
+                    @click="go">确认提现</van-button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
 
+    }
+  },
+  mounted () {
+
+  },
+  methods: {
+    go () {
+      wx.navigateTo({
+        url: '/pages/billing/settings/main'
+      })
+    }
+  }
 }
 </script>
 <style scope>
@@ -52,6 +75,9 @@ export default {
 .colorBtn {
   color: #97d700;
 }
+.bottom-btn-margin {
+  margin: 36px 15px !important;
+}
 </style>
 
 <style>
@@ -63,5 +89,9 @@ export default {
   flex: none !important;
   min-width: 12px !important;
   margin-right: 10px !important;
+}
+.van-button--small {
+  color: #fff;
+  height: 39px !important;
 }
 </style>

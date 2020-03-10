@@ -4,8 +4,13 @@
     "pages/order/main",
     "pages/mine/main",
     "pages/user/main",
+    "pages/user/address/main",
+    "pages/user/addaddr/main",
+    "pages/company/main",
+    "pages/company/verify/main",
     "pages/billing/main",
     "pages/billing/payout/main",
+    "pages/billing/settings/main",
     "pages/billing/detail/main",
     "pages/billing/history/main",
     "pages/billing/affiliate/main",
@@ -16,7 +21,8 @@
     "pages/about/detail/main",
     "pages/faqs/main",
     "pages/faqs/detail/main",
-    "pages/contact/main"
+    "pages/contact/main",
+    "pages/upload/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

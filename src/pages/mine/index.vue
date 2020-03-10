@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="top-info clearfix"
-         @click="goNextPage">
+         @click="goNextPage('userItems', 0)">
       <div class="avatar-box fl">
         <img src=""
              alt="">
@@ -63,12 +63,15 @@
 export default {
   data () {
     return {
+      userItems: [{ path: '/pages/user/main' }],
       gridItems: [{
         text: '认证企业',
-        icon: '/static/icons/m-company.png'
+        icon: '/static/icons/m-company.png',
+        path: '/pages/company/main'
       }, {
         text: '收货地址管理',
-        icon: '/static/icons/m-address.png'
+        icon: '/static/icons/m-address.png',
+        path: '/pages/user/address/main'
       }, {
         text: '我的余额',
         icon: '/static/icons/m-balance.png',
