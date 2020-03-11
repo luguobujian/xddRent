@@ -90,4 +90,7 @@ page {
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
 }
+.mb10 {
+  margin-bottom: 10px;
+}
 </style>

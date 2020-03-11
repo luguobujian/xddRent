@@ -7,13 +7,13 @@
               bindtouchstart="touchStart"
               bindtouchmove="touchMove"
               bindtouchend="touchEnd"
-              style="width:{{width}}px;height:{{height}}px;background-color: rgba(0, 0, 0, 0.8)"
-              canvas-id="{{id}}">
+              :style="{width:width+'px',height:height+'px',backgroundColor: 'rgba(0, 0, 0, 0.8)'}"
+              :canvasId="id">
       </canvas>
       <canvas class="cropper"
               disable-scroll="true"
-              style="position: fixed; top: -{{width * pixelRatio}}px; left: -{{height * pixelRatio}}px; width:{{width * pixelRatio}}px;height:{{height * pixelRatio}}px;"
-              canvas-id="{{targetId}}">
+              :style="{position:'fixed', top: '-'+(width * pixelRatio)+'px', left: '-'+(height * pixelRatio)+'px', width:width * pixelRatio+'px',height:height * pixelRatio+'px'}"
+              :canvasId="targetId">
       </canvas>
       <div class="cropper-buttons">
         <div class="upload"

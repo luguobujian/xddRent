@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/main",
     "pages/order/main",
+    "pages/order/detail/main",
     "pages/mine/main",
     "pages/user/main",
     "pages/user/address/main",
