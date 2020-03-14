@@ -1,8 +1,7 @@
 {
-  "navigationBarTitleText": "认证企业用户",
+  "navigationBarTitleText": "物流详情",
   "usingComponents": {
-    "van-grid": "/static/vant/grid/index",
-    "van-grid-item": "/static/vant/grid-item/index",
+    "van-steps": "/static/vant/steps/index",
     "van-cell": "/static/vant/cell/index",
     "van-button": "/static/vant/button/index",
     "van-icon": "/static/vant/icon/index",

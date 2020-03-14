@@ -85,9 +85,50 @@ export default {
       this.showArea = false
     },
     goNextPage () {
-      wx.navigateTo({
-        url: '/pages/upload/main'
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+          const src = res.tempFilePaths[0]
+          wx.navigateTo({
+            url: `/pages/upload/upload?src=${src}`
+          })
+        }
       })
+      // wx.navigateTo({
+      //   url: '/pages/upload/main'
+      // })
+    },
+    uploadImage (path) {
+      // var _this = this
+      wx.showLoading({
+        title: '正在上传..'
+      })
+      // wx.uploadFile({
+      //   url: app.globalData.domain + 'user/uploadimage',
+      //   filePath: path,
+      //   name: 'file',
+      //   formData: {
+      //     'uid': app.globalData.userId
+      //   },
+      //   success: function (res) {
+      //     var data = JSON.parse(res.data)
+      //     if (data.status == 0) {
+      //       wx.showToast({
+      //         title: data.err,
+      //         duration: 2000
+      //       })
+      //       return false
+      //     }
+      //     wx.hideLoading()
+      //     _this.setData({
+      //       imageurls: 'Uploads/' + data.urls,
+      //       postimage: path
+      //     })
+      //   }
+      // })
     }
   }
 }

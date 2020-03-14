@@ -3,6 +3,7 @@
     "pages/index/main",
     "pages/order/main",
     "pages/order/detail/main",
+    "pages/order/transport/main",
     "pages/mine/main",
     "pages/user/main",
     "pages/user/address/main",
@@ -23,7 +24,7 @@
     "pages/faqs/main",
     "pages/faqs/detail/main",
     "pages/contact/main",
-    "pages/upload/main"
+    "pages/upload/upload"
   ],
   "window": {
     "backgroundTextStyle": "light",
