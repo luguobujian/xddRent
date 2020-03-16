@@ -1,9 +1,11 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/search/main",
     "pages/order/main",
     "pages/order/detail/main",
     "pages/order/transport/main",
+    "pages/product/main",
     "pages/mine/main",
     "pages/user/main",
     "pages/user/address/main",

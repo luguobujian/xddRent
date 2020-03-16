@@ -25,12 +25,14 @@
       <div class="icon-box">
         <van-icon name="/static/icons/location.png" />北京
       </div>
-      <div class="inp-box">
+      <div class="inp-box"
+           @click="goNextPage('search')">
         <van-icon name="/static/icons/search.png" />输入箱子名称进行搜索
       </div>
     </div>
     <div class="two-g-box">
-      <div class="two-g-one-box">
+      <div class="two-g-one-box"
+           @click="goNextPage('product')">
         <div class="twgobt">推荐商品</div>
         <div class="twgobb">更多口碑尖货</div>
       </div>
@@ -74,6 +76,10 @@ import card from '@/components/card'
 export default {
   data () {
     return {
+      routes: {
+        search: '/pages/search/main',
+        product: '/pages/product/main'
+      },
       background: ['/static/images/banner_1.png', '/static/images/banner_1.png', '/static/images/banner_1.png'],
       indicatorDots: 0,
       vertical: false,
@@ -88,6 +94,11 @@ export default {
   methods: {
     bindChange (e) {
       this.indicatorDots = e.mp.detail.current
+    },
+    goNextPage (p) {
+      wx.navigateTo({
+        url: this.routes[p]
+      })
     }
   },
   created () {

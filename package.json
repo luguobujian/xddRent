@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "@vant/weapp": "^1.0.7",
-    "mpvue": "^2.0.0"
+    "mpvue": "^2.0.0",
+    "vue-cropper": "^0.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
