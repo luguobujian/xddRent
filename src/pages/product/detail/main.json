@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "商品详情",
+  "usingComponents": {
+    "van-field": "/static/vant/field/index",
+    "van-search": "/static/vant/search/index",
+    "van-icon": "/static/vant/icon/index",
+    "van-rate": "/static/vant/rate/index",
+    "van-goods-action": "/static/vant/goods-action/index",
+    "van-goods-action-button": "/static/vant/goods-action-button/index"
+  }
+}

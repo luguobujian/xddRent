@@ -6,6 +6,8 @@
     "pages/order/detail/main",
     "pages/order/transport/main",
     "pages/product/main",
+    "pages/product/detail/main",
+    "pages/product/comment/main",
     "pages/mine/main",
     "pages/user/main",
     "pages/user/address/main",

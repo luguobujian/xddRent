@@ -15,7 +15,8 @@
     <div class="result-box">
       <div v-for="(item, index) in reuslts"
            :key="index"
-           class="result-item">
+           class="result-item"
+           @click="goNextPage">
         <div class="result-item-img-box">
           <img :src="item.url"
                alt="">
@@ -57,6 +58,13 @@ export default {
         u: '800/天',
         location: '北京'
       }]
+    }
+  },
+  methods: {
+    goNextPage () {
+      wx.navigateTo({
+        url: '/pages/product/detail/main'
+      })
     }
   }
 }
