@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "选择仓库",
+  "usingComponents": {
+    "van-cell": "/static/vant/cell/index",
+    "van-field": "/static/vant/field/index",
+    "van-icon": "/static/vant/icon/index"
+  }
+}

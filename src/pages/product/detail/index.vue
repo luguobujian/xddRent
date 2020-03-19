@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div class="main-box">
-      <div class="top-swiper">
+      <div class="top-swiper"
+           @click="viewImage">
         <swiper :autoplay="autoplay"
                 :interval="interval"
                 :duration="duration"
@@ -71,7 +72,7 @@
       </div>
       <div class="rate-box select-items-box mb10">
         <div class="select-item"
-             @click="goNextPage">
+             @click="goNextPage('comment')">
           <div class="select-item-left">
             <div class="select-item-left-tit">选择规格</div>
             <div class="coupons-box rate-bb">
@@ -108,7 +109,7 @@
                                  type="warning"
                                  plain="true"
                                  size="small"
-                                 bind:click="onClickButton" />
+                                 @click="goNextPage('order_now')" />
         <van-goods-action-button text="租赁"
                                  color="#97D700"
                                  size="small"
@@ -121,6 +122,10 @@
 export default {
   data () {
     return {
+      routers: {
+        comment: '/pages/product/comment/main',
+        order_now: '/pages/order_now/main'
+      },
       background: ['/static/images/banner_1.png', '/static/images/banner_1.png', '/static/images/banner_1.png'],
       indicatorDots: 1,
       vertical: false,
@@ -138,9 +143,15 @@ export default {
         value: event.detail
       })
     },
-    goNextPage () {
+    goNextPage (r) {
       wx.navigateTo({
-        url: '/pages/product/comment/main'
+        url: this.routers[r]
+      })
+    },
+    viewImage () {
+      wx.previewImage({
+        current: '/static/images/banner_1.png', // 当前显示图片的http链接
+        urls: this.background // 需要预览的图片http链接列表
       })
     }
   }

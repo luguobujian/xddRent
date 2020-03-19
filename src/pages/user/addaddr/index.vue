@@ -28,6 +28,7 @@
                      position="bottom"
                      @cancel="showArea = false">
             <van-area :area-list="areaList"
+                      title="地区"
                       @confirm="onConfirm"
                       @cancel="showArea = false" />
           </van-popup>
