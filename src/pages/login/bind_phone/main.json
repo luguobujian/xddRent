@@ -1,0 +1,11 @@
+{
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "van-cell": "/static/vant/cell/index",
+    "van-field": "/static/vant/field/index",
+    "van-checkbox": "/static/vant/checkbox/index",
+    "van-button": "/static/vant/button/index",
+    "van-icon": "/static/vant/icon/index"
+  }
+}

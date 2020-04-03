@@ -1,5 +1,8 @@
 {
   "pages": [
+    "pages/login/main",
+    "pages/login/bind_phone/main",
+    "pages/login/register/main",
     "pages/index/main",
     "pages/search/main",
     "pages/city/main",
