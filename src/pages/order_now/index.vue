@@ -14,13 +14,14 @@
                    @click="onSwitchBtn(1)">配送</div>
             </div>
           </div>
-          <div class="quhuo-addr ">
-            <van-field v-model="tel"
+          <div class="quhuo-addr"
+               @click="goNextPage('warehouse')">
+            <van-field readonly
                        label="取货仓库"
                        right-icon="arrow" />
             <div class="addr van-hairline ">
               <div class="cell-title"></div>
-              <div class="cell-value">000000000000000000000000000</div>
+              <div class="cell-value"></div>
 
             </div>
           </div>
@@ -114,6 +115,9 @@
 export default {
   data () {
     return {
+      routers: {
+        warehouse: '/pages/warehouse/main'
+      },
       switchIdx: 0,
       activeNames: ['1'],
       columns: [],
@@ -162,6 +166,11 @@ export default {
     onPickerConfirm (e) {
       console.log(e.mp.detail)
       this.showPicker = false
+    },
+    goNextPage (r) {
+      wx.navigateTo({
+        url: this.routers[r]
+      })
     }
   }
 }

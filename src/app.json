@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/main",
     "pages/search/main",
+    "pages/city/main",
     "pages/order/main",
     "pages/order/detail/main",
     "pages/order/transport/main",
