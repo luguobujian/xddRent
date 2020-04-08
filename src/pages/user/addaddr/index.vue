@@ -33,7 +33,6 @@
                       @cancel="showArea = false" />
           </van-popup>
         </div>
-
       </div>
     </div>
     <div class="bottom-btn-box">
@@ -60,7 +59,7 @@ export default {
   methods: {
     onConfirm (e) {
       let values = e.target.values
-      this.value = values.map(item => item.name).join('/')
+      this.value = values.map((item) => item.name).join('/')
       this.showArea = false
     }
   }

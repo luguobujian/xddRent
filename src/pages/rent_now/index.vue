@@ -16,14 +16,16 @@
           </div>
           <div class="quhuo-addr"
                @click="goNextPage('warehouse')">
-            <van-field readonly
+            <van-field :value="warehouse.tit"
+                       readonly
                        label="取货仓库"
                        right-icon="arrow" />
             <div class="addr van-hairline ">
-              <div v-if="warehousetemp"
-                   class="cell-title"></div>
-              <div v-if="warehousetemp"
-                   class="cell-value">{{warehousetemp}}</div>
+              <div v-if="warehouse.id"
+                   class="cell-title"
+                   style="max-width:90px;min-width:90px"></div>
+              <div v-if="warehouse.id"
+                   class="cell-value">{{warehouse.val}}</div>
             </div>
           </div>
 
@@ -58,13 +60,15 @@
           </div>
         </div>
         <van-cell-group>
-          <van-field readonly
+          <van-field :value="long"
+                     readonly
                      label="租赁时长"
                      right-icon="arrow"
-                     @click="showPicker = true" />
-          <van-field v-model="number"
-                     label="订单备注"
                      input-align="right"
+                     @click="showPicker = true" />
+          <van-field label="订单备注"
+                     input-align="right"
+                     maxlength="100"
                      placeholder="请输入备注(100字内)" />
         </van-cell-group>
       </div>
@@ -113,6 +117,9 @@
   </div>
 </template>
 <script>
+
+let globalThat = null
+
 export default {
   data () {
     return {
@@ -120,9 +127,10 @@ export default {
         warehouse: '/pages/warehouse/main'
       },
       switchIdx: 0,
-      activeNames: ['1'],
+      activeNames: [],
       columns: [],
       date: '',
+      long: '',
       showDate: false,
       showPicker: false,
       currentDate: new Date().getTime(),
@@ -136,11 +144,18 @@ export default {
         }
         return value
       },
-
-      warehousetemp: ''
+      setData (key, value) {
+        globalThat[key] = value
+      },
+      warehouse: {
+        id: '',
+        val: '',
+        tit: ''
+      }
     }
   },
   mounted () {
+    globalThat = this
     for (let i = 0; i <= 365; i++) {
       this.columns.push(i + 1 + '天')
     }
@@ -160,14 +175,15 @@ export default {
     },
     onDateConfirm (e) {
       var date = new Date(e.mp.detail)
-      var Y = date.getFullYear() + '年'
-      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '月'
-      var D = date.getDate() + '日'
+      var Y = date.getFullYear() + '.'
+      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '.'
+      var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate() + ''
       this.date = Y + M + D
       this.showDate = false
     },
     onPickerConfirm (e) {
       console.log(e.mp.detail)
+      this.long = e.mp.detail.value
       this.showPicker = false
     },
     goNextPage (r) {

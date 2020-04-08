@@ -8,22 +8,30 @@
                        label="取货方式"
                        disabled />
             <div class="switch-btn-box">
-              <div :class="{'active': switchIdx == 0}"
-                   @click="onSwitchBtn(0)">自提</div>
-              <div :class="{'active': switchIdx == 1}"
-                   @click="onSwitchBtn(1)">配送</div>
+              <div :class="{ active: switchIdx == 0 }"
+                   @click="onSwitchBtn(0)">
+                自提
+              </div>
+              <div :class="{ active: switchIdx == 1 }"
+                   @click="onSwitchBtn(1)">
+                配送
+              </div>
             </div>
           </div>
           <div class="quhuo-addr"
-               @click="goNextPage('warehouse')">
+               @click="goNextPage('address')">
             <van-field readonly
-                       label="取货仓库"
-                       right-icon="arrow" />
-            <div class="addr van-hairline ">
-              <div v-if="warehousetemp"
-                   class="cell-title"></div>
-              <div v-if="warehousetemp"
-                   class="cell-value">{{warehousetemp}}</div>
+                       label="收货地址"
+                       right-icon="arrow"
+                       :value="address.val" />
+            <div class="addr van-hairline">
+              <div v-if="address.id"
+                   class="cell-title"
+                   style="max-width:90px;min-width:90px"></div>
+              <div v-if="address.id"
+                   class="cell-value">
+                {{ address.text }}
+              </div>
             </div>
           </div>
 
@@ -41,14 +49,15 @@
                      label="联系电话码"
                      input-align="right"
                      placeholder="请输入电话" /> -->
-
         </van-cell-group>
       </div>
       <div class="product-s-box mb10">
         <div class="product-box">
           <div class="product-img-box">
             <img src=""
-                 alt=""></div>
+                 alt="" />
+          </div>
+
           <div class="product-right-box">
             <div class="product-name">讯纳箱/Alphard</div>
             <div class="product-bottom">
@@ -91,13 +100,16 @@
         </van-collapse>
       </div>
       <div>
-        <van-field readonly
+        <van-field :value="couponResult"
+                   readonly
                    label="优惠券"
+                   input-align='right'
                    right-icon="arrow"
-                   @click="showCoupon=true" />
+                   input-class="coupon-value-style"
+                   @click="showCoupon = true" />
       </div>
     </div>
-    <van-popup :show="showDate"
+    <!-- <van-popup :show="showDate"
                position="bottom"
                @cancel="showDate = false">
       <van-datetime-picker type="date"
@@ -116,30 +128,42 @@
                   :columns="columns"
                   @cancel="showPicker = false"
                   @confirm="onPickerConfirm" />
-    </van-popup>
-    <van-popup :show="showCoupon"
+    </van-popup> -->
+
+    <couponComponent :couponDatas="couponDatas"
+                     :showCoupon="showCoupon"
+                     @childEvent="addEventListenerChildCoupon"></couponComponent>
+    <!-- <van-popup :show="showCoupon"
                custom-style="height: 60%;width: 100%"
                closeable
-               @clickOverlay="showCoupon=false"
-               @close="showCoupon=false">
-      <div>
+               @clickOverlay="showCoupon = false"
+               @close="showCoupon = false">
+      <div class="coupon-box">
         <div class="coupon-tit">优惠券</div>
         <div class="coupon-item-box">
-          <div class="coupon-item">
-            <div class="coupon-item-left">
-              <div>300</div>元
+          <van-radio-group :value="couponResult"
+                           @change="onCouponChecbox">
+            <div v-for="(item, index) in couponDatas"
+                 :key="index"
+                 class="coupon-item">
+              <div class="coupon-item-left">
+                <div>{{item.a}}</div>
+                元
+              </div>
+              <div class="coupon-item-right">
+                <div>{{item.b}}</div>
+                <div class="coupon-item-sub-tit">{{item.c}}</div>
+              </div>
+              <div class="checkbox-box">
+                <van-radio checked-color="#97D700"
+                           :name="item.a"></van-radio>
+              </div>
             </div>
-            <div class="coupon-item-right">
-              <div>满减1000元可用</div>
-              <div class="coupon-item-sub-tit">有效期永久</div>
-            </div>
-            <div class="checkbox-box">
-              <van-checkbox></van-checkbox>
-            </div>
-          </div>
+          </van-radio-group>
         </div>
       </div>
-    </van-popup>
+    </van-popup> -->
+
     <div v-if="!showDate && !showPicker && !showCoupon"
          class="bottom-btn">
       <van-submit-bar :price="2000000"
@@ -151,14 +175,20 @@
   </div>
 </template>
 <script>
+import couponComponent from '@/components/coupon'
+
+let globalThat = null
+
 export default {
   data () {
     return {
       routers: {
-        warehouse: '/pages/warehouse/main'
+        address: '/pages/user/address/main'
       },
+      // ========↑ 路由========
+
       switchIdx: 0,
-      activeNames: ['1'],
+      activeNames: [],
       columns: [],
       date: '',
       showDate: false,
@@ -176,10 +206,37 @@ export default {
         return value
       },
 
-      warehousetemp: ''
+      setData (key, value) {
+        globalThat[key] = value
+      },
+      // ========↑ 页面配置========
+
+      address: {
+        id: '',
+        val: '',
+        text: ''
+      },
+      couponDatas: [{
+        a: 1000,
+        b: 1000,
+        c: 'fjadslkfjasl'
+      }, {
+        a: 200,
+        b: 1000,
+        c: 'fjadslkfjasl'
+      }, {
+        a: 20000,
+        b: 1000,
+        c: 'fjadslkfjasl'
+      }],
+      couponResult: ''
     }
   },
+  components: {
+    couponComponent
+  },
   mounted () {
+    globalThat = this
     for (let i = 0; i <= 365; i++) {
       this.columns.push(i + 1 + '天')
     }
@@ -200,7 +257,10 @@ export default {
     onDateConfirm (e) {
       var date = new Date(e.mp.detail)
       var Y = date.getFullYear() + '年'
-      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '月'
+      var M =
+        (date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1)
+          : date.getMonth() + 1) + '月'
       var D = date.getDate() + '日'
       this.date = Y + M + D
       this.showDate = false
@@ -208,6 +268,13 @@ export default {
     onPickerConfirm (e) {
       console.log(e.mp.detail)
       this.showPicker = false
+    },
+    onCouponChecbox (e) {
+      this.couponResult = e.mp.detail
+    },
+    addEventListenerChildCoupon (e) {
+      this.showCoupon = e.showCoupon
+      this.couponResult = '-￥' + e.couponResult
     },
     goNextPage (r) {
       wx.navigateTo({
@@ -271,7 +338,8 @@ export default {
 }
 
 .cell-value {
-  flex: 1;
+  /* flex: 1; */
+  width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -306,50 +374,6 @@ export default {
   margin-top: 10px;
 }
 
-/* 优惠券 */
-.coupon-tit {
-  color: #333333;
-  text-align: center;
-  line-height: 24px;
-  padding: 20px 0;
-}
-
-.coupon-item-box {
-  margin: 0 15px;
-}
-.coupon-item {
-  display: flex;
-  background-image: url("");
-  margin-bottom: 15px;
-  justify-content: space-between;
-}
-.coupon-item-left {
-  color: #fff;
-  font-size: 15px;
-  background-color: #97d700;
-}
-.coupon-item-left div {
-  display: inline-block;
-  font-size: 30px;
-  line-height: 44px;
-  padding: 24px 0 24px 27px;
-}
-.coupon-item-right {
-  width: 40%;
-  color: #333333;
-  font-size: 15px;
-  line-height: 21px;
-  padding: 25px 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.coupon-item-sub-tit {
-  font-size: 12px;
-  color: #999999;
-  line-height: 17px;
-  margin-top: 4px;
-}
 .checkbox-box {
   padding: 36px 20px;
   padding-left: 0px;
@@ -392,16 +416,13 @@ export default {
 .b-b-price {
   color: #97d700 !important;
 }
+
 .b-b-btn {
   background: #97d700 !important;
   border: none !important ;
 }
-</style>
-<style lang="">
-.van-popup--center {
-  top: 70% !important;
-  border-radius: 8px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+
+.coupon-value-style {
+  color: #97d700 !important;
 }
 </style>
