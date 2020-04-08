@@ -113,7 +113,7 @@
         <van-goods-action-button text="租赁"
                                  color="#97D700"
                                  size="small"
-                                 bind:click="onClickButton" />
+                                 @click="goNextPage('rent_now')" />
       </van-goods-action>
     </div>
   </div>
@@ -124,7 +124,8 @@ export default {
     return {
       routers: {
         comment: '/pages/product/comment/main',
-        order_now: '/pages/order_now/main'
+        order_now: '/pages/order_now/main',
+        rent_now: '/pages/rent_now/main'
       },
       background: ['/static/images/banner_1.png', '/static/images/banner_1.png', '/static/images/banner_1.png'],
       indicatorDots: 1,

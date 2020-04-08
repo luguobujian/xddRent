@@ -1,36 +1,31 @@
 <template>
   <div class="container">
     <div class="main-box">
-      <div class="main-tit">绑定手机号</div>
+      <div class="main-tit">找回密码</div>
       <div>
-        <van-field :value="value"
-                   placeholder="请输入手机号"/>
+        <van-field v-model="value"
+                   placeholder="请输入手机号" />
       </div>
+
       <div class="sms-code-box van-hairline">
         <van-field class="inp-box"
                    placeholder="请输入验证码" />
         <span class="sms-btn">获取验证码</span>
       </div>
-
+      <div>
+        <van-field v-model="value"
+                   placeholder="请输入6～16位数字或字母密码"
+                   right-icon="/static/icons/eye.png" />
+      </div>
       <div class="bottom-btn-box">
         <div class="bottom-btn-margin">
           <van-button color="#97D700"
                       size="small"
                       round
                       block
-                      @click="openPage(0)">提交</van-button>
+                      @click="go">重置密码</van-button>
         </div>
       </div>
-    </div>
-    <div class="bottom-content">
-      <van-checkbox icon-size="15px"
-                    checked-color="#07c160"
-                    :value="checked"
-                    @change="onChange">我已阅读并同意
-        <div class="tip-btn">“用户协议”</div>
-        和
-        <div class="tip-btn">“隐私协议”</div>
-      </van-checkbox>
     </div>
   </div>
 </template>
@@ -39,14 +34,13 @@ export default {
   data () {
     return {
       routers: [{
-        url: '/pages/login/set_password/main'
+        url: '/pages/login/signin/main'
       }]
     }
   },
   methods: {
     openPage (i) {
-      console.log(i)
-      wx.navigateTo({
+      wx.redirectTo({
         url: this.routers[i].url
       })
     }
@@ -65,8 +59,9 @@ export default {
   color: #333;
   font-size: 30px;
   line-height: 42px;
-  padding: 19px 0;
+  padding: 19px 0 6px;
 }
+
 .sms-code-box {
   display: flex;
   flex-direction: row;
@@ -80,7 +75,7 @@ export default {
   background: #fff;
 }
 .bottom-btn-margin {
-  margin: 30px 0 !important;
+  margin: 30px 0 10px !important;
 }
 .bottom-content {
   display: inline-block;
@@ -89,6 +84,13 @@ export default {
   color: #999;
   text-align: center;
   margin: 0 auto;
+}
+.bottom-tip-btn {
+  font-size: 15px;
+  color: #666666;
+  line-height: 21px;
+  text-align: center;
+  margin-top: 10px;
 }
 .checkbox-box {
 }
@@ -107,12 +109,12 @@ export default {
 }
 
 /* .sms-code-box[class*="van-hairline"]::after {
-  left: 0px !important;
-  width: 100% !important;
+  left: 15px !important;
+  width: 92% !important;
 } */
 
 .van-cell::after {
-  left: 0px !important;
+  left: 0 !important;
   width: 100% !important;
 }
 
@@ -124,12 +126,5 @@ export default {
 .van-button--small {
   color: #fff;
   height: 39px !important;
-}
-
-.van-button {
-  height: 39px !important;
-}
-.van-checkbox__label {
-  color: #999 !important;
 }
 </style>

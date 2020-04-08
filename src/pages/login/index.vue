@@ -16,7 +16,7 @@
                     @click="openPage(0)">微信登录</van-button>
       </div>
       <div class="bottom-tip-btn">
-        <div>手机账号登录/注册</div>
+        <div @click="openPage(1)">手机账号登录/注册</div>
       </div>
     </div>
     <div class="bottom-content">
@@ -38,6 +38,8 @@ export default {
       checked: true,
       routers: [{
         url: '/pages/login/bind_phone/main'
+      }, {
+        url: '/pages/login/signin/main'
       }]
     }
   },

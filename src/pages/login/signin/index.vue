@@ -1,25 +1,30 @@
 <template>
   <div class="container">
     <div class="main-box">
-      <div class="main-tit">绑定手机号</div>
+      <div class="main-tit">验证码登录</div>
       <div>
-        <van-field :value="value"
-                   placeholder="请输入手机号"/>
+        <van-field v-model="value"
+                   placeholder="请输入手机号" />
       </div>
       <div class="sms-code-box van-hairline">
         <van-field class="inp-box"
                    placeholder="请输入验证码" />
         <span class="sms-btn">获取验证码</span>
       </div>
-
+      <div class="sub-tit" @click="openPage(0)">
+        账号密码登录
+      </div>
       <div class="bottom-btn-box">
         <div class="bottom-btn-margin">
           <van-button color="#97D700"
                       size="small"
                       round
                       block
-                      @click="openPage(0)">提交</van-button>
+                      @click="go">登录</van-button>
         </div>
+      </div>
+      <div class="bottom-tip-btn">
+        <div @click="openPage(1)">注册</div>
       </div>
     </div>
     <div class="bottom-content">
@@ -39,14 +44,13 @@ export default {
   data () {
     return {
       routers: [{
-        url: '/pages/login/set_password/main'
+        url: '/pages/login/signin2/main'
       }]
     }
   },
   methods: {
     openPage (i) {
-      console.log(i)
-      wx.navigateTo({
+      wx.redirectTo({
         url: this.routers[i].url
       })
     }
@@ -65,7 +69,17 @@ export default {
   color: #333;
   font-size: 30px;
   line-height: 42px;
-  padding: 19px 0;
+  padding: 19px 0 6px;
+}
+.sub-tit {
+  font-size: 15px;
+  color: #97d700;
+  line-height: 21px;
+  padding-top: 15px;
+}
+.sub-tit div {
+  display: inline-block;
+  color: #97d700;
 }
 .sms-code-box {
   display: flex;
@@ -80,7 +94,7 @@ export default {
   background: #fff;
 }
 .bottom-btn-margin {
-  margin: 30px 0 !important;
+  margin: 30px 0 10px !important;
 }
 .bottom-content {
   display: inline-block;
@@ -89,6 +103,13 @@ export default {
   color: #999;
   text-align: center;
   margin: 0 auto;
+}
+.bottom-tip-btn {
+  font-size: 15px;
+  color: #666666;
+  line-height: 21px;
+  text-align: center;
+  margin-top: 10px;
 }
 .checkbox-box {
 }
@@ -107,12 +128,12 @@ export default {
 }
 
 /* .sms-code-box[class*="van-hairline"]::after {
-  left: 0px !important;
-  width: 100% !important;
+  left: 15px !important;
+  width: 92% !important;
 } */
 
 .van-cell::after {
-  left: 0px !important;
+  left: 0 !important;
   width: 100% !important;
 }
 
@@ -124,12 +145,5 @@ export default {
 .van-button--small {
   color: #fff;
   height: 39px !important;
-}
-
-.van-button {
-  height: 39px !important;
-}
-.van-checkbox__label {
-  color: #999 !important;
 }
 </style>

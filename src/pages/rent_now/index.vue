@@ -27,7 +27,7 @@
             </div>
           </div>
 
-          <!-- <van-field :value="date"
+          <van-field :value="date"
                      label="取货时间"
                      input-align="right"
                      readonly
@@ -40,7 +40,7 @@
           <van-field v-model="password"
                      label="联系电话码"
                      input-align="right"
-                     placeholder="请输入电话" /> -->
+                     placeholder="请输入电话" />
 
         </van-cell-group>
       </div>
@@ -58,21 +58,20 @@
           </div>
         </div>
         <van-cell-group>
-          <!-- <van-field readonly
+          <van-field readonly
                      label="租赁时长"
                      right-icon="arrow"
-                     @click="showPicker = true" /> -->
+                     @click="showPicker = true" />
           <van-field v-model="number"
                      label="订单备注"
                      input-align="right"
                      placeholder="请输入备注(100字内)" />
         </van-cell-group>
       </div>
-      <div class="mb10">
+      <div class="">
         <van-collapse :value="activeNames"
                       @change="onChange1">
-          <van-collapse-item custom-class="mb10"
-                             title="定金"
+          <van-collapse-item title="定金"
                              value="¥20000.00"
                              name="1"
                              is-link="false">
@@ -80,21 +79,7 @@
                       slot="right-icon" />
             <div>这里是箱子名称</div>
           </van-collapse-item>
-          <van-collapse-item title="运费"
-                             value="¥20000.00"
-                             name="2"
-                             is-link="false">
-            <van-icon name="/static/icons/arrow-down.png"
-                      slot="right-icon" />
-            <div>这里是箱子名称</div>
-          </van-collapse-item>
         </van-collapse>
-      </div>
-      <div>
-        <van-field readonly
-                   label="优惠券"
-                   right-icon="arrow"
-                   @click="showCoupon=true" />
       </div>
     </div>
     <van-popup :show="showDate"
@@ -117,30 +102,7 @@
                   @cancel="showPicker = false"
                   @confirm="onPickerConfirm" />
     </van-popup>
-    <van-popup :show="showCoupon"
-               custom-style="height: 60%;width: 100%"
-               closeable
-               @clickOverlay="showCoupon=false"
-               @close="showCoupon=false">
-      <div>
-        <div class="coupon-tit">优惠券</div>
-        <div class="coupon-item-box">
-          <div class="coupon-item">
-            <div class="coupon-item-left">
-              <div>300</div>元
-            </div>
-            <div class="coupon-item-right">
-              <div>满减1000元可用</div>
-              <div class="coupon-item-sub-tit">有效期永久</div>
-            </div>
-            <div class="checkbox-box">
-              <van-checkbox></van-checkbox>
-            </div>
-          </div>
-        </div>
-      </div>
-    </van-popup>
-    <div v-if="!showDate && !showPicker && !showCoupon"
+    <div v-if="!showDate && !showPicker"
          class="bottom-btn">
       <van-submit-bar :price="2000000"
                       button-text="提交订单"
@@ -163,7 +125,6 @@ export default {
       date: '',
       showDate: false,
       showPicker: false,
-      showCoupon: false,
       currentDate: new Date().getTime(),
       formatter (type, value) {
         if (type === 'year') {
@@ -305,55 +266,6 @@ export default {
 .product-bottom {
   margin-top: 10px;
 }
-
-/* 优惠券 */
-.coupon-tit {
-  color: #333333;
-  text-align: center;
-  line-height: 24px;
-  padding: 20px 0;
-}
-
-.coupon-item-box {
-  margin: 0 15px;
-}
-.coupon-item {
-  display: flex;
-  background-image: url("");
-  margin-bottom: 15px;
-  justify-content: space-between;
-}
-.coupon-item-left {
-  color: #fff;
-  font-size: 15px;
-  background-color: #97d700;
-}
-.coupon-item-left div {
-  display: inline-block;
-  font-size: 30px;
-  line-height: 44px;
-  padding: 24px 0 24px 27px;
-}
-.coupon-item-right {
-  width: 40%;
-  color: #333333;
-  font-size: 15px;
-  line-height: 21px;
-  padding: 25px 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.coupon-item-sub-tit {
-  font-size: 12px;
-  color: #999999;
-  line-height: 17px;
-  margin-top: 4px;
-}
-.checkbox-box {
-  padding: 36px 20px;
-  padding-left: 0px;
-}
 </style>
 <style lang="">
 .van-cell {
@@ -395,13 +307,5 @@ export default {
 .b-b-btn {
   background: #97d700 !important;
   border: none !important ;
-}
-</style>
-<style lang="">
-.van-popup--center {
-  top: 70% !important;
-  border-radius: 8px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
 }
 </style>

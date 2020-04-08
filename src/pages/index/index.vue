@@ -208,6 +208,7 @@ image {
   display: flex;
   margin: 15px;
   border-radius: 6px;
+  justify-content: space-between;
   overflow: hidden;
 }
 .item-tit {
@@ -219,12 +220,13 @@ image {
 .item {
   padding: 15px;
   background: #fff;
+  
 }
 .item-bg {
   background: #97d700;
 }
 .item-middle {
-  margin: 0 7.5px;
+  /* margin: 0 7.5px; */
 }
 .item-bg .item-tit {
   color: #fff;
