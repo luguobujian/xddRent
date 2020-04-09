@@ -96,6 +96,7 @@ export default {
     },
     onDel (e) {
       Dialog.confirm({
+        // customStyle: '',
         title: '提示',
         message: '确认删除该地址信息？'
       }).then(() => {
@@ -176,7 +177,13 @@ export default {
   color: #fff;
   height: 35px !important;
 }
+
 .van-dialog {
-  border-radius: 8px !important;
+  color: #333;
+  border-radius: 6px !important;
+}
+
+.van-dialog__message-text {
+  font-size: 17px !important;
 }
 </style>

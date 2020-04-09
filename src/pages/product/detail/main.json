@@ -6,6 +6,7 @@
     "van-icon": "/static/vant/icon/index",
     "van-rate": "/static/vant/rate/index",
     "van-goods-action": "/static/vant/goods-action/index",
-    "van-goods-action-button": "/static/vant/goods-action-button/index"
+    "van-goods-action-button": "/static/vant/goods-action-button/index",
+    "van-popup": "/static/vant/popup/index"
   }
 }

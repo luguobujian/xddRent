@@ -20,22 +20,100 @@
                     size="small"
                     round
                     block
-                    @click="go">确认提现</van-button>
+                    @click="goPayout">确认提现</van-button>
       </div>
     </div>
+    <van-popup :show="showPayout"
+               position="bottom"
+               custom-style="height: 80%;width: 100%"
+               round
+               closeable
+               @clickOverlay="showPayout = false"
+               @close="showPayout = false">
+      <div class="payout-box">
+        <div class="payout-tit">选择提现账户</div>
+        <div class="payout-type-box">
+          <van-radio-group>
+            <div class="type-item card">
+              <div class="type-item-left">
+                <div class="type-item-tit">银行卡</div>
+                <div class="type-item-cell">
+                  <div class="small-tit">持卡人</div>
+                  <div>马小哈</div>
+                </div>
+                <div class="type-item-cell">
+                  <div class="small-tit">开户行</div>
+                  <div>中国工商银行北京北太平桥支行</div>
+                </div>
+                <div class="type-item-cell">
+                  <div class="small-tit">银行卡号</div>
+                  <div>62357237218451285</div>
+                </div>
+              </div>
+              <div class="type-item-right">
+                <van-radio class="type-item-radio"
+                           checked-color="#97D700"
+                           name="a"></van-radio>
+              </div>
+            </div>
+            <div class="type-item alipay">
+              <div class="type-item-left">
+                <div class="type-item-tit">支付宝</div>
+                <div class="type-item-cell">
+                  <div class="small-tit">绑定手机</div>
+                  <div>186372636253</div>
+                </div>
+                <div class="type-item-cell">
+                  <div class="small-tit">帐号</div>
+                  <div>273627153@qq.com</div>
+                </div>
+              </div>
+              <div class="type-item-right">
+                <van-radio class="type-item-radio"
+                           checked-color="#97D700"
+                           name="b"></van-radio>
+              </div>
+            </div>
+            <div class="type-item wxpay">
+              <div class="type-item-left">
+                <div class="type-item-tit">微信</div>
+                <div class="type-item-cell">
+                  <div class="small-tit">暂无微信账户信息</div>
+                  <!-- <div>186372636253</div> -->
+                </div>
+                <!-- <div class="type-item-cell">
+                  <div class="small-tit">帐号</div>
+                  <div>273627153@qq.com</div>
+                </div> -->
+              </div>
+              <div class="type-item-right">
+                <!-- <van-radio class="type-item-radio"
+                           checked-color="#97D700"
+                           name="b"></van-radio> -->
+                <div class="add-button">去添加</div>
+              </div>
+            </div>
+          </van-radio-group>
+        </div>
+      </div>
+
+    </van-popup>
   </div>
 </template>
 <script>
 export default {
   data () {
     return {
-
+      showPayout: false
     }
   },
   mounted () {
 
   },
   methods: {
+    goPayout () {
+      this.showPayout = true
+    },
     go () {
       wx.navigateTo({
         url: '/pages/billing/settings/main'
@@ -78,6 +156,53 @@ export default {
 .bottom-btn-margin {
   margin: 36px 15px !important;
 }
+
+/* =======↓=payout======== */
+.payout-tit {
+  font-size: 17px;
+  color: #333333;
+  text-align: center;
+  line-height: 24px;
+  padding: 20px 0;
+}
+.payout-type-box {
+  padding: 0 15px;
+}
+.type-item {
+  display: flex;
+  padding: 15px;
+  background: #faf9f9;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+.type-item-tit {
+  font-size: 15px;
+  color: #333333;
+  padding-bottom: 5px;
+}
+.type-item-left {
+  flex: 1;
+}
+.type-item-cell {
+  display: flex;
+  color: #333;
+  font-size: 13px;
+  line-height: 18px;
+  margin-top: 5px;
+  /* justify-content: space-between; */
+}
+.small-tit {
+  width: 70px;
+  color: #666;
+}
+.type-item-radio {
+  position: relative;
+}
+.add-button {
+  font-size: 13px;
+  color: #97d700;
+  margin-top: 15px;
+}
 </style>
 
 <style>
@@ -93,5 +218,18 @@ export default {
 .van-button--small {
   color: #fff;
   height: 39px !important;
+}
+.van-popup--bottom.van-popup--round {
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+.van-radio {
+  margin-top: 38px;
+}
+.alipay .van-radio {
+  margin-top: 27px;
+}
+.wxpay .small-tit {
+  width: auto;
 }
 </style>

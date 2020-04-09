@@ -85,7 +85,6 @@
                         void-icon="star"
                         bind:change="onChange" />4.5分
             </div>
-
           </div>
           <div>
             <van-icon name="arrow" />
@@ -116,6 +115,40 @@
                                  @click="goNextPage('rent_now')" />
       </van-goods-action>
     </div>
+    <van-popup :show="showAttrs"
+               position="bottom"
+               custom-style="height: 80%;width: 100%"
+               z-index="999"
+               round
+               closeable
+               @clickOverlay="showAttrs = false"
+               @close="showAttrs = false">
+      <div class="attrs-box">
+        <div class="product-info-box">
+          <div class="product-info-img">
+            <img src=""
+                 alt="">
+          </div>
+          <div>
+            <div class="product-info-name">讯纳箱/Alphard</div>
+            <div class="product-info-price-box">
+              <div>¥</div>
+              <div class="product-info-price">800</div>
+              <div>/天</div>
+            </div>
+            <div class="product-info-num">库存：2000</div>
+          </div>
+        </div>
+        <div class="attrs-lists-box">
+          <div class="attrs-lists-tit">属性1</div>
+          <div class="attrs-lists-main">
+            <div class="attrs-lists">
+              经典黑
+            </div>
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -132,7 +165,9 @@ export default {
       vertical: false,
       autoplay: false,
       interval: 2000,
-      duration: 500
+      duration: 500,
+
+      showAttrs: true
     }
   },
   methods: {
@@ -343,6 +378,58 @@ image {
   height: 176px;
   border-radius: 4px;
   padding: 8px 0;
+}
+
+/* ===========popup=========== */
+.attrs-box {
+  padding: 0 15px;
+}
+.product-info-box {
+  display: flex;
+  margin-top: 20px;
+}
+.product-info-img img {
+  width: 85px;
+  height: 85px;
+  background-color: aquamarine;
+  margin-right: 10px;
+}
+.product-info-name {
+  font-size: 13px;
+  color: #333333;
+  line-height: 18px;
+}
+.product-info-price-box div {
+  display: inline-block;
+  font-size: 11px;
+  color: #97d700;
+}
+.product-info-price-box .product-info-price {
+  font-size: 15px;
+  line-height: 22px;
+  margin: 5px 0 23px;
+}
+.product-info-num {
+  font-size: 12px;
+  color: #999999;
+  line-height: 17px;
+}
+.attrs-lists-box {
+  padding-top: 15px;
+}
+.attrs-lists-tit {
+  font-size: 14px;
+  color: #333333;
+  padding: 10px 0;
+}
+.attrs-lists {
+  display: inline-block;
+  font-size: 12px;
+  color: #666666;
+  line-height: 16px;
+  padding: 6px 21px;
+  background: #f6f6f6;
+  border-radius: 14px;
 }
 </style>
 <style lang="">

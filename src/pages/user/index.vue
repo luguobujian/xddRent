@@ -30,11 +30,14 @@
                        name="area"
                        :value="value"
                        @click="showArea = true" />
-            <van-field v-model="value1"
+            <van-field :value="gender"
                        label="性别"
                        right-icon="arrow"
                        placeholder="请选择"
-                       input-align="right" />
+                       readonly
+                       clickable
+                       input-align="right"
+                       @click="showGender=true" />
             <van-field :value="tel"
                        label="绑定手机"
                        placeholder="显示图标"
@@ -64,6 +67,11 @@
                     block>保存</van-button>
       </div>
     </div>
+    <van-action-sheet :show="showGender"
+                      :actions="actions"
+                      cancel-text="取消"
+                      @select="selectGender"
+                      @cancel="showGender= false" />
   </div>
 </template>
 
@@ -74,7 +82,13 @@ export default {
     return {
       value: '',
       tel: '133333333',
+      showGender: false,
       showArea: false,
+      gender: '',
+      actions: [
+        { name: '男', color: '#000' },
+        { name: '女', color: '#000' }
+      ],
       areaList: AreaList // 数据格式见 Area 组件文档
     }
   },
@@ -83,6 +97,11 @@ export default {
       let values = e.target.values
       this.value = values.map(item => item.name).join('/')
       this.showArea = false
+    },
+    selectGender (e) {
+      console.log(e)
+      this.gender = e.mp.detail.name
+      this.showGender = false
     },
     goNextPage () {
       wx.chooseImage({
@@ -181,5 +200,14 @@ export default {
 .van-picker__cancel,
 .van-picker__confirm {
   color: #97d700 !important;
+}
+
+.van-popup--bottom.van-popup--round {
+  border-radius: 6px 6px 0 0 !important;
+}
+.van-action-sheet__cancel,
+.van-action-sheet__item {
+  font-size: 15px !important;
+  color: #999999;
 }
 </style>

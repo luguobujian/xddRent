@@ -13,7 +13,7 @@
                       size="small"
                       round
                       block
-                      @click="go">提交</van-button>
+                      @click="goNextPage">提交</van-button>
         </div>
       </div>
     </div>
@@ -21,7 +21,18 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
 
+    }
+  },
+  methods: {
+    goNextPage () {
+      wx.switchTab({
+        url: '/pages/index/main'
+      })
+    }
+  }
 }
 </script>
 <style lang="">

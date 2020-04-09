@@ -4,21 +4,6 @@ export default {
       name: 'A',
       cities: [
         {
-          name: '鞍山市',
-          tags: 'ANSHAN,鞍山市',
-          cityid: 492
-        },
-        {
-          name: '安庆市',
-          tags: 'ANQING,安庆市',
-          cityid: 1098
-        },
-        {
-          name: '安阳市',
-          tags: 'ANYANG,安阳市',
-          cityid: 1583
-        },
-        {
           name: '阿拉善盟',
           tags: 'ALASHANMENG,阿拉善盟',
           cityid: 462
@@ -29,19 +14,9 @@ export default {
           cityid: 2521
         },
         {
-          name: '安顺市',
-          tags: 'ANSHUN,安顺市',
-          cityid: 2604
-        },
-        {
           name: '阿里地区',
           tags: 'ALIDIQU,阿里地区',
           cityid: 2882
-        },
-        {
-          name: '安康市',
-          tags: 'ANKANG,安康市',
-          cityid: 2997
         },
         {
           name: '阿克苏地区',
@@ -57,6 +32,31 @@ export default {
           name: '阿拉尔市',
           tags: 'ALAER,阿拉尔市',
           cityid: 3319
+        },
+        {
+          name: '鞍山市',
+          tags: 'ANSHAN,鞍山市',
+          cityid: 492
+        },
+        {
+          name: '安庆市',
+          tags: 'ANQING,安庆市',
+          cityid: 1098
+        },
+        {
+          name: '安阳市',
+          tags: 'ANYANG,安阳市',
+          cityid: 1583
+        },
+        {
+          name: '安顺市',
+          tags: 'ANSHUN,安顺市',
+          cityid: 2604
+        },
+        {
+          name: '安康市',
+          tags: 'ANKANG,安康市',
+          cityid: 2997
         }
       ]
     },
