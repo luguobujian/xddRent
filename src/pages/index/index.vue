@@ -73,6 +73,7 @@
 
 <script>
 import card from '@/components/card'
+import API from '@/api/api'
 export default {
   data () {
     return {
@@ -90,6 +91,12 @@ export default {
   },
   components: {
     card
+  },
+  mounted () {
+    API.request('api/Index/baner')
+      .then(r => {
+        console.log(r)
+      })
   },
   methods: {
     bindChange (e) {
@@ -220,7 +227,6 @@ image {
 .item {
   padding: 15px;
   background: #fff;
-  
 }
 .item-bg {
   background: #97d700;

@@ -9,9 +9,12 @@
       <div class="sms-code-box van-hairline">
         <van-field class="inp-box"
                    placeholder="请输入验证码" />
-        <span class="sms-btn">获取验证码</span>
+        <span class="sms-btn"
+              :class="{active: !getSmsCodeIng}"
+              @click="onClickGetSmsBtn">{{getSmsCodeBtnText}}</span>
       </div>
-      <div class="sub-tit" @click="openPage(0)">
+      <div class="sub-tit"
+           @click="openPage(0)">
         账号密码登录
       </div>
       <div class="bottom-btn-box">
@@ -45,10 +48,26 @@ export default {
     return {
       routers: [{
         url: '/pages/login/signin2/main'
-      }]
+      }],
+      getSmsCodeBtnText: '获取验证码',
+      getSmsCodeIng: false,
+      getSmsCodeClock: 60
     }
   },
   methods: {
+    onClickGetSmsBtn () {
+      if (this.getSmsCodeIng) return
+      let timer = setInterval(() => {
+        this.getSmsCodeIng = true
+        this.getSmsCodeBtnText = `${this.getSmsCodeClock--}秒后重试`
+        if (this.getSmsCodeClock < 1) {
+          this.getSmsCodeBtnText = '获取验证码'
+          this.getSmsCodeClock = 60
+          this.getSmsCodeIng = false
+          clearInterval(timer)
+        }
+      }, 1000)
+    },
     openPage (i) {
       wx.redirectTo({
         url: this.routers[i].url
@@ -92,6 +111,9 @@ export default {
   color: #97d700;
   padding: 17px 15px;
   background: #fff;
+}
+.sms-btn.active:active {
+  color: #999;
 }
 .bottom-btn-margin {
   margin: 30px 0 10px !important;

@@ -1,12 +1,5 @@
 {
   "pages": [
-    "pages/login/main",
-    "pages/login/bind_phone/main",
-    "pages/login/register/main",
-    "pages/login/set_password/main",
-    "pages/login/signin/main",
-    "pages/login/signin2/main",
-    "pages/login/reset_password/main",
     "pages/index/main",
     "pages/search/main",
     "pages/city/main",
@@ -39,7 +32,14 @@
     "pages/faqs/main",
     "pages/faqs/detail/main",
     "pages/contact/main",
-    "pages/upload/upload"
+    "pages/upload/upload",
+    "pages/login/main",
+    "pages/login/bind_phone/main",
+    "pages/login/register/main",
+    "pages/login/set_password/main",
+    "pages/login/signin/main",
+    "pages/login/signin2/main",
+    "pages/login/reset_password/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

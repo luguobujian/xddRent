@@ -7,13 +7,17 @@
                    placeholder="请输入手机号" />
       </div>
       <div>
-        <van-field v-model="value"
+        <van-field :value="pass"
+                   :password="hidepass"
                    placeholder="请输入6～16位数字或字母密码"
-                   right-icon="/static/icons/eye.png" />
+                   right-icon="/static/icons/eye.png"
+                   @clickIcon="showPassword" />
       </div>
       <div class="sub-tit">
-        <div class="code-login" @click="openPage(0)">验证码登录</div>
-        <div class="reset-password" @click="openPage(1)">忘记密码</div>
+        <div class="code-login"
+             @click="openPage(0)">验证码登录</div>
+        <div class="reset-password"
+             @click="openPage(1)">忘记密码</div>
       </div>
       <div class="bottom-btn-box">
         <div class="bottom-btn-margin">
@@ -48,10 +52,18 @@ export default {
         url: '/pages/login/signin/main'
       }, {
         url: '/pages/login/reset_password/main'
-      }]
+      }],
+      hidepass: true
     }
   },
   methods: {
+    showPassword (e) {
+      if (this.hidepass) {
+        this.hidepass = false
+      } else {
+        this.hidepass = true
+      }
+    },
     openPage (i) {
       wx.redirectTo({
         url: this.routers[i].url

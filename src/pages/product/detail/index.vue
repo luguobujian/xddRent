@@ -108,16 +108,16 @@
                                  type="warning"
                                  plain="true"
                                  size="small"
-                                 @click="goNextPage('order_now')" />
+                                 @click="showAttrs = true" />
         <van-goods-action-button text="租赁"
                                  color="#97D700"
                                  size="small"
-                                 @click="goNextPage('rent_now')" />
+                                 @click="showAttrs = true" />
       </van-goods-action>
     </div>
     <van-popup :show="showAttrs"
                position="bottom"
-               custom-style="height: 80%;width: 100%"
+               custom-style="height: 78%;width: 100%;border-radius: 8px !important"
                z-index="999"
                round
                closeable
@@ -142,10 +142,58 @@
         <div class="attrs-lists-box">
           <div class="attrs-lists-tit">属性1</div>
           <div class="attrs-lists-main">
+            <div class="attrs-lists active">
+              经典黑
+            </div>
+            <div class="attrs-lists">
+              经典黑
+            </div>
+            <div class="attrs-lists">
+              经典黑
+            </div>
+            <div class="attrs-lists">
+              经典黑
+            </div>
             <div class="attrs-lists">
               经典黑
             </div>
           </div>
+        </div>
+        <div class="attrs-lists-box">
+          <div class="attrs-lists-tit">属性2</div>
+          <div class="attrs-lists-main">
+            <div class="attrs-lists">
+              经典黑
+            </div>
+            <div class="attrs-lists">
+              经典黑
+            </div>
+            <div class="attrs-lists">
+              经典黑
+            </div>
+          </div>
+        </div>
+        <div class="stepper-btn-box attrs-lists-box">
+          <div class=" attrs-lists-tit">购买数量</div>
+          <div class="stepper-btn-main">
+            <van-stepper :value="1"
+                         @change="onStepperChange" />
+          </div>
+        </div>
+        <div class="btn-box">
+          <van-goods-action>
+            <van-goods-action-button text="立即购买"
+                                     color="#fff"
+                                     text-class="goods-button-left"
+                                     type="warning"
+                                     plain="true"
+                                     size="small"
+                                     @click="goNextPage('order_now')" />
+            <van-goods-action-button text="租赁"
+                                     color="#97D700"
+                                     size="small"
+                                     @click="goNextPage('rent_now')" />
+          </van-goods-action>
         </div>
       </div>
     </van-popup>
@@ -178,6 +226,9 @@ export default {
       this.setData({
         value: event.detail
       })
+    },
+    onStepperChange (e) {
+      console.log(e)
     },
     goNextPage (r) {
       wx.navigateTo({
@@ -387,6 +438,7 @@ image {
 .product-info-box {
   display: flex;
   margin-top: 20px;
+  margin-bottom: 15px;
 }
 .product-info-img img {
   width: 85px;
@@ -415,24 +467,40 @@ image {
   line-height: 17px;
 }
 .attrs-lists-box {
-  padding-top: 15px;
+  /* padding-top: 15px; */
 }
 .attrs-lists-tit {
   font-size: 14px;
   color: #333333;
   padding: 10px 0;
 }
+.attrs-lists-main {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+}
 .attrs-lists {
-  display: inline-block;
   font-size: 12px;
   color: #666666;
   line-height: 16px;
-  padding: 6px 21px;
+  padding: 5px 20px;
   background: #f6f6f6;
+  border: 1px solid #f6f6f6;
   border-radius: 14px;
+  margin-bottom: 10px;
+  margin-right: 11px;
+}
+.attrs-lists.active {
+  font-size: 12px;
+  color: #97d700;
+  background: rgba(151, 215, 0, 0.06);
+  border: 1px solid #97d700;
+}
+.attrs-lists:nth-child(4n) {
+  margin-right: 0;
 }
 </style>
-<style lang="">
+<style>
 ._van-icon {
   margin: 23px 0 !important;
 }
@@ -441,7 +509,9 @@ image {
   color: #97d700;
   margin-top: 22px;
 }
-
+.van-goods-action--safe {
+  z-index: 999;
+}
 .van-goods-action-button--first {
   margin-top: 7px;
   margin-bottom: 7px;
@@ -456,6 +526,23 @@ image {
 .van-goods-action-button--last {
   margin-top: 7px;
   margin-bottom: 7px;
+  margin-right: 15px !important;
+}
+.van-stepper__minus,
+.van-stepper__input,
+.van-stepper__plus {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e5 !important;
+  border-radius: 2px !important;
+  margin: 0 !important;
+}
+.van-stepper__input {
+  border-left: none !important;
+  border-right: none !important;
+}
+.van-goods-action-button--last {
+  margin-top: 15px !important;
+  margin-bottom: 15px !important;
   margin-right: 15px !important;
 }
 </style>
