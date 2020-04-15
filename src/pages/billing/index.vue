@@ -43,7 +43,7 @@ export default {
   methods: {
     goNextPage (t, i) {
       console.log(this[t][i].path)
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: this[t][i].path
       })
     }

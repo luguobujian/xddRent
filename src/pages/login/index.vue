@@ -49,7 +49,7 @@ export default {
       this.checked = e.mp.detail
     },
     openPage (i) {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: this.routers[i].url
       })
     }

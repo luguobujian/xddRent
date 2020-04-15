@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     goNextPage () {
-      wx.switchTab({
+      mpvue.switchTab({
         url: '/pages/index/main'
       })
     }

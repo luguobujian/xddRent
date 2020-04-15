@@ -32,7 +32,7 @@
     "pages/faqs/main",
     "pages/faqs/detail/main",
     "pages/contact/main",
-    "pages/upload/upload",
+    "pages/upload/main",
     "pages/login/main",
     "pages/login/bind_phone/main",
     "pages/login/register/main",

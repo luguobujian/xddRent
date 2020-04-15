@@ -1,9 +1,0 @@
-page {
-  
-}
-button {
-  height: 80rpx;
-  background: #97d700 !important;
-  border-radius: 40rpx;
-  margin: 0 30rpx;
-}

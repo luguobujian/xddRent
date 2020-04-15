@@ -187,7 +187,7 @@ export default {
       this.showPicker = false
     },
     goNextPage (r) {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: this.routers[r]
       })
     }

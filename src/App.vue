@@ -1,4 +1,5 @@
 <script>
+import { exchangeCode } from '@/api/getData'
 export default {
   created () {
     // 调用API从本地缓存中获取数据
@@ -10,22 +11,62 @@ export default {
      * 支付宝(蚂蚁)：mpvue === my, mpvuePlatform === 'my'
      */
 
-    let logs
-    if (mpvuePlatform === 'my') {
-      logs = mpvue.getStorageSync({ key: 'logs' }).data || []
-      logs.unshift(Date.now())
-      mpvue.setStorageSync({
-        key: 'logs',
-        data: logs
-      })
-    } else {
-      logs = mpvue.getStorageSync('logs') || []
-      logs.unshift(Date.now())
-      mpvue.setStorageSync('logs', logs)
-    }
+    // let logs
+    // if (mpvuePlatform === 'my') {
+    //   logs = mpvue.getStorageSync({ key: 'logs' }).data || []
+    //   logs.unshift(Date.now())
+    //   mpvue.setStorageSync({
+    //     key: 'logs',
+    //     data: logs
+    //   })
+    // } else {
+    //   logs = mpvue.getStorageSync('logs') || []
+    //   logs.unshift(Date.now())
+    //   mpvue.setStorageSync('logs', logs)
+    // }
+
   },
-  log () {
-    console.log(`log at:${Date.now()}`)
+  onLaunch () {
+    // this.privateWxLogin().then(r => this.exchangeCode(r.code))
+  },
+  mounted () {
+    this.exchangeCode()
+  },
+  methods: {
+    /**
+    *用户登录凭证（有效期五分钟）。开发者需要在开发者服务器后台调用 auth.code2Session，使用 code 换取 openid 和 session_key 等信息
+    */
+    async privateWxLogin () {
+      return new Promise((resolve, reject) => {
+        mpvue.login({
+          success (res) {
+            console.log('privateWxLogin', res)
+            if (res.code) {
+              resolve(res.code)
+            } else {
+              reject(res)
+              console.log('登录失败！' + res.errMsg)
+            }
+          }
+        })
+      })
+    },
+    /**
+    *code登录获取openid
+    */
+    async exchangeCode () {
+      try {
+        const code = await this.privateWxLogin()
+        const res = await exchangeCode({ code })
+        console.log(`App:exchangeCode ${new Date().getTime()}`, res)
+        mpvue.setStorage({
+          key: 'token',
+          data: res.data.data.userinfo.token
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 }
 </script>

@@ -115,7 +115,7 @@ export default {
       this.showPayout = true
     },
     go () {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/billing/settings/main'
       })
     }

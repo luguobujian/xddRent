@@ -1,68 +1,97 @@
 <template>
   <div class="container">
-    <div class="top-search-btn van-hairline">
-      <div class="city-box">
-        <div class="city">北京</div>
-        <van-icon name="/static/icons/arrow-down.png" />
-      </div>
-      <div class="search-btn-box">
-        <div class="search-btn">
-          <van-icon name="/static/icons/search2.png" />
-          输入箱子名称进行搜索
+    <van-sticky>
+      <div class="top-search-btn van-hairline">
+        <div class="city-box">
+          <div class="city">{{city.name}}</div>
+          <van-icon name="/static/icons/arrow-down.png" />
+        </div>
+        <div class="search-btn-box">
+          <div class="search-btn">
+            <van-icon name="/static/icons/search2.png" />
+            输入箱子名称进行搜索
+          </div>
         </div>
       </div>
-    </div>
+    </van-sticky>
     <div class="result-box">
       <div v-for="(item, index) in reuslts"
            :key="index"
            class="result-item"
            @click="goNextPage">
         <div class="result-item-img-box">
-          <img :src="item.url"
+          <img :src="item.images"
                alt="">
         </div>
-        <div class="result-name">讯纳箱/Alphard</div>
+        <div class="result-name">{{item.name}}</div>
         <div class="n-address-box">
           <div class="location-box">
             <van-icon name="/static/icons/addres_icon.png"
                       size="12px" />
-            {{item.location}}
+            {{item.loacl}}
           </div>
           <div>
-            销量：2.3w
+            销量：{{item.sell_num}}
           </div>
         </div>
         <div class="per-address-box">
           <div class="unit-box">
-            <span>¥</span>{{item.u}}
+            <span>¥</span>{{item.get_price}}
           </div>
-          <div class="tag">特价</div>
-          <div class="o-cost">¥1700/天</div>
+          <div v-if="item.switch===1"
+               class="tag">特价</div>
+          <div class="o-cost">¥{{item.pre_price}}/天</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { getRecommentGoods, getSpePriceGoods, getGoodsList } from '@/api/getData'
 export default {
   data () {
     return {
-      reuslts: [{
-        url: '/static/images/banner_1.png',
-        name: '讯纳箱/Alphard',
-        u: '800/天',
-        location: '北京'
-      }, {
-        url: '/static/images/banner_1.png',
-        name: '讯纳箱/Alphard',
-        u: '800/天',
-        location: '北京'
-      }]
+      city: {
+        name: '北京市',
+        tags: 'BEIJING,北京市',
+        cityid: 2
+      },
+      fromCode: null,
+
+      reuslts: []
     }
   },
+  onLoad (options) {
+    console.log(options)
+    mpvue.setNavigationBarTitle({
+      title: decodeURI(options.title)
+    })
+
+    this.fromCode = Number(options.fromCode)
+
+    this.getGoodsList()
+  },
   methods: {
+    async getGoodsList () {
+      try {
+        if (this.fromCode === 1) {
+          const res1 = await getRecommentGoods({ area_id: this.city.id, page: '', page_size: '' })
+          this.reuslts = res1.data.data
+          console.log(this.reuslts)
+        } else if (this.fromCode === 2) {
+          const res2 = await getSpePriceGoods({ type_id: 1, area_id: this.city.id, page: '', page_size: '' })
+          this.reuslts = res2.data.data
+          console.log(res2)
+        } else if (this.fromCode === 3) {
+          const res3 = await getGoodsList({ type_id: 1, area_id: this.city.id, page: '', page_size: '' })
+          console.log(res3)
+        }
+      } catch (error) {
+        console.log('* getGoodsList error', error)
+      }
+    },
     goNextPage () {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/product/detail/main'
       })
     }
@@ -76,7 +105,7 @@ export default {
   background: #fff;
 }
 .search-btn-box {
-  width: 285px;
+  width: 270px;
   height: 32px;
   background: #f4f4f4;
   border-radius: 16px;
@@ -89,27 +118,33 @@ export default {
   line-height: 32px;
 }
 .city-box {
+  flex: 1;
   display: flex;
   width: 60px;
   line-height: 32px;
 }
 .city {
   flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .result-box {
-  padding: 13.5px;
+  padding: 15px 0;
+  margin: 0 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 .result-item {
   display: inline-block;
-  margin: 4.5px;
+  margin-bottom: 9px;
   background-color: #fff;
   border-radius: 4px;
   overflow: hidden;
 }
-.result-item:nth-child(2n) {
-  margin-right: 0;
-}
+
 .result-item-img-box {
 }
 .result-item-img-box img {

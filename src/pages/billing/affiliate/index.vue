@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     goNextPage () {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/billing/pay/main'
       })
     }

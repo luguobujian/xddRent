@@ -201,13 +201,13 @@ export default {
   },
   methods: {
     onChange (event) {
-      wx.showToast({
+      mpvue.showToast({
         title: `切换到标签 ${event.detail.name}`,
         icon: 'none'
       })
     },
     goNextPage () {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/order/detail/main'
       })
     }

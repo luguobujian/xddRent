@@ -76,7 +76,7 @@ export default {
       this.showArea = false
     },
     goNextPage () {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/company/verify/main'
       })
     }

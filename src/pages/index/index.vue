@@ -9,7 +9,7 @@
                :key="index">
           <swiper-item>
             <view class="swiper-item">
-              <img :src="item"
+              <img :src="item.smallimage"
                    alt=""></view>
           </swiper-item>
         </block>
@@ -32,12 +32,13 @@
     </div>
     <div class="two-g-box">
       <div class="two-g-one-box"
-           @click="goNextPage('product')">
+           @click="goNextPage('product', {title: '推荐商品', fromCode: 1})">
         <div class="twgobt">推荐商品</div>
         <div class="twgobb">更多口碑尖货</div>
       </div>
       <div class="slash"></div>
-      <div class="two-g-one-box">
+      <div class="two-g-one-box"
+           @click="goNextPage('product', {title: '特价商品', fromCode: 2})">
         <div class="twgobt">特价商品</div>
         <div class="twgobb">更多超值好物</div>
       </div>
@@ -72,16 +73,16 @@
 </template>
 
 <script>
-import card from '@/components/card'
-import API from '@/api/api'
+import { getBanner, getGoodsType } from '@/api/getData'
+
 export default {
   data () {
     return {
-      routes: {
+      routers: {
         search: '/pages/search/main',
         product: '/pages/product/main'
       },
-      background: ['/static/images/banner_1.png', '/static/images/banner_1.png', '/static/images/banner_1.png'],
+      background: ['/static/images/banner_1.jpg', '/static/images/banner_1.jpg', '/static/images/banner_1.jpg'],
       indicatorDots: 0,
       vertical: false,
       autoplay: false,
@@ -89,27 +90,60 @@ export default {
       duration: 500
     }
   },
-  components: {
-    card
+  onLoad () {
+    this.getBanner()
+    // this.getGoodsType()
   },
-  mounted () {
-    API.request('api/Index/baner')
-      .then(r => {
-        console.log(r)
-      })
-  },
+
   methods: {
+    /**
+    *获取banner数据
+    */
+    async getBanner () {
+      try {
+        const res = await getBanner()
+        console.log('page', res)
+        this.background = res.data.data
+      } catch (error) {
+        console.log('* error', error)
+        if (error === 401) {
+          this.getBanner()
+        }
+      }
+    },
+    async getGoodsType () {
+      try {
+        const res = await getGoodsType()
+        console.log('page', res)
+      } catch (error) {
+        console.log('* error', error)
+      }
+    },
     bindChange (e) {
       this.indicatorDots = e.mp.detail.current
     },
-    goNextPage (p) {
-      wx.navigateTo({
-        url: this.routes[p]
+    goNextPage (p, data) {
+      mpvue.navigateTo({
+        url: `${this.routers[p]}?${this.parseParams(data)}`
       })
+    },
+    parseParams (data) {
+      try {
+        var tempArr = []
+        for (var i in data) {
+          var key = encodeURIComponent(i)
+          var value = encodeURIComponent(data[i])
+          tempArr.push(key + '=' + value)
+        }
+        var urlParamsStr = tempArr.join('&')
+        return urlParamsStr
+      } catch (err) {
+        return ''
+      }
     }
   },
   created () {
-    // let app = getApp()
+
   }
 }
 </script>

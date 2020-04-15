@@ -86,7 +86,7 @@ export default {
 
       console.log(prev)
 
-      setTimeout(() => { wx.navigateBack() }, 1000)
+      setTimeout(() => { mpvue.navigateBack() }, 1000)
     },
     onCheckboxAddress (e) {
       this.addressResult = e.mp.detail
@@ -108,7 +108,7 @@ export default {
       })
     },
     goNextPage () {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/user/addaddr/main'
       })
     },

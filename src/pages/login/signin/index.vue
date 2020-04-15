@@ -69,7 +69,7 @@ export default {
       }, 1000)
     },
     openPage (i) {
-      wx.redirectTo({
+      mpvue.redirectTo({
         url: this.routers[i].url
       })
     }

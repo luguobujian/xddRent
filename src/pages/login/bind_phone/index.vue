@@ -46,7 +46,7 @@ export default {
   methods: {
     openPage (i) {
       console.log(i)
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: this.routers[i].url
       })
     }

@@ -104,28 +104,28 @@ export default {
       this.showGender = false
     },
     goNextPage () {
-      wx.chooseImage({
+      mpvue.chooseImage({
         count: 1,
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
           // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
           const src = res.tempFilePaths[0]
-          wx.navigateTo({
-            url: `/pages/upload/upload?src=${src}`
+          mpvue.navigateTo({
+            url: `/pages/upload/main?src=${src}`
           })
         }
       })
-      // wx.navigateTo({
+      // mpvue.navigateTo({
       //   url: '/pages/upload/main'
       // })
     },
     uploadImage (path) {
       // var _this = this
-      wx.showLoading({
+      mpvue.showLoading({
         title: '正在上传..'
       })
-      // wx.uploadFile({
+      // mpvue.uploadFile({
       //   url: app.globalData.domain + 'user/uploadimage',
       //   filePath: path,
       //   name: 'file',
@@ -135,13 +135,13 @@ export default {
       //   success: function (res) {
       //     var data = JSON.parse(res.data)
       //     if (data.status == 0) {
-      //       wx.showToast({
+      //       mpvue.showToast({
       //         title: data.err,
       //         duration: 2000
       //       })
       //       return false
       //     }
-      //     wx.hideLoading()
+      //     mpvue.hideLoading()
       //     _this.setData({
       //       imageurls: 'Uploads/' + data.urls,
       //       postimage: path

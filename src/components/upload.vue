@@ -1,67 +1,106 @@
 <template>
-  <div class="container">
-    <div class="container flex">
-      <div>
-        <image :src="src"
-               class="avatar"
-               bindtap="upload"></image>
-        <div class="item flex"
-             bindtap="upload">click me</div>
-      </div>
-    </div>
+  <div>
+    <canvas v-if="_canvasId"
+            :canvasId="_canvasId"
+            @touchstart="touchstart"
+            @touchmove="touchmove"
+            @touchend="touchend"
+            disable-scroll
+            :style="{ width: _width + 'px', height: _height + 'px', background: 'rgba(0, 0, 0, .8)' }">
+    </canvas>
+    <canvas v-if="_targetId"
+            :canvas-id="_targetId"
+            disable-scroll
+            :style="{
+      position: 'fixed',
+      top: -_width * _pixelRatio + 'px',
+      left: -_height * _pixelRatio + 'px',
+      width: _width * _pixelRatio + 'px',
+      height: _height * _pixelRatio + 'px'
+    }">
+    </canvas>
   </div>
 </template>
+
 <script>
+import WeCropper from '../../static/vant/cropper/we-cropper.js'
+
 export default {
+  name: 'mpvue-cropper',
+  props: {
+    option: {
+      type: Object
+    }
+  },
   data () {
     return {
-      src: ''
+      _wecropper: null
     }
   },
-  upload () {
-    wx.chooseImage({
-      count: 1, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success (res) {
-        const src = res.tempFilePaths[0]
-
-        wx.redirectTo({
-          url: `../upload/upload?src=${src}`
+  computed: {
+    _canvasId () {
+      return this.option.id
+    },
+    _targetId () {
+      return this.option.targetId
+    },
+    _width () {
+      return this.option.width
+    },
+    _height () {
+      return this.option.height
+    },
+    _pixelRatio () {
+      return this.option.pixelRatio
+    }
+  },
+  methods: {
+    touchstart ($event) {
+      this._wecropper.touchStart($event.mp)
+    },
+    touchmove ($event) {
+      this._wecropper.touchMove($event.mp)
+    },
+    touchend ($event) {
+      this._wecropper.touchEnd($event.mp)
+    },
+    pushOrigin (src) {
+      this._wecropper.pushOrign(src)
+    },
+    updateCanvas () {
+      this._wecropper.updateCanvas()
+    },
+    getCropperBase64 (fn) {
+      return this._wecropper.getCropperBase64(fn)
+    },
+    getCropperImage (opt, fn) {
+      return this._wecropper.getCropperImage(opt, fn)
+    },
+    init () {
+      this._wecropper = new WeCropper(Object.assign(this.option, {
+        id: this._canvasId,
+        targetId: this._targetId,
+        pixelRatio: this._pixelRatio
+      }))
+        .on('ready', (...args) => {
+          this.$emit('ready', ...args)
         })
-      }
-    })
-  },
-  onLoad (option) {
-    let { avatar } = option
-    if (avatar) {
-      this.setData({
-        src: avatar
-      })
+        .on('beforeImageLoad', (...args) => {
+          this.$emit('beforeImageLoad', ...args)
+        })
+        .on('imageLoad', (...args) => {
+          this.$emit('imageLoad', ...args)
+        })
+        .on('beforeDraw', (...args) => {
+          this.$emit('beforeDraw', ...args)
+        })
     }
+  },
+  onLoad () {
+    if (!this.option) {
+      return console.warn('[mpvue-cropper] 请传入option参数\n参数配置见文档：https://we-plugin.github.io/we-cropper/#/api')
+    }
+    this.init()
   }
 }
 </script>
-<style scoped>
-.container {
-  width: 100%;
-  height: 100%;
-}
-
-.avatar-container {
-  position: relative;
-  text-align: center;
-  padding-top: 50%;
-}
-
-.avatar {
-  width: 5rem;
-  height: 5rem;
-  background-color: #e5e5e5;
-  border-radius: 50%;
-}
-
-.item {
-  line-height: 3rem;
-}
-</style>

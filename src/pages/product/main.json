@@ -1,8 +1,7 @@
 {
   "navigationBarTitleText": "运输领域",
   "usingComponents": {
-    "van-field": "/static/vant/field/index",
-    "van-search": "/static/vant/search/index",
+    "van-sticky": "/static/vant/sticky/index",
     "van-icon": "/static/vant/icon/index"
   }
 }

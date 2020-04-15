@@ -231,12 +231,12 @@ export default {
       console.log(e)
     },
     goNextPage (r) {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: this.routers[r]
       })
     },
     viewImage () {
-      wx.previewImage({
+      mpvue.previewImage({
         current: '/static/images/banner_1.png', // 当前显示图片的http链接
         urls: this.background // 需要预览的图片http链接列表
       })

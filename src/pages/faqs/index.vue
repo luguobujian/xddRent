@@ -18,7 +18,7 @@ export default {
   methods: {
     goNextPage (id) {
       console.log(id)
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/faqs/detail/main'
       })
     }

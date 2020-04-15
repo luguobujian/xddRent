@@ -71,7 +71,6 @@ export default {
   line-height: 24px;
   padding: 20px 0;
 }
-
 .coupon-item-box {
   flex: 1;
   margin: 0 15px;
@@ -93,10 +92,8 @@ export default {
 }
 .coupon-item-left div {
   display: inline-block;
-
   font-size: 30px;
   line-height: 44px;
-
   padding: 24px 0;
 }
 .coupon-item-right {
@@ -126,15 +123,12 @@ export default {
   border-radius: 6px 6px 0 0 !important;
   overflow: hidden !important;
 }
-
 .van-picker__cancel {
   color: #999999 !important;
 }
-
 .van-picker__confirm {
   color: #97d700 !important;
 }
-
 .van-popup--center {
   top: 70% !important;
   border-radius: 8px;

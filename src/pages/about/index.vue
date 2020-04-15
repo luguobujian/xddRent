@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     goNextPage () {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '/pages/about/detail/main?id=1'
       })
     }

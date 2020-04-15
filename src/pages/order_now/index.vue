@@ -277,7 +277,7 @@ export default {
       this.couponResult = '-￥' + e.couponResult
     },
     goNextPage (r) {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: this.routers[r]
       })
     }

@@ -37,8 +37,8 @@
             <div v-for="(item, index) in hots"
                  :key="index"
                  class="item"
-                 @click="chsItem(item.t)">
-              {{item.t}}
+                 @click="chsItem(item.name)">
+              {{item.name}}
             </div>
           </div>
         </div>
@@ -69,6 +69,7 @@
   </div>
 </template>
 <script>
+import { getSearchHistory, getHotSearch } from '@/api/getData'
 export default {
   data () {
     return {
@@ -81,9 +82,7 @@ export default {
       }, {
         t: '国庆'
       }],
-      hots: [{
-        t: '北京'
-      }],
+      hots: [],
       reuslts: [{
         url: '/static/images/banner_1.png',
         name: '讯纳箱/Alphard',
@@ -99,9 +98,27 @@ export default {
     }
   },
   mounted () {
-
+    this.getSearchHistory()
+    this.getHotSearch()
   },
   methods: {
+    async getSearchHistory () {
+      try {
+        const res = await getSearchHistory()
+        console.log(res)
+      } catch (error) {
+
+      }
+    },
+    async getHotSearch () {
+      try {
+        const res = await getHotSearch()
+        console.log(res)
+        this.hots = res.data.data
+      } catch (error) {
+
+      }
+    },
     onChange (e) {
       this.keyword = e.mp.detail
     },
