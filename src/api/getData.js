@@ -11,6 +11,11 @@ export const exchangeCode = data => API.request('api/user/wxxtLogin', data, 'POS
 export const getBanner = () => API.request('api/Index/baner')
 
 /**
+*获取热门城市列表数据
+*/
+export const getHotCity = () => API.request('api/City/hotCity')
+
+/**
 *获取搜索历史数据
 */
 export const getSearchHistory = () => API.request('api/City/historyGet', { type: 2 }, 'post')
@@ -39,3 +44,13 @@ export const getGoodsType = data => API.request('api/Goods/goodsType', data, 'po
 *获取商品列表数据
 */
 export const getGoodsList = data => API.request('api/Goods/goodsList', data, 'post')
+
+/**
+*获取商品详情数据
+*/
+export const getGoodsInfo = data => API.request('api/Goods/goodsInfo', data, 'post')
+
+/**
+*获取商品规格数据
+*/
+export const getGoodsFormat = data => API.request('api/Goods/goodsFormat', data, 'post')

@@ -22,8 +22,9 @@
       </div>
     </div>
     <div class="serach-box">
-      <div class="icon-box">
-        <van-icon name="/static/icons/location.png" />北京
+      <div class="icon-box"
+           @click="goNextPage('citys')">
+        <van-icon name="/static/icons/location.png" />{{showCity.name}}
       </div>
       <div class="inp-box"
            @click="goNextPage('search')">
@@ -44,7 +45,8 @@
       </div>
     </div>
     <div class="items-box">
-      <div class="item">
+      <div class="item"
+           @click="goNextPage('product', {title: '汽车领域', fromCode: 3, type: 1})">
         <div class="item-tit">汽车领域</div>
         <div class="sub-item-tit">Automotive field</div>
         <div class="item-img">
@@ -52,7 +54,8 @@
                alt="">
         </div>
       </div>
-      <div class="item item-bg item-middle">
+      <div class="item item-bg item-middle"
+           @click="goNextPage('product', {title: '零售领域', fromCode: 3, type: 2})">
         <div class="item-tit">零售领域</div>
         <div class="sub-item-tit"></div>
         <div class="item-img">
@@ -60,7 +63,8 @@
                alt="">
         </div>
       </div>
-      <div class="item item-bg">
+      <div class="item item-bg"
+           @click="goNextPage('product', {title: '运输领域', fromCode: 3, type: 3})">
         <div class="item-tit">运输领域</div>
         <div class="sub-item-tit"></div>
         <div class="item-img">
@@ -74,11 +78,12 @@
 
 <script>
 import { getBanner, getGoodsType } from '@/api/getData'
-
+let that = null
 export default {
   data () {
     return {
       routers: {
+        citys: '/pages/city/main',
         search: '/pages/search/main',
         product: '/pages/product/main'
       },
@@ -87,14 +92,23 @@ export default {
       vertical: false,
       autoplay: false,
       interval: 2000,
-      duration: 500
+      duration: 500,
+      setData: function (key, value) {
+        that[key] = value
+      },
+      showCity: {
+        name: '北京市',
+        cityid: 2
+      }
     }
   },
   onLoad () {
     this.getBanner()
     // this.getGoodsType()
   },
-
+  mounted () {
+    that = this
+  },
   methods: {
     /**
     *获取banner数据
@@ -196,13 +210,17 @@ image {
   left: 15px;
 }
 .icon-box {
+  max-width: 100px;
   height: 25px;
   line-height: 25px;
-  font-size: 20px;
+  font-size: 18px;
   color: #333333;
   margin: 15px 0;
   padding: 0 15px;
   border-right: 1px solid #eee;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .inp-box {
   font-size: 15px;

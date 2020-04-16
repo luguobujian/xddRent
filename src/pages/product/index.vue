@@ -15,9 +15,10 @@
       </div>
     </van-sticky>
     <div class="result-box">
-      <div v-for="(item, index) in reuslts"
+      <div class="result-item"
+           v-for="(item, index) in reuslts"
            :key="index"
-           class="result-item"
+           :data-id="item.id"
            @click="goNextPage">
         <div class="result-item-img-box">
           <img :src="item.images"
@@ -36,18 +37,23 @@
         </div>
         <div class="per-address-box">
           <div class="unit-box">
-            <span>¥</span>{{item.get_price}}
+            <span>¥</span>{{item.pre_price}}
           </div>
           <div v-if="item.switch===1"
                class="tag">特价</div>
-          <div class="o-cost">¥{{item.pre_price}}/天</div>
+          <div class="o-cost">¥{{item.price}}/天</div>
         </div>
       </div>
     </div>
+    <nomoreComponents :tipBoxTop="tipBoxTop"
+                      :tipSrc="tipSrc"
+                      :dataList="reuslts"></nomoreComponents>
   </div>
 </template>
 <script>
 import { getRecommentGoods, getSpePriceGoods, getGoodsList } from '@/api/getData'
+import nomoreComponents from '@/components/nomore'
+
 export default {
   data () {
     return {
@@ -57,9 +63,13 @@ export default {
         cityid: 2
       },
       fromCode: null,
-
-      reuslts: []
+      typeId: null,
+      reuslts: null,
+      tipBoxTop: '50px'
     }
+  },
+  components: {
+    nomoreComponents
   },
   onLoad (options) {
     console.log(options)
@@ -68,6 +78,7 @@ export default {
     })
 
     this.fromCode = Number(options.fromCode)
+    this.typeId = options.type_id
 
     this.getGoodsList()
   },
@@ -79,26 +90,42 @@ export default {
           this.reuslts = res1.data.data
           console.log(this.reuslts)
         } else if (this.fromCode === 2) {
-          const res2 = await getSpePriceGoods({ type_id: 1, area_id: this.city.id, page: '', page_size: '' })
+          const res2 = await getSpePriceGoods({ area_id: this.city.id, page: '', page_size: '' })
           this.reuslts = res2.data.data
           console.log(res2)
         } else if (this.fromCode === 3) {
-          const res3 = await getGoodsList({ type_id: 1, area_id: this.city.id, page: '', page_size: '' })
+          const res3 = await getGoodsList({ type_id: this.typeId, area_id: this.city.id, page: '', page_size: '' })
+          this.reuslts = res3.data.data
           console.log(res3)
         }
       } catch (error) {
         console.log('* getGoodsList error', error)
       }
     },
-    goNextPage () {
+    goNextPage (e) {
+      console.log(e)
+      let id = e.mp.currentTarget.dataset.id
       mpvue.navigateTo({
-        url: '/pages/product/detail/main'
+        url: `/pages/product/detail/main?id=${id}`
       })
     }
   }
 }
 </script>
 <style scoped>
+/* .nomore-skeleton-img {
+  display: block;
+  width: 121px;
+  height: 100px;
+  margin: 0 auto;
+}
+.nomore-skeleton-tip {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+} */
+
 .top-search-btn {
   display: flex;
   padding: 0 15px 7px;

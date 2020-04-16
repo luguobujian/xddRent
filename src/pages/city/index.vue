@@ -8,9 +8,12 @@
     </div>
     <div v-if="keyword"
          class="search-item-box">
-      <div v-for="(item, index) in searchRes"
+      <div class="search-item van-hairline"
+           v-for="(item, index) in searchRes"
            :key="index"
-           class="search-item van-hairline">
+           :data-city="item.name"
+           :data-id="item.cityid"
+           @click="chsCitys">
         <div v-for="(itm, idx) in item.resNameArr"
              :key="idx"
              class="word"
@@ -22,7 +25,8 @@
       <div>
         <div class="some-set-tit">当前定位</div>
         <div class="some-set-box">
-          <div class="this-one-city">北京</div>
+          <div v-if="selectedCity.name"
+               class="this-one-city">{{selectedCity.name}}</div>
           <div class="get-location">
             <van-icon name="../../../static/icons/loca.png"
                       size="16px" />重新定位
@@ -37,15 +41,15 @@
           <div class="citys-item">北京</div>
         </div>
       </div>
-      <div>
+      <div v-if="hotCitys && hotCitys!=0">
         <div class="some-set-tit">热门城市</div>
         <div class="some-set-box citys-item-box">
-          <div class="citys-item">北京</div>
-          <div class="citys-item">北京</div>
-          <div class="citys-item">北京</div>
-          <div class="citys-item">北京</div>
-          <div class="citys-item">北京</div>
-          <div class="citys-item">北京</div>
+          <div v-for="(item, index) in hotCitys"
+               :key="index"
+               class="citys-item"
+               :data-city="item.city"
+               :data-id="item.city_id"
+               @click="chsCitys">{{item.city}}</div>
         </div>
       </div>
     </div>
@@ -56,7 +60,10 @@
           <van-index-anchor :index="item.name" />
           <van-cell v-for="(itm, idx) in item.cities"
                     :key="idx"
-                    :title="itm.name" />
+                    :title="itm.name"
+                    :data-city="itm.name"
+                    :data-id="itm.cityid"
+                    @click="chsCitys" />
         </view>
       </van-index-bar>
     </div>
@@ -65,6 +72,12 @@
 <script>
 import citys from './city'
 
+import { getHotCity } from '@/api/getData'
+
+import QQMapWX from '../../../static/qqmap-wx-jssdk1.2/qqmap-wx-jssdk.js'
+let qqmapsdk = new QQMapWX({
+  key: '7URBZ-BJHKG-WUDQL-I6COI-YRTOK-RMFWF'
+})
 export default {
   data () {
     return {
@@ -72,6 +85,13 @@ export default {
       scrollTop: 0,
       keyword: null,
       primaryListData: null,
+
+      selectedCity: {
+        name: '北京市',
+        cityid: 2
+      },
+
+      hotCitys: null,
       searchRes: []
     }
   },
@@ -83,6 +103,44 @@ export default {
       }
     }
   },
+  onLoad () {
+    this.getHotCity()
+
+    // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
+    wx.getSetting({
+      success (res) {
+        if (!res.authSetting['scope.record']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success () {
+              wx.getLocation({
+                type: 'wgs84',
+                success (res) {
+                  console.log(res)
+                  qqmapsdk.reverseGeocoder({
+                    coord_type: 0,
+                    location: {
+                      latitude: res.latitude,
+                      longitude: res.longitude
+                    },
+                    success (res) {
+                      console.log(res)
+                    },
+                    fail (err) {
+                      console.log(err)
+                    },
+                    complete (err) {
+                      console.log(err)
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+      }
+    })
+  },
   mounted () {
     let citys = this.citys
     let tempData = []
@@ -92,6 +150,15 @@ export default {
     this.primaryListData = tempData
   },
   methods: {
+    async getHotCity () {
+      try {
+        const res = await getHotCity()
+        this.hotCitys = res.data.data
+        console.log(res)
+      } catch (error) {
+        console.log('* error getHotCity', error)
+      }
+    },
     onKeyInput (e) {
       let keyword = e.mp.detail.trim()
       this.keyword = keyword
@@ -116,6 +183,21 @@ export default {
         }
       }
       this.searchRes = arr
+    },
+    chsCitys (e) {
+      console.log(e)
+      this.selectedCity = {
+        name: e.mp.currentTarget.dataset.city,
+        cityid: e.mp.currentTarget.dataset.id
+      }
+
+      const pages = getCurrentPages()
+      const prevPage = pages[pages.length - 2]
+
+      prevPage.data.$root[0].setData('showCity', this.selectedCity)
+
+      this.keyword = ''
+      mpvue.navigateBack()
     },
     searchRes () {
 

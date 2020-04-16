@@ -25,18 +25,19 @@
           <div class="pri-info-box">
             <div class="pri-info">
               <div>¥</div>
-              <div class="prb">1400</div>
+              <div class="prb">{{detail.pre_price}}</div>
               <div>/天</div>
             </div>
-            <div class="tag">特价</div>
-            <div class="o-cost">¥1700/天</div>
+            <div v-if="detail.switch === 1"
+                 class="tag">特价</div>
+            <div class="o-cost">¥{{detail.price}}/天</div>
           </div>
-          <div class="dingj">定金：¥2000/个</div>
+          <div class="dingj">定金：¥{{detail.get_price}}/个</div>
         </div>
-        <div class="product-name">讯纳箱/Alphard</div>
+        <div class="product-name">{{detail.name}}</div>
         <div class="sales-city-box">
-          <div class="sales">销量：2397</div>
-          <div class="citys">所在地：北京、天津、上海</div>
+          <div class="sales">销量：{{detail.sell_num}}</div>
+          <div class="citys">所在地：{{detail.loacl}}</div>
         </div>
       </div>
       <div class="select-items-box mb10">
@@ -60,7 +61,8 @@
             <van-icon name="arrow" />
           </div>
         </div>
-        <div class="select-item">
+        <div class="select-item"
+             @click="showAttrs=true">
           <div class="select-item-left">
             <div class="select-item-left-tit">选择规格</div>
             <div class="coupons-box"></div>
@@ -74,16 +76,16 @@
         <div class="select-item"
              @click="goNextPage('comment')">
           <div class="select-item-left">
-            <div class="select-item-left-tit">选择规格</div>
+            <div class="select-item-left-tit">商品评价</div>
             <div class="coupons-box rate-bb">
-              <van-rate :value="value"
+              <van-rate :value="valuation"
                         size="12"
                         allow-half
                         readonly="true"
                         color="#97D700;"
                         void-color="#eee"
                         void-icon="star"
-                        bind:change="onChange" />4.5分
+                        bind:change="onChange" />{{detail.goods_valuation}}分
             </div>
           </div>
           <div>
@@ -94,9 +96,12 @@
       <div class="text-info">
         <div class="text-tit">商品详情</div>
         <div class="text-content">
-          新华社北京6月5日电 高考前夕，中共中央政治局委员、国务院副总理孙春兰来到教育部考试中心检查2018年高考准备工作，通过国家教育考试考务指挥系统了解有关地方考场、试卷保管和分发场所等情况，看望高考值班工作人员，并向全国奋战在高考一线的教师、同学们致以诚挚问候，向为高考提供服务保障的各个方面表示感谢。
+          <wxParse :content="content"
+                   @preview="preview"
+                   @navigate="navigate" />
+          <!-- 新华社北京6月5日电 高考前夕，中共中央政治局委员、国务院副总理孙春兰来到教育部考试中心检查2018年高考准备工作，通过国家教育考试考务指挥系统了解有关地方考场、试卷保管和分发场所等情况，看望高考值班工作人员，并向全国奋战在高考一线的教师、同学们致以诚挚问候，向为高考提供服务保障的各个方面表示感谢。
           <img src="/static/images/banner_1.png"
-               alt="">
+               alt=""> -->
         </div>
       </div>
     </div>
@@ -126,58 +131,45 @@
       <div class="attrs-box">
         <div class="product-info-box">
           <div class="product-info-img">
-            <img src=""
+            <img :src="background[0]"
                  alt="">
           </div>
           <div>
-            <div class="product-info-name">讯纳箱/Alphard</div>
+            <div class="product-info-name">{{detail.name}}</div>
             <div class="product-info-price-box">
               <div>¥</div>
-              <div class="product-info-price">800</div>
+              <div class="product-info-price">{{detail.pre_price}}</div>
               <div>/天</div>
             </div>
-            <div class="product-info-num">库存：2000</div>
+            <div class="product-info-num">库存：{{detail.sell_num}}</div>
           </div>
         </div>
-        <div class="attrs-lists-box">
-          <div class="attrs-lists-tit">属性1</div>
-          <div class="attrs-lists-main">
-            <div class="attrs-lists active">
-              经典黑
-            </div>
-            <div class="attrs-lists">
-              经典黑
-            </div>
-            <div class="attrs-lists">
-              经典黑
-            </div>
-            <div class="attrs-lists">
-              经典黑
-            </div>
-            <div class="attrs-lists">
-              经典黑
-            </div>
-          </div>
-        </div>
-        <div class="attrs-lists-box">
-          <div class="attrs-lists-tit">属性2</div>
-          <div class="attrs-lists-main">
-            <div class="attrs-lists">
-              经典黑
-            </div>
-            <div class="attrs-lists">
-              经典黑
-            </div>
-            <div class="attrs-lists">
-              经典黑
+        <div class="popup-main-box">
+          <div class="attrs-lists-box"
+               v-for="(item, index) in specification"
+               :key="index">
+            <div class="attrs-lists-tit">{{item.format_name}}</div>
+            <div class="attrs-lists-main">
+              <div class="attrs-lists"
+                   :class="{nomore: itm.have_num === 0, active: specIdxArr[index] === (index+'-'+idx)}"
+                   v-for="(itm, idx) in item.son"
+                   :key="idx"
+                   :data-index="index"
+                   :data-idx="idx"
+                   :data-loca="index+'-'+idx"
+                   :data-have="itm.have_num"
+                   @click="chsSpecItem">
+                {{itm.format_name}}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="stepper-btn-box attrs-lists-box">
-          <div class=" attrs-lists-tit">购买数量</div>
-          <div class="stepper-btn-main">
-            <van-stepper :value="1"
-                         @change="onStepperChange" />
+
+          <div class="stepper-btn-box attrs-lists-box">
+            <div class=" attrs-lists-tit">购买数量</div>
+            <div class="stepper-btn-main">
+              <van-stepper :value="1"
+                           @change="onStepperChange" />
+            </div>
           </div>
         </div>
         <div class="btn-box">
@@ -200,6 +192,8 @@
   </div>
 </template>
 <script>
+import wxParse from 'mpvue-wxparse'
+import { getGoodsInfo, getGoodsFormat } from '@/api/getData'
 export default {
   data () {
     return {
@@ -208,17 +202,60 @@ export default {
         order_now: '/pages/order_now/main',
         rent_now: '/pages/rent_now/main'
       },
-      background: ['/static/images/banner_1.png', '/static/images/banner_1.png', '/static/images/banner_1.png'],
+      background: ['/static/images/banner_1.png'],
       indicatorDots: 1,
       vertical: false,
       autoplay: false,
       interval: 2000,
       duration: 500,
 
-      showAttrs: true
+      showAttrs: false,
+
+      id: null,
+      detail: null,
+      valuation: null,
+      content: null,
+      specification: null,
+      specIdxArr: [],
+      specificationCombination: []
     }
   },
+  components: {
+    wxParse
+  },
+  onLoad (options) {
+    console.log(options)
+    this.id = options.id
+    this.getGoodsInfo()
+    this.getGoodsFormat()
+  },
+  mounted () {
+    // console.log(Vue)
+    // console.log(app)
+    console.log(this)
+  },
   methods: {
+    async getGoodsInfo () {
+      try {
+        const res = await getGoodsInfo({ goods_id: this.id })
+        console.log(res)
+        this.detail = res.data.data
+        this.background = res.data.data.images.split(',')
+        this.valuation = Number.isInteger(res.data.data.goods_valuation) ? res.data.data.goods_valuation : parseInt(res.data.data.goods_valuation) + 0.5
+        this.content = res.data.data.content
+      } catch (error) {
+        console.log('* getGoodsInfo error', error)
+      }
+    },
+    async getGoodsFormat () {
+      try {
+        const res = await getGoodsFormat({ goods_id: this.id })
+        this.specification = res.data.data.info_list
+        console.log('* getGoodsFormat', res)
+      } catch (error) {
+        console.log('* getGoodsFormat error', error)
+      }
+    },
     bindChange (e) {
       this.indicatorDots = e.mp.detail.current + 1
     },
@@ -226,6 +263,13 @@ export default {
       this.setData({
         value: event.detail
       })
+    },
+    chsSpecItem (e) {
+      let have = e.mp.currentTarget.dataset.have
+      if (!have) return
+      let sindex = e.mp.currentTarget.dataset.index
+      let specLoca = e.mp.currentTarget.dataset.loca
+      this.specIdxArr.includes(specLoca) ? this.$set(this.specIdxArr, sindex, '') : this.$set(this.specIdxArr, sindex, specLoca)
     },
     onStepperChange (e) {
       console.log(e)
@@ -413,7 +457,7 @@ image {
 .text-info {
   padding: 15px;
   background-color: #fff;
-  margin-bottom: 65px;
+  margin-bottom: 10px;
 }
 .text-tit {
   font-size: 18px;
@@ -431,9 +475,19 @@ image {
   padding: 8px 0;
 }
 
+.btn-box {
+  height: 70px;
+}
 /* ===========popup=========== */
 .attrs-box {
+  display: flex;
+  height: 100%;
   padding: 0 15px;
+  flex-direction: column;
+}
+.popup-main-box {
+  overflow: auto;
+  margin-bottom: 10px;
 }
 .product-info-box {
   display: flex;
@@ -489,6 +543,10 @@ image {
   border-radius: 14px;
   margin-bottom: 10px;
   margin-right: 11px;
+}
+.attrs-lists.nomore {
+  color: #ccc;
+  background: #fcfcfc;
 }
 .attrs-lists.active {
   font-size: 12px;

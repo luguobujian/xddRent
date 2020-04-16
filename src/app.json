@@ -41,6 +41,11 @@
     "pages/login/signin2/main",
     "pages/login/reset_password/main"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于获取当前设备所在城市信息"
+    }
+  },
   "window": {
     "backgroundTextStyle": "light",
     "BackgroundColor": "#f9f9f9",
