@@ -23,7 +23,7 @@
     </div>
     <div class="serach-box">
       <div class="icon-box"
-           @click="goNextPage('citys')">
+           @click="goNextPage('citys',{cityid: showCity.cityid})">
         <van-icon name="/static/icons/location.png" />{{showCity.name}}
       </div>
       <div class="inp-box"

@@ -5,46 +5,46 @@
         <div class="top-summary-item">
           服务:
           <van-rate class="rate-box"
-                    :value="val1"
+                    :value="detail.score.service"
                     size="15"
                     allow-half
                     color="#97D700"
                     void-color="#fff"
                     void-icon="star"
-                    bind:change="onChange" />{{val1}}分
+                    bind:change="onChange" />{{detail.score.service}}分
         </div>
         <div class="top-summary-item">
           服务:
           <van-rate class="rate-box"
-                    :value="val1"
+                    :value="detail.score.transport"
                     size="15"
                     allow-half
                     color="#97D700"
                     void-color="#fff"
                     void-icon="star"
-                    bind:change="onChange" />{{val1}}分
+                    bind:change="onChange" />{{detail.score.transport}}分
         </div>
         <div class="top-summary-item">
           其他:
           <van-rate class="rate-box"
-                    :value="val1"
+                    :value="detail.score.other"
                     size="15"
                     allow-half
                     color="#97D700"
                     void-color="#fff"
                     void-icon="star"
-                    bind:change="onChange" />{{val1}}分
+                    bind:change="onChange" />{{detail.score.other}}分
         </div>
       </div>
       <div class="right-score">
-        <div class="top-val">4分</div>
+        <div class="top-val">{{detail.score.all}}分</div>
         <div class="bottom-tit">综合评分</div>
       </div>
     </div>
     <div class="bottom-main-box">
       <div class="tab-box">
         <div :class="{'active': tabIndex == 0}"
-             @click="onSelectTab(0)">全部评价(2938)</div>
+             @click="onSelectTab(0)">全部评价({{detail.num}})</div>
         <div :class="{'active': tabIndex == 1}"
              @click="onSelectTab(1)">有图</div>
       </div>
@@ -54,13 +54,13 @@
              :key="index"
              class="item">
           <div class="left-avatar-box">
-            <img src=""
+            <img :src="item.avatar"
                  alt="">
           </div>
           <div class="right-main-box van-hairline">
-            <div>{{item.name}}</div>
+            <div>{{item.username}}</div>
             <div class="time-rate-some">
-              <div class="time-box">{{item.time}}</div>
+              <div class="time-box">{{item.createtime}}</div>
               <div>
                 <van-icon v-if="item.val >= 1"
                           name="star"
@@ -91,10 +91,12 @@
               </div>
             </div>
             <div class="rm-text">
-              小区内部环境典雅幽静，绿化多，通过小区道路的合理组织，休闲设施的精心安排，提供自然、舒适的居住环境。
+              {{item.text}}
             </div>
             <div class="rm-imgs">
-              <img src="../../../../static/images/zz.png"
+              <img v-for="(itm, idx) in item.imgsArr"
+                   :key="idx"
+                   :src="itm"
                    alt="">
             </div>
           </div>
@@ -104,25 +106,41 @@
   </div>
 </template>
 <script>
+import { getGoodsValuation } from '@/api/getData'
 export default {
   data () {
     return {
       tabIndex: 0,
       val1: 1.5,
-      dataList: [{
-        name: '李斯丹妮',
-        time: '2019.07.21 16:29',
-        val: 2.5
-      }, {
-        name: '李斯丹妮',
-        time: '2019.07.21 16:29',
-        val: 5
-      }]
+
+      id: null,
+      detail: null,
+      dataList: null
     }
   },
+  onLoad (options) {
+    console.log(options)
+    this.id = options.id
+    this.getGoodsValuation()
+  },
   methods: {
+    async getGoodsValuation () {
+      try {
+        const res = await getGoodsValuation({ goods_id: this.id, type: this.tabIndex, page: '' })
+        console.log(res)
+        this.detail = res.data.data
+        let dataList = res.data.data.list
+        dataList.forEach((item, key) => {
+          dataList[key].imgsArr = item.picimages.split(',')
+        })
+        this.dataList = dataList
+      } catch (error) {
+        console.log('* getGoodsValuation error', error)
+      }
+    },
     onSelectTab (i) {
       this.tabIndex = i
+      this.getGoodsValuation()
     }
   }
 }

@@ -26,6 +26,11 @@ export const getSearchHistory = () => API.request('api/City/historyGet', { type:
 export const getHotSearch = () => API.request('api/City/hotSeach', { type: 1 }, 'post')
 
 /**
+*搜索商品数据
+*/
+export const onSearch = data => API.request('api/Goods/seachGoods', data, 'post')
+
+/**
 *获取推荐商品商品列表数据
 */
 export const getRecommentGoods = data => API.request('api/Goods/recommentGoods', data, 'post')
@@ -54,3 +59,8 @@ export const getGoodsInfo = data => API.request('api/Goods/goodsInfo', data, 'po
 *获取商品规格数据
 */
 export const getGoodsFormat = data => API.request('api/Goods/goodsFormat', data, 'post')
+
+/**
+*获取商品评价列表数据
+*/
+export const getGoodsValuation = data => API.request('api/Valuation/goodsValuation', data, 'post')

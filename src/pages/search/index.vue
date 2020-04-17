@@ -18,7 +18,7 @@
           </view>
         </van-search>
       </div>
-      <div v-if="!keyword"
+      <div v-if="!reuslts"
            class="bottom-items-box">
         <div class="history-box">
           <div class="title">历史搜索</div>
@@ -43,24 +43,24 @@
           </div>
         </div>
       </div>
-      <div v-if="keyword"
+      <div v-if="reuslts"
            class="result-box">
         <div v-for="(item, index) in reuslts"
              :key="index"
              class="result-item">
           <div class="result-item-img-box">
-            <img :src="item.url"
+            <img :src="item.images"
                  alt="">
           </div>
-          <div class="result-name">讯纳箱/Alphard</div>
+          <div class="result-name">{{item.name}}</div>
           <div class="per-address-box">
             <div class="unit-box">
-              <span>¥</span>{{item.u}}
+              <span>¥</span>{{item.pre_price}}
             </div>
             <div class="location-box">
               <van-icon name="/static/icons/addres_icon.png"
                         size="12px" />
-              {{item.location}}
+              {{item.loacl}}
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@
   </div>
 </template>
 <script>
-import { getSearchHistory, getHotSearch } from '@/api/getData'
+import { onSearch, getSearchHistory, getHotSearch } from '@/api/getData'
 export default {
   data () {
     return {
@@ -83,19 +83,14 @@ export default {
         t: '国庆'
       }],
       hots: [],
-      reuslts: [{
-        url: '/static/images/banner_1.png',
-        name: '讯纳箱/Alphard',
-        u: '800/天',
-        location: '北京'
-      }, {
-        url: '/static/images/banner_1.png',
-        name: '讯纳箱/Alphard',
-        u: '800/天',
-        location: '北京'
-      }],
+      reuslts: null,
+      area: null,
       keyword: ''
     }
+  },
+  onLoad (options) {
+    console.log(options)
+    this.area = options.cityid
   },
   mounted () {
     this.getSearchHistory()
@@ -121,9 +116,16 @@ export default {
     },
     onChange (e) {
       this.keyword = e.mp.detail
+      if (!this.keyword) { this.reuslts = null }
     },
-    onSearch () {
+    async onSearch () {
+      try {
+        const res = await onSearch({ card: this.keyword, area: this.area })
+        this.reuslts = res.data.data
+        console.log(res)
+      } catch (error) {
 
+      }
     },
     onClear () {
       this.keyword = ''

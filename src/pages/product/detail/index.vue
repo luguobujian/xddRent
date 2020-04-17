@@ -65,7 +65,7 @@
              @click="showAttrs=true">
           <div class="select-item-left">
             <div class="select-item-left-tit">选择规格</div>
-            <div class="coupons-box"></div>
+            <div class="coupons-box spec">{{sCShow}}</div>
           </div>
           <div>
             <van-icon name="arrow" />
@@ -138,10 +138,10 @@
             <div class="product-info-name">{{detail.name}}</div>
             <div class="product-info-price-box">
               <div>¥</div>
-              <div class="product-info-price">{{detail.pre_price}}</div>
+              <div class="product-info-price">{{popup_pre_price}}</div>
               <div>/天</div>
             </div>
-            <div class="product-info-num">库存：{{detail.sell_num}}</div>
+            <div class="product-info-num">库存：{{popup_sell_num}}</div>
           </div>
         </div>
         <div class="popup-main-box">
@@ -154,6 +154,8 @@
                    :class="{nomore: itm.have_num === 0, active: specIdxArr[index] === (index+'-'+idx)}"
                    v-for="(itm, idx) in item.son"
                    :key="idx"
+                   :data-id="itm.id"
+                   :data-name="itm.format_name"
                    :data-index="index"
                    :data-idx="idx"
                    :data-loca="index+'-'+idx"
@@ -167,7 +169,7 @@
           <div class="stepper-btn-box attrs-lists-box">
             <div class=" attrs-lists-tit">购买数量</div>
             <div class="stepper-btn-main">
-              <van-stepper :value="1"
+              <van-stepper :value="stepperVal"
                            @change="onStepperChange" />
             </div>
           </div>
@@ -194,11 +196,12 @@
 <script>
 import wxParse from 'mpvue-wxparse'
 import { getGoodsInfo, getGoodsFormat } from '@/api/getData'
+let pnum = null
 export default {
   data () {
     return {
       routers: {
-        comment: '/pages/product/comment/main',
+        comment: `/pages/product/comment/main`,
         order_now: '/pages/order_now/main',
         rent_now: '/pages/rent_now/main'
       },
@@ -210,14 +213,20 @@ export default {
       duration: 500,
 
       showAttrs: false,
+      popup_pre_price: 0,
+      popup_sell_num: 0,
+      stepperVal: 1,
 
       id: null,
       detail: null,
       valuation: null,
       content: null,
       specification: null,
+      specificationCom: null,
       specIdxArr: [],
-      specificationCombination: []
+      specificationCombination: [],
+      spcCShow: [],
+      sCShow: ''
     }
   },
   components: {
@@ -230,9 +239,7 @@ export default {
     this.getGoodsFormat()
   },
   mounted () {
-    // console.log(Vue)
-    // console.log(app)
-    console.log(this)
+
   },
   methods: {
     async getGoodsInfo () {
@@ -251,6 +258,7 @@ export default {
       try {
         const res = await getGoodsFormat({ goods_id: this.id })
         this.specification = res.data.data.info_list
+        this.specificationCom = res.data.data.info_arr
         console.log('* getGoodsFormat', res)
       } catch (error) {
         console.log('* getGoodsFormat error', error)
@@ -267,16 +275,41 @@ export default {
     chsSpecItem (e) {
       let have = e.mp.currentTarget.dataset.have
       if (!have) return
+      let id = e.mp.currentTarget.dataset.id
+      let name = e.mp.currentTarget.dataset.name
       let sindex = e.mp.currentTarget.dataset.index
       let specLoca = e.mp.currentTarget.dataset.loca
       this.specIdxArr.includes(specLoca) ? this.$set(this.specIdxArr, sindex, '') : this.$set(this.specIdxArr, sindex, specLoca)
+      if (this.specificationCombination.includes(id)) {
+        this.specificationCombination[sindex] = ''
+        this.spcCShow[sindex] = ''
+      } else {
+        this.specificationCombination[sindex] = id
+        this.spcCShow[sindex] = name
+      }
+      this.sCShow = this.spcCShow.join('/')
+      console.log(this.sCShow)
+      this.setPopupChsInfo()
+    },
+    setPopupChsInfo () {
+      // console.log('---', this.specification.length)
+      // console.log('===', this.specIdxArr.length)
+      // console.log(this.specificationCombination)
+
+      let sc = this.specificationCombination.join(',')
+      this.popup_pre_price = this.specificationCom[sc] ? this.specificationCom[sc].pre_price : 0
+      this.popup_sell_num = this.specificationCom[sc] ? this.specificationCom[sc].num - this.stepperVal : 0
+      pnum = this.popup_sell_num
     },
     onStepperChange (e) {
       console.log(e)
+      let ep = e.mp.detail
+      this.stepperVal = e.mp.detail
+      this.popup_sell_num = pnum ? pnum - ep + 1 : 0
     },
     goNextPage (r) {
       mpvue.navigateTo({
-        url: this.routers[r]
+        url: `${this.routers[r]}?id=${this.id}`
       })
     },
     viewImage () {
@@ -284,6 +317,11 @@ export default {
         current: '/static/images/banner_1.png', // 当前显示图片的http链接
         urls: this.background // 需要预览的图片http链接列表
       })
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }
@@ -410,7 +448,8 @@ image {
   font-size: 15px;
   color: #333333;
 }
-.coupon-box {
+.coupons-box.spec {
+  line-height: 62px;
 }
 .coupons-item {
   /* display: inline-block; */
@@ -418,7 +457,6 @@ image {
   color: #97d700;
   line-height: 16px;
   padding: 2px 6px;
-
   border: 1px solid #97d700;
   border-radius: 4px;
   position: relative;
