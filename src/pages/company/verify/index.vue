@@ -10,7 +10,7 @@
         <div class="txt-tip-box">
           <div class="m-s-box">
             <van-icon name="warning-o"
-                      size="22px" />未通过
+                      size="19px" />未通过
           </div>
           <div class="cause-box">未通过原因：联系方式不正确</div>
         </div>
@@ -18,7 +18,7 @@
       <div class="txt-main-box">
         <div class="left-icon-box">
           <van-icon name="/static/icons/company-icon.png"
-                    size="22px" />
+                    size="13px" />
         </div>
         <div class="right-info-box">
           <van-cell-group>
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="main-img-box">
-        <div class="t-tit">
+        <div class="t-tit PingFangSC-Medium">
           营业执照
         </div>
         <div class="img-box">
@@ -48,6 +48,7 @@
     <div class="bottom-btn-margin">
       <van-button color="#97D700"
                   size="small"
+                  custom-style="font-size:13px"
                   round
                   block>再次提交</van-button>
     </div>
@@ -68,6 +69,7 @@ export default {
 <style scoped>
 .main-box {
   flex: 1;
+  margin-bottom: 60px;
 }
 .p-t-box {
   position: relative;
@@ -93,13 +95,14 @@ export default {
   line-height: 18px;
   margin-top: 5px;
   margin-right: 25px;
+  margin-left: 25px;
 }
 .txt-main-box {
   display: flex;
   background-color: #fff;
 }
 .left-icon-box {
-  padding: 19px 0 0 15px;
+  padding: 21px 0 0 15px;
 }
 .right-info-box {
   flex: 1;
@@ -129,12 +132,16 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  
+
   background-color: skyblue;
   border-radius: 8px;
 }
 .bottom-btn-margin {
-  margin: 7px 15px !important;
+  width: 92%;
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  padding: 7px 15px !important;
 }
 </style>>
 <style>
@@ -155,7 +162,7 @@ export default {
   color: #999999 !important;
 }
 .van-field__body--textarea.van-field__body--ios {
-  margin-top: 3px !important;
+  margin-top: 0px !important;
 }
 
 .van-button--small {

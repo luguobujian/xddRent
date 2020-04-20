@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="serach-box">
-      <div class="icon-box"
+      <div class="icon-box PingFangSC-Medium"
            @click="goNextPage('citys',{cityid: showCity.cityid})">
         <van-icon name="/static/icons/location.png" />{{showCity.name}}
       </div>
@@ -34,13 +34,13 @@
     <div class="two-g-box">
       <div class="two-g-one-box"
            @click="goNextPage('product', {title: '推荐商品', fromCode: 1})">
-        <div class="twgobt">推荐商品</div>
+        <div class="twgobt PingFangSC-Medium">推荐商品</div>
         <div class="twgobb">更多口碑尖货</div>
       </div>
       <div class="slash"></div>
       <div class="two-g-one-box"
            @click="goNextPage('product', {title: '特价商品', fromCode: 2})">
-        <div class="twgobt">特价商品</div>
+        <div class="twgobt PingFangSC-Medium">特价商品</div>
         <div class="twgobb">更多超值好物</div>
       </div>
     </div>
@@ -210,6 +210,7 @@ image {
   left: 15px;
 }
 .icon-box {
+  /* font-family: "PingFangSC-Medium"; */
   max-width: 100px;
   height: 25px;
   line-height: 25px;
@@ -230,8 +231,8 @@ image {
 }
 .two-g-box {
   display: flex;
-  margin-top: 50px;
-  margin-bottom: 5px;
+  margin-top: 48px;
+  /* margin-bottom: 5px; */
 }
 .two-g-one-box {
   width: 144px;
@@ -266,6 +267,7 @@ image {
 .items-box {
   display: flex;
   margin: 15px;
+  margin-top: 20px;
   border-radius: 6px;
   justify-content: space-between;
   overflow: hidden;

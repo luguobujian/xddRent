@@ -48,8 +48,7 @@
         <div :class="{'active': tabIndex == 1}"
              @click="onSelectTab(1)">有图</div>
       </div>
-      <div class="
-             items-box">
+      <div class="items-box">
         <div v-for="(item, index) in dataList"
              :key="index"
              class="item">
@@ -58,31 +57,31 @@
                  alt="">
           </div>
           <div class="right-main-box van-hairline">
-            <div>{{item.username}}</div>
+            <div class="right-main-name">{{item.username}}</div>
             <div class="time-rate-some">
               <div class="time-box">{{item.createtime}}</div>
               <div>
-                <van-icon v-if="item.val >= 1"
+                <van-icon v-if="item.all_num >= 1"
                           name="star"
                           color="#97d700"
                           size="12px" />
-                <van-icon v-if="item.val >= 2"
+                <van-icon v-if="item.all_num >= 2"
                           name="star"
                           color="#97d700"
                           size="12px" />
-                <van-icon v-if="item.val >= 3"
+                <van-icon v-if="item.all_num >= 3"
                           name="star"
                           color="#97d700"
                           size="12px" />
-                <van-icon v-if="item.val >= 4"
+                <van-icon v-if="item.all_num >= 4"
                           name="star"
                           color="#97d700"
                           size="12px" />
-                <van-icon v-if="item.val >= 5"
+                <van-icon v-if="item.all_num >= 5"
                           name="star"
                           color="#97d700"
                           size="12px" />
-                <div v-if="item.val%1"
+                <div v-if="item.all_num%1"
                      class="banke">
                   <van-icon name="star"
                             color="#97d700"
@@ -148,10 +147,15 @@ export default {
 <style scoped>
 .top-summary-box {
   display: flex;
+  width: 100%;
   font-size: 13px;
   color: #666666;
   padding: 15px;
   background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
 }
 .top-summary-item {
   line-height: 18px;
@@ -207,6 +211,7 @@ export default {
 .bottom-main-box {
   padding: 15px;
   background-color: #fff;
+  margin-top: 112px;
 }
 .left-avatar-box,
 .left-avatar-box img {
@@ -222,6 +227,9 @@ export default {
 .item .right-main-box {
   flex: 1;
   margin-left: 6px;
+}
+.right-main-name {
+  font-size: 13px;
 }
 .time-rate-some {
   display: flex;

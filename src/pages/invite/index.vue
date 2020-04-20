@@ -2,7 +2,7 @@
   <div class="container">
     <div class="top-box">
       <div class="tip-box">我的邀请码</div>
-      <div class="code-box">827362</div>
+      <div class="code-box Oswald-Medium">827362</div>
     </div>
     <div class="items-box">
       <div class="items">
@@ -15,11 +15,11 @@
                  alt="">
           </div>
           <div class="tl fl">
-            <div class="title-box">{{item.t1}}</div>
+            <div class="title-box PingFangSC-Medium">{{item.t1}}</div>
             <div class="sub-title-box">{{item.t2}}</div>
           </div>
           <div class="tr fl">
-            <div class="title-box">奖励：{{item.t3}}</div>
+            <div class="title-box PingFangSC-Medium">奖励：{{item.t3}}</div>
             <div class="sub-title-box">注册时间：{{item.t4}}</div>
           </div>
         </div>
@@ -69,7 +69,9 @@ export default {
   margin: 0 15px;
   border-bottom: 1px solid #ebedf0;
 }
-
+.items-m:last-child {
+  border-bottom: none;
+}
 .avatar-box {
   width: 40px;
   height: 40px;

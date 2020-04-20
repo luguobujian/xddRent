@@ -5,9 +5,12 @@
       <div class="avatar-box fl">
         <img src=""
              alt="">
+        <van-icon class="gender-i"
+                  name="/static/icons/male.png"
+                  size="16px" />
       </div>
       <div class="fl">
-        <div class="name-box">深海淹死一条鱼</div>
+        <div class="name-box">深海淹死一条鱼 </div>
         <div class="city-box">北京</div>
         <div class="company-box">
           <div class="company-info-box clearfix">
@@ -21,8 +24,8 @@
         </div>
       </div>
       <div class="right-arrow fr">
-        <van-icon name="arrow"
-                  size="18px" />
+        <van-icon name="/static/icons/arrow.png"
+                  size="14px" />
       </div>
 
     </div>
@@ -50,6 +53,7 @@
         <van-button color="#97D700"
                     type="primary"
                     size="small"
+                    custom-style="font-size: 15px"
                     plain
                     round
                     block>退出登录</van-button>
@@ -115,11 +119,12 @@ export default {
 }
 
 .top-info {
-  padding: 20px 0 30px;
+  padding: 79px 0 30px;
   margin: 0 15px;
 }
 .avatar-box {
   margin-right: 12px;
+  position: relative;
 }
 
 .avatar-box img {
@@ -128,6 +133,12 @@ export default {
   background-color: aquamarine;
   border: 1px solid #fff;
   border-radius: 50%;
+}
+
+.gender-i {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
 }
 
 .name-box {
@@ -142,7 +153,9 @@ export default {
   line-height: 17px;
 }
 .company-box {
+  display: inline-block;
   height: 22px;
+  padding-right: 6px;
   margin-top: 10px;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 11px;
@@ -199,8 +212,23 @@ export default {
   border: none !important;
 }
 
+.grid-item .van-icon--image {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.van-cell {
+  padding: 16px 13px !important;
+}
+
+.van-grid-item__text {
+  font-family: "PingFangSC-Regular";
+  font-size: 13px !important;
+  color: #333333 !important;
+}
+
 .van-cell:after {
-  width: 90% !important;
+  width: 92% !important;
 }
 
 .no-border .van-cell:after {

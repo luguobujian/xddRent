@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline-top">
     <div class="billing-detail-box">
       <div class="title-box clearfix">
         <div class="fl">提成收益</div>
@@ -81,9 +81,10 @@ export default {
   color: #333333;
   font-weight: bold;
   padding-top: 16px;
+  padding-bottom: 5px;
 }
 .user-info-box {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 .small-avatar-box {
   display: inline-block;

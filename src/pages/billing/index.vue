@@ -3,10 +3,11 @@
     <div class="main-box">
       <div class="top-box">
         <div class="top-tit-box">钱包余额(元)</div>
-        <div class="num-box">6300.00</div>
+        <div class="num-box Oswald-Medium">6300.00</div>
         <div class="bottom-btn-margin">
           <van-button color="#97D700"
                       size="small"
+                      custom-style="font-size: 15px"
                       round
                       block
                       @click="goNextPage('payoutBtn',0)">提现</van-button>
@@ -81,6 +82,7 @@ export default {
   margin-top: 30px;
 }
 .bottom-btn-margin {
+  font-size: 15px;
   text-align: center;
   padding: 30px 15px 15px !important;
 }
@@ -92,5 +94,9 @@ export default {
 .van-button--small {
   color: #fff;
   height: 39px !important;
+}
+.van-cell__title,
+.van-cell__value {
+  font-size: 15px;
 }
 </style>

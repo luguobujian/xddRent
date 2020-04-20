@@ -47,10 +47,12 @@
     </div>
     <div class="bottom-btn-box">
       <div class="bottom-btn-margin">
-        <van-button color="#97D700"
+        <van-button :color="btnColor"
                     size="small"
+                    custom-style="font-size: 15px"
+                    disabled
                     round
-                    block>保存</van-button>
+                    block>确定</van-button>
       </div>
     </div>
   </div>
@@ -60,7 +62,8 @@
 export default {
   data () {
     return {
-      payType: 'wxpay'
+      payType: 'wxpay',
+      btnColor: '#E6F3C8'
     }
   }
 }

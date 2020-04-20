@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline-top">
     <div class="detail-box">
       <div>
         <div class="p-t-box">
@@ -11,14 +11,14 @@
           <div class="txt-tip-box">
             <div class="m-s-box">
               <van-icon name="warning-o"
-                        size="22px" />未通过
+                        size="19px" />未通过
             </div>
             <div class="cause-box">未通过原因：联系方式不正确</div>
           </div>
         </div>
         <!-- 还货图片 -->
         <div class="img-box">
-          <div class="img-tit">还货图片</div>
+          <div class="img-tit PingFangSC-Medium">还货图片</div>
           <div class="img-items-box">
             <div class="img-item"><img src=""
                    alt=""></div>
@@ -32,7 +32,7 @@
         </div>
         <!-- 破损图片 -->
         <div class="img-box">
-          <div class="img-tit">破损图片</div>
+          <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
             <div class="img-item">
               <img src=""
@@ -68,7 +68,8 @@
             <div class="wi-time">2020.1.7 15:30到达</div>
           </div>
           <div class="arrow-box">
-            <van-icon name="arrow" />
+            <van-icon name="/static/icons/arrow.png"
+                      size="12px" />
           </div>
         </div>
         <!-- 收货信息 -->
@@ -79,9 +80,9 @@
           </div>
           <div class="wuliu-info shouhuo-info">
             <div class="sh-info">
-              <span class="">李先生</span>
+              <span class="PingFangSC-Medium">李先生</span>
               <span class="">18632763762</span>
-              <span class="s-t-icon">收</span>
+              <span class="s-t-icon PingFangSC-Medium">收</span>
             </div>
             <div class="wi-time">北京市海淀区龙翔路甲一号泰祥商务楼208室</div>
           </div>
@@ -94,9 +95,9 @@
           </div>
           <div class="wuliu-info shouhuo-info huanhuo-info">
             <div class="sh-info van-hairline">
-              <span class="">李先生</span>
+              <span class="PingFangSC-Medium">李先生</span>
               <span class="">18632763762</span>
-              <span class="s-t-icon">还</span>
+              <span class="s-t-icon PingFangSC-Medium">还</span>
             </div>
             <div class="huanhuo-text-box">
               <div class="huanhuo-text-t-box van-hairline">
@@ -125,10 +126,10 @@
                    alt="">
             </div>
             <div class="pi-box-r">
-              <div class="pbr-t">讯纳箱/Alphard</div>
+              <div class="pbr-t PingFangSC-Medium">讯纳箱/Alphard</div>
               <div class="pbr-m">红色/大号</div>
               <div class="pbr-b">
-                <div class="pbrb-l">¥69.9</div>
+                <div class="pbrb-l PingFangSC-Medium">¥69.9</div>
                 <div class="pbrb-r">x1</div>
               </div>
             </div>
@@ -139,10 +140,10 @@
                    alt="">
             </div>
             <div class="pi-box-r">
-              <div class="pbr-t">讯纳箱/Alphard</div>
+              <div class="pbr-t PingFangSC-Medium">讯纳箱/Alphard</div>
               <div class="pbr-m">红色/大号</div>
               <div class="pbr-b">
-                <div class="pbrb-l">¥69.9</div>
+                <div class="pbrb-l PingFangSC-Medium">¥69.9</div>
                 <div class="pbrb-r">x1</div>
               </div>
             </div>
@@ -155,102 +156,107 @@
             <div class="cd-n van-hairline">30天</div>
           </div>
           <div class="order-mark-info">
-            <div class="om-tit">订单备注</div>
-            <div class="omi-c">这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注</div>
+            <div class="om-tit">订单备注
+              <van-icon class="a-icon"
+                        name="/static/icons/title_bg.png"
+                        size="21px"
+                        color="#1989fa" />
+            </div>
+            <div class="omi-c PingFangSC-Medium">这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注</div>
           </div>
         </div>
         <!-- 订单时间相关 -->
         <div class="some-time-box mb10">
           <div>
             <span class="some-time-title">订单编号：</span>
-            <span>1238612964129</span>
+            <span class="PingFangSC-Medium">1238612964129</span>
           </div>
           <div>
             <span class="some-time-title">创建时间：</span>
-            <span>1238612964129</span>
+            <span class="PingFangSC-Medium">1238612964129</span>
           </div>
           <div>
             <span class="some-time-title">支付时间：</span>
-            <span>1238612964129</span>
+            <span class="PingFangSC-Medium">1238612964129</span>
           </div>
           <div>
             <span class="some-time-title">取货时间：</span>
-            <span>1238612964129</span>
+            <span class="PingFangSC-Medium">1238612964129</span>
           </div>
           <div>
             <span class="some-time-title">还货时间：</span>
-            <span>1238612964129</span>
+            <span class="PingFangSC-Medium">1238612964129</span>
           </div>
           <div>
             <span class="some-time-title">取货时间：</span>
-            <span>1238612964129</span>
+            <span class="PingFangSC-Medium">1238612964129</span>
           </div>
           <div>
             <span class="some-time-title">返款时间：</span>
-            <span>1238612964129</span>
+            <span class="PingFangSC-Medium">1238612964129</span>
           </div>
         </div>
         <!-- 金额信息 -->
         <div class="amount-box">
           <div class="ab-tit">
-            <span>定金</span>
-            <span class="abt-r">合计：¥20000.00</span>
+            <span class="PingFangSC-Medium">定金</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥20000.00</span>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
               <span class="oil-l">这里是箱子名称</span>
-              <span>x2</span>
+              <span class="PingFangSC-Medium">x2</span>
             </div>
-            <div class="oi-r">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
               <span class="oil-l">这里是箱子名称</span>
-              <span>x2</span>
+              <span class="PingFangSC-Medium">x2</span>
             </div>
-            <div class="oi-r">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
         </div>
         <!-- 运费信息 -->
         <div class="amount-box">
           <div class="ab-tit">
-            <span>运费</span>
-            <span class="abt-r">合计：¥20000.00</span>
+            <span class="PingFangSC-Medium">运费</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥20000.00</span>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
               <span class="oil-l">这里是箱子名称</span>
-              <span>x2</span>
+              <span class="PingFangSC-Medium">x2</span>
             </div>
-            <div class="oi-r">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
               <span class="oil-l">这里是箱子名称</span>
-              <span>x2</span>
+              <span class="PingFangSC-Medium">x2</span>
             </div>
-            <div class="oi-r">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
         </div>
         <!-- 租金信息 -->
         <div class="amount-box">
           <div class="ab-tit">
-            <span>租金</span>
-            <span class="abt-r">合计：¥20000.00</span>
+            <span class="PingFangSC-Medium">租金</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥20000.00</span>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
               <span class="oil-l">这里是箱子名称</span>
-              <span>x2</span>
+              <span class="PingFangSC-Medium">x2</span>
             </div>
-            <div class="oi-r">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
               <span class="oil-l">这里是箱子名称</span>
-              <span>x2</span>
+              <span class="PingFangSC-Medium">x2</span>
             </div>
-            <div class="oi-r">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
         </div>
       </div>
@@ -258,17 +264,19 @@
     <div class="bottom-btn-box">
       <div class="bbb-l">
         <span class="bbb-l-r">应付:</span>
-        <span class="bbb-l-l">¥20000.00</span>
+        <span class="bbb-l-l Oswald-Medium">¥20000.00</span>
       </div>
       <div>
         <van-button plain
                     size="small"
-                    color="#DDDDDD"
+                    color="#aaa"
+                    custom-style="width: 90px"
                     round
                     type="default">取消订单</van-button>
         <van-button plain
                     size="small"
                     color="#97D700"
+                    custom-style="width: 100px"
                     round
                     type="default">上传支付凭证</van-button>
       </div>
@@ -295,6 +303,9 @@ export default {
 }
 </script>
 <style scoped>
+.PingFangSC-Medium {
+  color: #333;
+}
 .container {
   height: 100%;
 }
@@ -324,7 +335,7 @@ export default {
   color: #ffffff;
   line-height: 18px;
   margin-top: 5px;
-  margin-right: 25px;
+  margin-left: 25px;
 }
 
 .img-box {
@@ -451,6 +462,12 @@ export default {
   font-size: 13px;
   color: #666666;
   margin-right: 20px;
+  position: relative;
+}
+.a-icon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 .count-day-box {
   display: flex;
@@ -468,6 +485,7 @@ export default {
 .omi-c {
   flex: 1;
   color: #333;
+  font-size: 13px;
   line-height: 18px;
 }
 /* ??? */
@@ -565,6 +583,7 @@ export default {
   line-height: 35px;
 }
 .bbb-l-r {
+  font-size: 15px;
   line-height: 21px;
   /* margin-top: 9px; */
   vertical-align: top;
@@ -572,7 +591,7 @@ export default {
 .bbb-l-l {
   font-size: 20px;
   color: #97d700;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 </style>
 <style>
@@ -592,7 +611,7 @@ export default {
   height: 13px !important;
 }
 .huanhuo-box ._van-icon {
-  margin-top: 11px;
+  margin-top: 14px;
 }
 .van-button--small {
   /* color: #fff; */

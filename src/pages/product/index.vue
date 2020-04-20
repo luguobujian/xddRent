@@ -3,12 +3,12 @@
     <van-sticky>
       <div class="top-search-btn van-hairline">
         <div class="city-box">
-          <div class="city">{{city.name}}</div>
+          <div class="city PingFangSC-Medium">{{city.name}}</div>
           <van-icon name="/static/icons/arrow-down.png" />
         </div>
         <div class="search-btn-box">
           <div class="search-btn">
-            <van-icon name="/static/icons/search2.png" />
+            <van-icon name="/static/icons/search.png" />
             输入箱子名称进行搜索
           </div>
         </div>
@@ -24,10 +24,11 @@
           <img :src="item.images"
                alt="">
         </div>
-        <div class="result-name">{{item.name}}</div>
+        <div class="result-name PingFangSC-Medium">{{item.name}}</div>
         <div class="n-address-box">
-          <div class="location-box">
-            <van-icon name="/static/icons/addres_icon.png"
+          <div class="location-box PingFangSC-Regular">
+            <van-icon class="location-ico"
+                      name="/static/icons/addres_icon.png"
                       size="12px" />
             {{item.loacl}}
           </div>
@@ -36,11 +37,11 @@
           </div>
         </div>
         <div class="per-address-box">
-          <div class="unit-box">
+          <div class="unit-box Oswald-Medium">
             <span>¥</span>{{item.pre_price}}
           </div>
           <div v-if="item.switch===1"
-               class="tag">特价</div>
+               class="tag PingFangSC-Medium">特价</div>
           <div class="o-cost">¥{{item.price}}/天</div>
         </div>
       </div>
@@ -203,6 +204,9 @@ export default {
   font-size: 11px;
   color: #999999;
 }
+.location-ico {
+  vertical-align: -7%;
+}
 .unit-box {
   /* flex: 1; */
   font-size: 15px;
@@ -217,9 +221,9 @@ export default {
   height: 16px;
   font-size: 10px;
   color: #97d700;
-  line-height: 14px;
+  line-height: 16px;
   text-align: center;
-  padding: 1px 4px;
+  padding: 0 5px;
   background: rgba(151, 215, 0, 0.2);
   border-radius: 6px 0 6px 0;
   margin-top: 3px;

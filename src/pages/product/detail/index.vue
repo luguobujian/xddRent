@@ -25,16 +25,16 @@
           <div class="pri-info-box">
             <div class="pri-info">
               <div>¥</div>
-              <div class="prb">{{detail.pre_price}}</div>
+              <div class="prb Oswald-Medium">{{detail.pre_price}}</div>
               <div>/天</div>
             </div>
             <div v-if="detail.switch === 1"
                  class="tag">特价</div>
-            <div class="o-cost">¥{{detail.price}}/天</div>
+            <div class="o-cost ">¥{{detail.price}}/天</div>
           </div>
           <div class="dingj">定金：¥{{detail.get_price}}/个</div>
         </div>
-        <div class="product-name">{{detail.name}}</div>
+        <div class="product-name PingFangSC-Medium">{{detail.name}}</div>
         <div class="sales-city-box">
           <div class="sales">销量：{{detail.sell_num}}</div>
           <div class="citys">所在地：{{detail.loacl}}</div>
@@ -94,7 +94,12 @@
         </div>
       </div>
       <div class="text-info">
-        <div class="text-tit">商品详情</div>
+        <div class="text-tit PingFangSC-Medium">商品详情
+          <van-icon class="a-icon"
+                    name="/static/icons/title_bg.png"
+                    size="21px"
+                    color="#1989fa" />
+        </div>
         <div class="text-content">
           <wxParse :content="content"
                    @preview="preview"
@@ -379,8 +384,9 @@ image {
   padding: 1px 4px;
   background: rgba(151, 215, 0, 0.2);
   border-radius: 6px 0 6px 0;
-  margin-top: 11px;
+  /* margin-top: 11px; */
   margin-left: 8px;
+  vertical-align: 18%;
 }
 .o-cost {
   display: inline-block;
@@ -390,6 +396,7 @@ image {
   margin-top: 12px;
   margin-left: 8px;
   text-decoration: line-through;
+  vertical-align: 9%;
 }
 .price-info {
   display: flex;
@@ -490,7 +497,7 @@ image {
   vertical-align: -20%;
 }
 .select-item-left-tit {
-  line-height: 62px;
+  line-height: 60px;
 }
 .text-info {
   padding: 15px;
@@ -501,6 +508,12 @@ image {
   font-size: 18px;
   color: #333333;
   padding: 7px 0;
+  position: relative;
+}
+.a-icon {
+  position: absolute;
+  top: -15px;
+  left: 56px;
 }
 .text-content {
   font-size: 15px;
@@ -603,7 +616,7 @@ image {
 .rate-bb {
   font-size: 15px;
   color: #97d700;
-  margin-top: 22px;
+  margin-top: 18px;
 }
 .van-goods-action--safe {
   z-index: 999;

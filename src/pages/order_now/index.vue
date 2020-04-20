@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="main-box">
       <div class="mb10">
         <van-cell-group>
@@ -52,14 +52,14 @@
         </van-cell-group>
       </div>
       <div class="product-s-box mb10">
-        <div class="product-box">
+        <div class="product-box van-hairline">
           <div class="product-img-box">
             <img src=""
                  alt="" />
           </div>
 
           <div class="product-right-box">
-            <div class="product-name">讯纳箱/Alphard</div>
+            <div class="product-name PingFangSC-Medium">讯纳箱/Alphard</div>
             <div class="product-bottom">
               <van-stepper :value="1"
                            @change="onChange" />
@@ -164,13 +164,26 @@
       </div>
     </van-popup> -->
 
-    <div v-if="!showDate && !showPicker && !showCoupon"
+    <!-- <div v-if="!showDate && !showPicker && !showCoupon"
          class="bottom-btn">
       <van-submit-bar :price="2000000"
                       button-text="提交订单"
                       bind:submit="onSubmit"
                       price-class="b-b-price"
                       button-class="b-b-btn" />
+    </div> -->
+    <div class="bottom-btn-box">
+      <div class="bbb-l">
+        <span class="bbb-l-r">合计:</span>
+        <span class="bbb-l-l Oswald-Medium">¥20000.00</span>
+      </div>
+      <div class="bbb-r">
+        <van-button size="small"
+                    color="#97D700"
+                    custom-style="width: 120px"
+                    round
+                    type="default">立即付款</van-button>
+      </div>
     </div>
   </div>
 </template>
@@ -294,10 +307,9 @@ export default {
 .switch-btn-box {
   display: flex;
   width: 140px;
-
   background: rgba(151, 215, 0, 0.06);
-  border: 1px solid #97d700;
-  border-radius: 15px;
+  border: 0.5px solid #97d700;
+  border-radius: 300px;
   overflow: hidden;
   position: absolute;
   right: 15px;
@@ -378,6 +390,40 @@ export default {
   padding: 36px 20px;
   padding-left: 0px;
 }
+.bottom-btn-box {
+  width: 92%;
+  height: 49px;
+  display: flex;
+  padding: 0 15px;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+
+.bbb-l {
+  flex: 1;
+  line-height: 49px;
+  font-size: 15px;
+  color: #333333;
+}
+.bbb-r {
+  line-height: 49px;
+}
+.bbb-l span {
+  line-height: 49px;
+}
+.bbb-l-r {
+  font-size: 15px;
+  line-height: 21px;
+  /* margin-top: 9px; */
+  vertical-align: top;
+}
+.bbb-l-l {
+  font-size: 20px;
+  color: #97d700;
+  /* font-weight: bold; */
+}
 </style>
 <style lang="">
 .van-cell {
@@ -412,17 +458,21 @@ export default {
 .quhuo-addr .van-cell::after {
   border: none;
 }
-
-.b-b-price {
-  color: #97d700 !important;
+.van-stepper__minus,
+.van-stepper__input,
+.van-stepper__plus {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e5 !important;
+  border-radius: 2px !important;
+  margin: 0 !important;
 }
-
-.b-b-btn {
-  background: #97d700 !important;
-  border: none !important ;
+.van-stepper__input {
+  border-left: none !important;
+  border-right: none !important;
 }
-
-.coupon-value-style {
-  color: #97d700 !important;
+.van-button--small {
+  height: 35px !important;
+  margin-left: 8px;
+  padding: 0 12px !important;
 }
 </style>

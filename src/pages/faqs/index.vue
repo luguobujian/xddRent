@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline-top">
     <van-cell v-for="(item, index) in 6"
               :key="index"
               title="单元格"
@@ -26,6 +26,9 @@ export default {
 }
 </script>
 <style scope>
-
-
+</style>
+<style>
+.van-cell {
+  padding: 16px 13px !important;
+}
 </style>

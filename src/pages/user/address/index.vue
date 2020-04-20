@@ -1,6 +1,6 @@
 <template>
 
-  <div class="container">
+  <div class="container van-hairline--top">
 
     <div class="main-items-box">
       <div>
@@ -40,6 +40,7 @@
       <div class="bottom-btn-margin">
         <van-button color="#97D700"
                     size="small"
+                    custom-style="font-size: 13px"
                     round
                     block
                     @click="goNextPage">新增地址</van-button>

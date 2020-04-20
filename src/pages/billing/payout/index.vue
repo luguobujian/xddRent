@@ -10,7 +10,8 @@
         <van-field type="number"
                    label="￥"
                    placeholder="请输入提现金额"
-                   label-width="22px" />
+                   label-width="22px"
+                   custom-style="font-family:'Oswald-Medium'" />
       </div>
       <div class="tip-box">当前余额：¥300.00 <span class="colorBtn">全部提现</span></div>
     </div>
@@ -18,6 +19,7 @@
       <div class="bottom-btn-margin">
         <van-button color="#97D700"
                     size="small"
+                    custom-style="font-size: 15px"
                     round
                     block
                     @click="goPayout">确认提现</van-button>
@@ -214,6 +216,9 @@ export default {
   flex: none !important;
   min-width: 12px !important;
   margin-right: 10px !important;
+}
+.van-field__input {
+  font-family: "Oswald-Medium" !important;
 }
 .van-button--small {
   color: #fff;

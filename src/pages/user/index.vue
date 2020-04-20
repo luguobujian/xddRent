@@ -63,6 +63,7 @@
       <div class="bottom-btn-margin">
         <van-button color="#97D700"
                     size="small"
+                    custon-style="font-size: 15px"
                     round
                     block>保存</van-button>
       </div>
@@ -154,6 +155,9 @@ export default {
 </script>
 
 <style scope>
+image {
+  display: inline-block;
+}
 .main-top-box {
   flex: 1;
 }
@@ -182,10 +186,10 @@ export default {
 
 <style>
 .van-cell {
-  padding: 16px 15px !important;
+  padding: 16px 13px !important;
 }
 .van-cell:after {
-  width: 90% !important;
+  width: 92% !important;
 }
 ._van-icon {
   color: #969799;

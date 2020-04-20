@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline-top">
     <div class="itmes-box">
-
       <div v-for="(item, index) in detailList"
            :key="index"
            class="item">
@@ -12,8 +11,8 @@
           </div>
         </div>
         <div class="title-box clearfix">
-          <div class="fl">{{item.title}}</div>
-          <div class="fr fail">{{item.sum}}</div>
+          <div class="fl">{{item.sum}}</div>
+          <div class="fr fail">{{item.title}}</div>
         </div>
         <div class="some-info-box">订单号：{{item.orderId}}</div>
         <div class="some-info-box">订单日期：{{item.date}}</div>
@@ -28,28 +27,28 @@ export default {
   data () {
     return {
       detailList: [{
-        title: '提成收益',
-        sum: '+¥200.00',
+        title: '占位符',
+        sum: '¥200.00',
         orderId: '283721946129',
         date: '2020.01.21'
       }, {
-        title: '提成收益',
-        sum: '+¥200.00',
+        title: '占位符',
+        sum: '¥200.00',
         orderId: '283721946129',
         date: '2020.01.21'
       }, {
-        title: '提成收益',
-        sum: '+¥200.00',
+        title: '占位符',
+        sum: '¥200.00',
         orderId: '283721946129',
         date: '2020.01.21'
       }, {
-        title: '提成收益',
-        sum: '+¥200.00',
+        title: '占位符',
+        sum: '¥200.00',
         orderId: '283721946129',
         date: '2020.01.21'
       }, {
-        title: '提成收益',
-        sum: '+¥200.00',
+        title: '占位符',
+        sum: '¥200.00',
         orderId: '283721946129',
         date: '2020.01.21'
       }]
@@ -75,6 +74,7 @@ export default {
   color: #333333;
   font-weight: bold;
   padding-top: 15px;
+  padding-bottom: 5px;
 }
 .some-info-box {
   line-height: 18px;

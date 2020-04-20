@@ -56,7 +56,7 @@ export default {
   display: block;
   width: 100px;
   height: 100px;
-  border-radius: 8px;
+  border-radius: 5px;
   background-color: #97d700;
   margin: 0 auto;
 }
@@ -75,7 +75,10 @@ export default {
 }
 </style>
 <style>
+.van-cell {
+  padding: 16px 13px !important;
+}
 .van-cell:after {
-  width: 90% !important;
+  width: 92% !important;
 }
 </style>

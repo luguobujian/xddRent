@@ -7,10 +7,12 @@
            :data-id="item.id"
            class="item van-hairline"
            @click="onClick">
-        <div class="item-name">{{item.tit}}</div>
+        <div class="item-name PingFangSC-Medium">{{item.tit}}</div>
         <div class="item-content">
           <div class="item-left">
-            <van-icon name="/static/icons/addres_icon.png" />
+            <van-icon name="/static/icons/addres_icon.png"
+                      size="12px"
+                      custom-style="vertical-align: 6%" />
           </div>
           <div class="item-right">{{item.val}}</div>
         </div>

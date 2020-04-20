@@ -1,5 +1,6 @@
 <script>
 import { exchangeCode } from '@/api/getData'
+import API from '@/api/api'
 export default {
   created () {
     // 调用API从本地缓存中获取数据
@@ -27,6 +28,27 @@ export default {
 
   },
   onLaunch () {
+    wx.loadFontFace({
+      global: true,
+      family: 'PingFangSC-Medium',
+      source: `url("${API.baseUrl}PingFangSC/PingFangSC-Medium.ttf")`,
+      success (res) { console.log(res) },
+      fail (res) { console.log(res) }
+    })
+    wx.loadFontFace({
+      global: true,
+      family: 'PingFangSC-Regular',
+      source: `url("${API.baseUrl}PingFangSC/PingFangSC-Regular.ttf")`,
+      success (res) { console.log(res) },
+      fail (res) { console.log(res) }
+    })
+    wx.loadFontFace({
+      global: true,
+      family: 'Oswald-Medium',
+      source: `url("${API.baseUrl}PingFangSC/Oswald-Medium.ttf")`,
+      success (res) { console.log(res) },
+      fail (res) { console.log(res) }
+    })
     // this.privateWxLogin().then(r => this.exchangeCode(r.code))
   },
   mounted () {
@@ -72,14 +94,31 @@ export default {
 </script>
 
 <style>
+@import "../static/vant/common/index.wxss";
+* {
+  font-family: "PingFangSC-Regular";
+}
 page {
   height: 100%;
+  font-size: 15px;
   background-color: #f9f9f9;
 }
-
+image.van-icon__image {
+  display: block;
+}
+.PingFangSC-Regular {
+  font-family: "PingFangSC-Regular";
+}
+.PingFangSC-Medium {
+  font-family: "PingFangSC-Medium";
+}
+.Oswald-Medium {
+  font-family: "Oswald-Medium";
+}
 .container {
   height: 100%;
   color: #333;
+  font-family: "PingFangSC-Regular";
   display: flex;
   flex-direction: column;
 }
@@ -113,10 +152,10 @@ page {
 .van-cell:after {
   width: 90% !important;
 }
-[class*="van-hairline"] {
+.van-hairline {
   position: relative;
 }
-[class*="van-hairline"]::after {
+.van-hairline::after {
   position: absolute;
   box-sizing: border-box;
   -webkit-transform-origin: center;
@@ -131,7 +170,12 @@ page {
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
 }
+
 .mb10 {
   margin-bottom: 10px;
+}
+.van-cell__title,
+.van-cell__value {
+  font-size: 15px;
 }
 </style>

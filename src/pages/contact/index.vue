@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline-top">
     <div class="top-main-box">
       <div>
         <div class="logo-box">
@@ -37,6 +37,7 @@ export default {
 </script>
 <style scope>
 .container {
+  font-size: 15px;
   background-color: #fff;
 }
 .top-main-box {
@@ -49,7 +50,7 @@ export default {
   display: block;
   width: 100px;
   height: 100px;
-  border-radius: 8px;
+  border-radius: 5px;
   background-color: #97d700;
   margin: 0 auto;
 }
@@ -58,7 +59,14 @@ export default {
 }
 </style>
 <style>
+.van-cell {
+  padding: 16px 15px !important;
+}
 .van-cell:after {
-  width: 90% !important;
+  width: 92% !important;
+}
+.van-cell__title,
+.van-cell__value {
+  font-size: 15px;
 }
 </style>

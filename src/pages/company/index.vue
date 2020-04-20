@@ -51,6 +51,7 @@
       <div class="bottom-btn-margin">
         <van-button color="#97D700"
                     size="small"
+                    custom-style="font-size: 15px"
                     round
                     block
                     @click="goNextPage">提交</van-button>
@@ -129,7 +130,7 @@ export default {
 }
 .van-button--small {
   color: #fff;
-  height: 35px !important;
+  height: 39px !important;
 }
 
 .van-picker__cancel,

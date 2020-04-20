@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="main-top-box">
       <div class="main-form-box">
         <div>
@@ -39,6 +39,7 @@
       <div class="bottom-btn-margin">
         <van-button color="#97D700"
                     size="small"
+                    custom-style="font-size:15px"
                     round
                     block>提交</van-button>
       </div>
@@ -81,7 +82,7 @@ export default {
 
 <style>
 .van-cell {
-  padding: 17px 15px !important;
+  padding: 16px 15px !important;
 }
 .van-cell:after {
   width: 90% !important;
@@ -96,11 +97,11 @@ export default {
   min-height: 42px !important;
 }
 .van-field__body--textarea.van-field__body--ios {
-  margin-top: 3px !important;
+  margin-top: 0px !important;
 }
 .van-button--small {
   color: #fff;
-  height: 35px !important;
+  height: 39px !important;
 }
 .van-picker__cancel,
 .van-picker__confirm {

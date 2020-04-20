@@ -13,7 +13,7 @@
           <view class="r-icon-box"
                 slot="action"
                 bind:tap="onClick">
-            <van-icon name="cross"
+            <van-icon name="/static/icons/close.png"
                       size="20px" />
           </view>
         </van-search>
@@ -21,7 +21,11 @@
       <div v-if="!reuslts"
            class="bottom-items-box">
         <div class="history-box">
-          <div class="title">历史搜索</div>
+          <div class="title">历史搜索
+            <van-icon class="fr"
+                      name="/static/icons/del-icon.png"
+                      size="20px" />
+          </div>
           <div class="his-items-box">
             <div v-for="(item, index) in historys"
                  :key="index"
@@ -52,14 +56,15 @@
             <img :src="item.images"
                  alt="">
           </div>
-          <div class="result-name">{{item.name}}</div>
+          <div class="result-name PingFangSC-Medium">{{item.name}}</div>
           <div class="per-address-box">
-            <div class="unit-box">
-              <span>¥</span>{{item.pre_price}}
+            <div class="unit-box Oswald-Medium">
+              <span>¥</span>{{item.pre_price}}<span>/天</span>
             </div>
             <div class="location-box">
               <van-icon name="/static/icons/addres_icon.png"
-                        size="12px" />
+                        size="12px"
+                        style="vertical-align: -1%" />
               {{item.loacl}}
             </div>
           </div>
@@ -182,6 +187,7 @@ export default {
   height: 170px;
 }
 .result-name {
+  font-size: 15px;
   line-height: 21px;
   padding-top: 10px;
   padding-left: 8px;
@@ -208,8 +214,13 @@ export default {
 }
 </style>
 <style>
+.van-search--withaction {
+  padding-top: 3px !important;
+}
+
 .r-icon-box ._van-icon {
   vertical-align: -14%;
+  padding: 0 7px;
 }
 .van-cell__left-icon-wrap {
   -webkit-align-items: stretch !important;

@@ -11,7 +11,7 @@
                @click="goNextPage">
             <div class="order-no-info-box van-hairline">
               <div class="order-no-box">订单编号：283728462421</div>
-              <div class="order-status-box">待支付</div>
+              <div class="order-status-box PingFangSC-Medium">待支付</div>
             </div>
             <div class="product-info-box van-hairline">
               <div class="product-img-box">
@@ -20,7 +20,7 @@
                      alt="">
               </div>
               <div class="product-text-box">
-                <div class="product-name">讯纳箱/Alphard</div>
+                <div class="product-name PingFangSC-Medium">讯纳箱/Alphard</div>
                 <div class="product-skus-n">
                   <span class="product-skus">红色/大号</span>
                   <span class="product-n">x1</span>
@@ -28,16 +28,17 @@
               </div>
             </div>
             <div class="btns-info-box">
-              <div class="info-p-box">合计:¥20000.00</div>
+              <div class="info-p-box Oswald-Medium">合计:¥20000.00</div>
               <div class="btns-box">
                 <van-button plain
                             size="small"
                             color="#DDDDDD"
+                            custom-style="width: 80px"
                             round
                             type="default">取消订单</van-button>
-                <van-button plain
-                            size="small"
+                <van-button size="small"
                             color="#97d700"
+                            custom-style="width: 80px"
                             round
                             type="primary">去支付</van-button>
               </div>
@@ -83,11 +84,13 @@
                 <van-button plain
                             size="small"
                             color="#DDDDDD"
+                            custom-style="width: 80px"
                             round
                             type="default">取消订单</van-button>
                 <van-button plain
                             size="small"
                             color="#97d700"
+                            custom-style="width: 100px"
                             round
                             type="primary">上传支付凭证</van-button>
               </div>
@@ -106,7 +109,7 @@
                      alt="">
               </div>
               <div class="product-text-box">
-                <div class="product-name">讯纳箱/Alphard</div>
+                <div class="product-name PingFangSC-Medium">讯纳箱/Alphard</div>
                 <div class="product-skus-n">
                   <span class="product-skus">红色/大号</span>
                   <span class="product-n">x1</span>
@@ -128,11 +131,12 @@
               </div>
             </div>
             <div class="btns-info-box">
-              <div class="info-p-box">合计:¥20000.00</div>
+              <div class="info-p-box Oswald-Medium">合计:¥20000.00</div>
               <div class="btns-box">
                 <van-button plain
                             size="small"
                             color="#DDDDDD"
+                            custom-style="width: 80px"
                             round
                             type="default">取消订单</van-button>
               </div>
@@ -302,6 +306,9 @@ export default {
 }
 </style>
 <style >
+.van-hairline--top-bottom::after {
+  border-top: none !important;
+}
 .van-tabs__line {
   width: 20 !important;
   background-color: #97d700 !important;
