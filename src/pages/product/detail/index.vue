@@ -118,11 +118,11 @@
                                  type="warning"
                                  plain="true"
                                  size="small"
-                                 @click="showAttrs = true" />
+                                 @click="goOrderPage('order_now',1)" />
         <van-goods-action-button text="租赁"
                                  color="#97D700"
                                  size="small"
-                                 @click="showAttrs = true" />
+                                 @click="goOrderPage('rent_now',0)" />
       </van-goods-action>
     </div>
     <van-popup :show="showAttrs"
@@ -187,20 +187,23 @@
                                      type="warning"
                                      plain="true"
                                      size="small"
-                                     @click="goNextPage('order_now')" />
+                                     @click="goOrderPage('order_now',1)" />
             <van-goods-action-button text="租赁"
                                      color="#97D700"
                                      size="small"
-                                     @click="goNextPage('rent_now')" />
+                                     @click="goOrderPage('rent_now', 0)" />
           </van-goods-action>
         </div>
       </div>
     </van-popup>
+    <van-toast id="van-toast" />
+
   </div>
 </template>
 <script>
 import wxParse from 'mpvue-wxparse'
-import { getGoodsInfo, getGoodsFormat } from '@/api/getData'
+import Toast from '../../../../static/vant/toast/toast.js'
+import { getGoodsInfo, getCoupons, getGoodsFormat } from '@/api/getData'
 let pnum = null
 export default {
   data () {
@@ -231,7 +234,9 @@ export default {
       specIdxArr: [],
       specificationCombination: [],
       spcCShow: [],
-      sCShow: ''
+      sCShow: '',
+
+      is_buy: null
     }
   },
   components: {
@@ -241,6 +246,7 @@ export default {
     console.log(options)
     this.id = options.id
     this.getGoodsInfo()
+    this.getCoupons()
     this.getGoodsFormat()
   },
   mounted () {
@@ -257,6 +263,14 @@ export default {
         this.content = res.data.data.content
       } catch (error) {
         console.log('* getGoodsInfo error', error)
+      }
+    },
+    async getCoupons () {
+      try {
+        const res = await getCoupons({ goods_id: this.id })
+        console.log(res)
+      } catch (error) {
+        console.log('* getCoupons error', error)
       }
     },
     async getGoodsFormat () {
@@ -293,7 +307,7 @@ export default {
         this.spcCShow[sindex] = name
       }
       this.sCShow = this.spcCShow.join('/')
-      console.log(this.sCShow)
+      // console.log(this.sCShow)
       this.setPopupChsInfo()
     },
     setPopupChsInfo () {
@@ -314,7 +328,34 @@ export default {
     },
     goNextPage (r) {
       mpvue.navigateTo({
-        url: `${this.routers[r]}?id=${this.id}`
+        url: `${this.routers[r]}`
+      })
+    },
+    goOrderPage (r, is) {
+      if (this.specificationCombination.length !== this.specification.length) {
+        Toast.fail('请选择产品规格')
+        this.showAttrs = true
+        return
+      }
+      this.is_buy = is
+      let idArrStr = this.specificationCombination.join(',')
+      let money = null
+      if (is === 1) {
+        if (this.detail.switch === 1) {
+          money = this.specificationCom[idArrStr].pre_buyprice
+        } else {
+          money = this.specificationCom[idArrStr].buyprice
+        }
+      } else {
+        if (this.detail.switch === 1) {
+          money = this.specificationCom[idArrStr].pre_price
+        } else {
+          money = this.specificationCom[idArrStr].price
+        }
+      }
+
+      mpvue.navigateTo({
+        url: `${this.routers[r]}?is_buy=${this.is_buy}&goods_format_id_arr=${idArrStr}&name=${this.detail.name}&money=${money}&stepperVal=${this.stepperVal}&house_id=${this.detail.house_id}&transport_id=${this.detail.transport_id}`
       })
     },
     viewImage () {
@@ -322,6 +363,20 @@ export default {
         current: '/static/images/banner_1.png', // 当前显示图片的http链接
         urls: this.background // 需要预览的图片http链接列表
       })
+    },
+    parseParams (data) {
+      try {
+        var tempArr = []
+        for (var i in data) {
+          var key = encodeURIComponent(i)
+          var value = encodeURIComponent(data[i])
+          tempArr.push(key + '=' + value)
+        }
+        var urlParamsStr = tempArr.join('&')
+        return urlParamsStr
+      } catch (err) {
+        return ''
+      }
     }
   },
   onUnload () {

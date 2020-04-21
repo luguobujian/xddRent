@@ -21,21 +21,25 @@
             <div class="l-info-box">
               <div class="info-top-box">
                 <span class="name-box">{{item.name}}</span>
-                <span>{{item.tel}}</span>
+                <span>{{item.mobile}}</span>
               </div>
-              <div class="info-bottom-box">{{item.text}}</div>
+              <div class="info-bottom-box">{{item.addressone}}{{item.addresstwo}}</div>
             </div>
             <div class="r-btns-box">
               <van-icon name="/static/icons/edit-icon.png"
-                        @click.stop="onEdit" />
+                        @click.stop="onEdit(index)" />
               <van-icon name="/static/icons/del-icon.png"
+                        :data-id="item.id"
                         @click.stop="onDel" />
             </div>
           </div>
         </van-radio-group>
       </div>
-
+      <nomoreComponents :tipBoxTop="tipBoxTop"
+                        :tipSrc="tipSrc"
+                        :dataList="dataList"></nomoreComponents>
     </div>
+
     <div class="bottom-btn-box">
       <div class="bottom-btn-margin">
         <van-button color="#97D700"
@@ -52,29 +56,47 @@
 </template>
 <script>
 import Dialog from '../../../../static/vant/dialog/dialog'
+import nomoreComponents from '@/components/nomore'
+
+import { getMyAddress, delAddress } from '@/api/getData'
+import Toast from '../../../../dist/wx/static/vant/toast/toast'
 
 export default {
   data () {
     return {
-      dataList: [{
-        id: 1,
-        name: '马小哈',
-        tel: 13333333333,
-        text: '北京市海淀区龙翔路甲一号泰祥商务楼508北京市'
-      }, {
-        id: 2,
-        name: '马哈',
-        tel: 13333333333,
-        text: '北京市海淀区龙翔路甲一号泰祥商务楼508北京市'
-      }],
+      dataList: [],
       addressResult: '',
       addressIndex: ''
+
     }
+  },
+  components: {
+    nomoreComponents
+  },
+  onLoad (options) {
+    console.log(options)
+    if (options.f === 'detail') {
+      mpvue.setNavigationBarTitle({
+        title: '选择收获地址'
+      })
+    }
+  },
+  onShow () {
+    this.getMyAddress()
   },
   mounted () {
 
   },
   methods: {
+    async getMyAddress () {
+      try {
+        const res = await getMyAddress()
+        this.dataList = res.data.data
+        console.log(res)
+      } catch (error) {
+
+      }
+    },
     onClick (e) {
       const { index, name } = e.currentTarget.dataset
       const pages = getCurrentPages()
@@ -83,7 +105,9 @@ export default {
       this.addressResult = name
       this.addressIndex = index
 
-      prev.data.$root[0].setData('address', { id: indexData.id, val: `${indexData.name}   ${indexData.tel}`, text: indexData.text })
+      console.log(prev)
+
+      prev.data.$root[0].setData('address', { id: indexData.id, val: `${indexData.name}   ${indexData.mobile}`, text: `${indexData.addressone}${indexData.addresstwo}` })
 
       console.log(prev)
 
@@ -92,18 +116,27 @@ export default {
     onCheckboxAddress (e) {
       this.addressResult = e.mp.detail
     },
-    onEdit () {
-
+    onEdit (i) {
+      mpvue.navigateTo({
+        url: `/pages/user/addaddr/main?${this.parseParams(this.dataList[i])}`
+      })
     },
     onDel (e) {
+      console.log(e)
+      let id = e.mp.currentTarget.dataset.id
       Dialog.confirm({
-        // customStyle: '',
         title: '提示',
         message: '确认删除该地址信息？'
       }).then(() => {
         // on confirm
         this.addressResult = ''
         this.addressIndex = ''
+        const res = delAddress({ id })
+        console.log(res)
+        if (res['_v'].data.code === 1) {
+          Toast.success('删除成功')
+          this.getMyAddress()
+        }
       }).catch(() => {
         // on cancel
       })
@@ -113,8 +146,19 @@ export default {
         url: '/pages/user/addaddr/main'
       })
     },
-    submit () {
-
+    parseParams (data) {
+      try {
+        var tempArr = []
+        for (var i in data) {
+          var key = encodeURIComponent(i)
+          var value = encodeURIComponent(data[i])
+          tempArr.push(key + '=' + value)
+        }
+        var urlParamsStr = tempArr.join('&')
+        return urlParamsStr
+      } catch (err) {
+        return ''
+      }
     }
   }
 }

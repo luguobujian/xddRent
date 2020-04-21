@@ -119,8 +119,8 @@ export default {
         console.log('page', res)
         this.background = res.data.data
       } catch (error) {
-        console.log('* error', error)
-        if (error === 401) {
+        console.log('* error getBanner', error)
+        if (error.statusCode === 401) {
           this.getBanner()
         }
       }

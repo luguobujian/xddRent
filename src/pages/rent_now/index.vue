@@ -168,6 +168,9 @@ export default {
       }
     }
   },
+  onLoad (options) {
+    console.log(options)
+  },
   mounted () {
     globalThat = this
     for (let i = 0; i <= 365; i++) {

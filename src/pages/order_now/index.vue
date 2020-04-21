@@ -59,9 +59,9 @@
           </div>
 
           <div class="product-right-box">
-            <div class="product-name PingFangSC-Medium">讯纳箱/Alphard</div>
+            <div class="product-name PingFangSC-Medium">{{productName}}</div>
             <div class="product-bottom">
-              <van-stepper :value="1"
+              <van-stepper :value="productNum"
                            @change="onChange" />
             </div>
           </div>
@@ -81,21 +81,32 @@
         <van-collapse :value="activeNames"
                       @change="onChange1">
           <van-collapse-item custom-class="mb10"
-                             title="定金"
-                             value="¥20000.00"
+                             title="金额"
+                             :value="allMoney"
                              name="1"
                              is-link="false">
             <van-icon name="/static/icons/arrow-down.png"
                       slot="right-icon" />
-            <div>这里是箱子名称</div>
+            <div class="collapse-itm-box">
+              <div class="collapse-itm-l">
+                <div class="collapse-itm-l-l">{{productName}}</div>
+                <div class="collapse-itm-l-r PingFangSC-Medium">x{{productNum}}</div>
+              </div>
+              <div class="collapse-itm-r PingFangSC-Medium">{{allMoney}}</div>
+            </div>
           </van-collapse-item>
-          <van-collapse-item title="运费"
-                             value="¥20000.00"
+          <van-collapse-item v-if="transfer_fee"
+                             title="运费"
+                             :value="transfer_fee"
                              name="2"
                              is-link="false">
-            <van-icon name="/static/icons/arrow-down.png"
-                      slot="right-icon" />
-            <div>这里是箱子名称</div>
+            <div class="collapse-itm-box">
+              <div class="collapse-itm-l">
+                <div class="collapse-itm-l-l">{{productName}}</div>
+                <div class="collapse-itm-l-r PingFangSC-Medium">x{{productNum}}</div>
+              </div>
+              <div class="collapse-itm-r PingFangSC-Medium">{{transfer_fee}}</div>
+            </div>
           </van-collapse-item>
         </van-collapse>
       </div>
@@ -189,7 +200,7 @@
 </template>
 <script>
 import couponComponent from '@/components/coupon'
-
+import { getTransportMoney } from '@/api/getData'
 let globalThat = null
 
 export default {
@@ -229,6 +240,17 @@ export default {
         val: '',
         text: ''
       },
+      house_id: null,
+      transport_id: null,
+      transfer_fee: null,
+
+      productName: null,
+      productId: null,
+      productMoney: null,
+      productNum: null,
+
+      allMoney: null,
+
       couponDatas: [{
         a: 1000,
         b: 1000,
@@ -248,6 +270,19 @@ export default {
   components: {
     couponComponent
   },
+  onLoad (options) {
+    console.log(options)
+    this.house_id = options.house_id
+    this.transport_id = options.transport_id
+    this.productName = options.name
+    this.productId = options.goods_id
+    this.productMoney = options.money
+    this.productNum = options.stepperVal
+    this.allMoney = `¥${parseInt(options.stepperVal) * parseInt(options.money)}.00`
+  },
+  onShow () {
+    this.getTransportMoney()
+  },
   mounted () {
     globalThat = this
     for (let i = 0; i <= 365; i++) {
@@ -255,6 +290,17 @@ export default {
     }
   },
   methods: {
+    async getTransportMoney () {
+      try {
+        if (!this.address.id) return
+        let data = { address_id: this.address.id, house_id: this.house_id, transport_id: this.transport_id }
+        const res = await getTransportMoney(data)
+        this.transfer_fee = res.data.data ? `¥${res.data.data}.00` : null
+        console.log(res)
+      } catch (error) {
+
+      }
+    },
     onSwitchBtn (i) {
       this.switchIdx = i
     },
@@ -291,7 +337,7 @@ export default {
     },
     goNextPage (r) {
       mpvue.navigateTo({
-        url: this.routers[r]
+        url: `${this.routers[r]}?f=detail`
       })
     }
   }
@@ -385,7 +431,27 @@ export default {
 .product-bottom {
   margin-top: 10px;
 }
-
+.collapse-itm-box {
+  display: flex;
+}
+.collapse-itm-l {
+  /* flex: 1; */
+  display: flex;
+  width: 204px;
+}
+.collapse-itm-l-l {
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.collapse-itm-l-r {
+  padding-left: 20px;
+}
+.collapse-itm-r {
+  flex: 1;
+  text-align: right;
+}
 .checkbox-box {
   padding: 36px 20px;
   padding-left: 0px;
