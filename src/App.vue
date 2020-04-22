@@ -110,6 +110,7 @@ image.van-icon__image {
   font-family: "PingFangSC-Regular";
 }
 .PingFangSC-Medium {
+  color: #333;
   font-family: "PingFangSC-Medium";
 }
 .Oswald-Medium {

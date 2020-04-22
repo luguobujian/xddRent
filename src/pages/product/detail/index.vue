@@ -45,14 +45,11 @@
           <div class="select-item-left">
             <div class="select-item-left-tit">可用优惠券</div>
             <div class="coupons-box">
-              <div class="coupons-item-box">
+              <div class="coupons-item-box"
+                   v-for="(item, index) in couponsArr"
+                   :key="index">
                 <div class="coupons-item">
-                  <div>满2000减300</div>
-                </div>
-              </div>
-              <div class="coupons-item-box">
-                <div class="coupons-item">
-                  <div>满2000减300</div>
+                  <div>满{{item.del_rules}}减{{item.del_price}}</div>
                 </div>
               </div>
             </div>
@@ -220,6 +217,8 @@ export default {
       interval: 2000,
       duration: 500,
 
+      couponsArr: null,
+
       showAttrs: false,
       popup_pre_price: 0,
       popup_sell_num: 0,
@@ -268,7 +267,8 @@ export default {
     async getCoupons () {
       try {
         const res = await getCoupons({ goods_id: this.id })
-        console.log(res)
+        console.log('* getCoupons', res)
+        this.couponsArr = res.data.data
       } catch (error) {
         console.log('* getCoupons error', error)
       }
@@ -334,7 +334,7 @@ export default {
     goOrderPage (r, is) {
       if (this.specificationCombination.length !== this.specification.length) {
         Toast.fail('请选择产品规格')
-        this.showAttrs = true
+        setTimeout(() => { this.showAttrs = true }, 1500)
         return
       }
       this.is_buy = is
@@ -355,8 +355,10 @@ export default {
       }
 
       mpvue.navigateTo({
-        url: `${this.routers[r]}?is_buy=${this.is_buy}&goods_format_id_arr=${idArrStr}&name=${this.detail.name}&money=${money}&stepperVal=${this.stepperVal}&house_id=${this.detail.house_id}&transport_id=${this.detail.transport_id}`
+        url: `${this.routers[r]}?id=${this.id}&is_buy=${this.is_buy}&goods_format_id_arr=${idArrStr}&name=${this.detail.name}&img=${this.detail.images}&money=${money}&stepperVal=${this.stepperVal}&house_id=${this.detail.house_id}&transport_id=${this.detail.transport_id}`
       })
+
+      this.showAttrs = false
     },
     viewImage () {
       mpvue.previewImage({

@@ -12,6 +12,8 @@
     "van-submit-bar": "/static/vant/submit-bar/index",
     "van-popup": "/static/vant/popup/index",
     "van-datetime-picker": "/static/vant/datetime-picker/index",
-    "van-picker": "/static/vant/picker/index"
+    "van-picker": "/static/vant/picker/index",
+    "van-toast": "/static/vant/toast/index",
+    "van-dialog": "/static/vant/dialog/index"
   }
 }

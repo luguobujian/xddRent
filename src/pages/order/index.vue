@@ -8,27 +8,29 @@
       <van-tab title="全部">
         <div class="items-box">
           <div class="item"
+               v-for="(item, index) in dataList"
+               :key="index"
                @click="goNextPage">
             <div class="order-no-info-box van-hairline">
-              <div class="order-no-box">订单编号：283728462421</div>
+              <div class="order-no-box">订单编号：{{item.order_id}}</div>
               <div class="order-status-box PingFangSC-Medium">待支付</div>
             </div>
             <div class="product-info-box van-hairline">
               <div class="product-img-box">
                 <img class="product-img"
-                     src=""
+                     :src="item.goodsimages"
                      alt="">
               </div>
               <div class="product-text-box">
-                <div class="product-name PingFangSC-Medium">讯纳箱/Alphard</div>
+                <div class="product-name PingFangSC-Medium">{{item.goods_name}}</div>
                 <div class="product-skus-n">
-                  <span class="product-skus">红色/大号</span>
-                  <span class="product-n">x1</span>
+                  <span class="product-skus">{{item.goods_format}}</span>
+                  <span class="product-n">x{{item.goods_num}}</span>
                 </div>
               </div>
             </div>
             <div class="btns-info-box">
-              <div class="info-p-box Oswald-Medium">合计:¥20000.00</div>
+              <div class="info-p-box Oswald-Medium">合计:{{item.pay_price}}</div>
               <div class="btns-box">
                 <van-button plain
                             size="small"
@@ -43,143 +45,9 @@
                             type="primary">去支付</van-button>
               </div>
             </div>
-            <div class="count-down ">15小时25分后关闭</div>
-          </div>
-          <div class="item">
-            <div class="order-no-info-box van-hairline">
-              <div class="order-no-box">订单编号：283728462421</div>
-              <div class="order-status-box">待支付</div>
-            </div>
-            <div class="product-info-box van-hairline">
-              <div class="product-img-box">
-                <img class="product-img"
-                     src=""
-                     alt="">
-              </div>
-              <div class="product-text-box">
-                <div class="product-name">讯纳箱/Alphard</div>
-                <div class="product-skus-n">
-                  <span class="product-skus">红色/大号</span>
-                  <span class="product-n">x1</span>
-                </div>
-              </div>
-            </div>
-            <div class="product-info-box van-hairline">
-              <div class="product-img-box">
-                <img class="product-img"
-                     src=""
-                     alt="">
-              </div>
-              <div class="product-text-box">
-                <div class="product-name">讯纳箱/Alphard</div>
-                <div class="product-skus-n">
-                  <span class="product-skus">红色/大号</span>
-                  <span class="product-n">x1</span>
-                </div>
-              </div>
-            </div>
-            <div class="btns-info-box">
-              <div class="info-p-box">合计:¥20000.00</div>
-              <div class="btns-box">
-                <van-button plain
-                            size="small"
-                            color="#DDDDDD"
-                            custom-style="width: 80px"
-                            round
-                            type="default">取消订单</van-button>
-                <van-button plain
-                            size="small"
-                            color="#97d700"
-                            custom-style="width: 100px"
-                            round
-                            type="primary">上传支付凭证</van-button>
-              </div>
-            </div>
-            <!-- <div class="count-down ">15小时25分后关闭</div> -->
-          </div>
-          <div class="item">
-            <div class="order-no-info-box van-hairline">
-              <div class="order-no-box">订单编号：283728462421</div>
-              <div class="order-status-box">待支付</div>
-            </div>
-            <div class="product-info-box van-hairline">
-              <div class="product-img-box">
-                <img class="product-img"
-                     src=""
-                     alt="">
-              </div>
-              <div class="product-text-box">
-                <div class="product-name PingFangSC-Medium">讯纳箱/Alphard</div>
-                <div class="product-skus-n">
-                  <span class="product-skus">红色/大号</span>
-                  <span class="product-n">x1</span>
-                </div>
-              </div>
-            </div>
-            <div class="product-info-box van-hairline">
-              <div class="product-img-box">
-                <img class="product-img"
-                     src=""
-                     alt="">
-              </div>
-              <div class="product-text-box">
-                <div class="product-name">讯纳箱/Alphard</div>
-                <div class="product-skus-n">
-                  <span class="product-skus">红色/大号</span>
-                  <span class="product-n">x1</span>
-                </div>
-              </div>
-            </div>
-            <div class="btns-info-box">
-              <div class="info-p-box Oswald-Medium">合计:¥20000.00</div>
-              <div class="btns-box">
-                <van-button plain
-                            size="small"
-                            color="#DDDDDD"
-                            custom-style="width: 80px"
-                            round
-                            type="default">取消订单</van-button>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="order-no-info-box van-hairline">
-              <div class="order-no-box">订单编号：283728462421</div>
-              <div class="order-status-box">待支付</div>
-            </div>
-            <div class="product-info-box van-hairline">
-              <div class="product-img-box">
-                <img class="product-img"
-                     src=""
-                     alt="">
-              </div>
-              <div class="product-text-box">
-                <div class="product-name">讯纳箱/Alphard</div>
-                <div class="product-skus-n">
-                  <span class="product-skus">红色/大号</span>
-                  <span class="product-n">x1</span>
-                </div>
-              </div>
-            </div>
-            <div class="product-info-box van-hairline">
-              <div class="product-img-box">
-                <img class="product-img"
-                     src=""
-                     alt="">
-              </div>
-              <div class="product-text-box">
-                <div class="product-name">讯纳箱/Alphard</div>
-                <div class="product-skus-n">
-                  <span class="product-skus">红色/大号</span>
-                  <span class="product-n">x1</span>
-                </div>
-              </div>
-            </div>
-            <div class="btns-info-box">
-              <div class="info-p-box">合计:¥20000.00</div>
-              <div class="btns-box">
-                <span>已返金额：</span><span class="money">¥1200.00</span>
-              </div>
+            <div class="count-down ">
+              <van-count-down :time="12*60*60*1000"
+                              format="HH 时 mm 分" />后关闭
             </div>
           </div>
         </div>
@@ -193,17 +61,30 @@
 </template>
 
 <script>
-
+import { getOrder } from '@/api/getData'
 export default {
   data () {
     return {
-      active: 0
+      active: 0,
+      dataList: null
     }
+  },
+  onLoad () {
+    this.getOrder()
   },
   mounted () {
 
   },
   methods: {
+    async getOrder () {
+      try {
+        const res = await getOrder({ type: 0 })
+        this.dataList = res.data.data
+        console.log(res)
+      } catch (error) {
+
+      }
+    },
     onChange (event) {
       mpvue.showToast({
         title: `切换到标签 ${event.detail.name}`,
@@ -317,5 +198,13 @@ export default {
   /* color: #fff; */
   height: 30px !important;
   margin-left: 10px;
+}
+._van-count-down {
+  color: #333333 !important;
+  font-size: 13px !important;
+}
+.van-count-down {
+  display: inline-block;
+  font-size: 13px !important;
 }
 </style>

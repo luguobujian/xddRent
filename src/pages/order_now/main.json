@@ -14,6 +14,8 @@
     "van-datetime-picker": "/static/vant/datetime-picker/index",
     "van-picker": "/static/vant/picker/index",
     "van-radio-group": "/static/vant/radio-group/index",
-    "van-radio": "/static/vant/radio/index"
+    "van-radio": "/static/vant/radio/index",
+    "van-toast": "/static/vant/toast/index",
+    "van-dialog": "/static/vant/dialog/index"
   }
 }

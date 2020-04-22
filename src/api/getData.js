@@ -111,3 +111,15 @@ export const editAddress = (data) =>
  */
 export const getTransportMoney = (data) =>
   API.request('api/Order/getTransportMoney', data, 'post')
+
+/**
+*确认订单
+*/
+export const order = (data) =>
+  API.request('api/Order/order', data, 'post')
+
+/**
+*获取订单数据
+*/
+export const getOrder = (data) =>
+  API.request('api/Order/myOrder', data, 'post')

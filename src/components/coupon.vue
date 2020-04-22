@@ -14,16 +14,16 @@
                  :key="index"
                  class="coupon-item">
               <div class="coupon-item-left">
-                <div>{{item.a}}</div>
+                <div>{{item.del_price}}</div>
                 元
               </div>
               <div class="coupon-item-right">
-                <div>{{item.b}}</div>
-                <div class="coupon-item-sub-tit">{{item.c}}</div>
+                <div>满{{item.del_rules}}可用</div>
+                <div class="coupon-item-sub-tit">{{item.use_time}}前有效</div>
               </div>
               <div class="checkbox-box">
                 <van-radio checked-color="#97D700"
-                           :name="item.a"></van-radio>
+                           :name="item"></van-radio>
               </div>
             </div>
           </van-radio-group>

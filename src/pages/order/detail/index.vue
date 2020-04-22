@@ -157,10 +157,7 @@
           </div>
           <div class="order-mark-info">
             <div class="om-tit">订单备注
-              <van-icon class="a-icon"
-                        name="/static/icons/title_bg.png"
-                        size="21px"
-                        color="#1989fa" />
+              
             </div>
             <div class="omi-c PingFangSC-Medium">这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注</div>
           </div>
@@ -464,11 +461,7 @@ export default {
   margin-right: 20px;
   position: relative;
 }
-.a-icon {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-}
+
 .count-day-box {
   display: flex;
   color: #333;

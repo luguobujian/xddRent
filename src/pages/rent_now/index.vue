@@ -4,17 +4,36 @@
       <div class="mb10">
         <van-cell-group>
           <div class="sbb-cell-box">
-            <van-field v-model="text"
-                       label="取货方式"
+            <van-field label="取货方式"
                        disabled />
             <div class="switch-btn-box">
-              <div :class="{'active': switchIdx == 0}"
-                   @click="onSwitchBtn(0)">自提</div>
               <div :class="{'active': switchIdx == 1}"
-                   @click="onSwitchBtn(1)">配送</div>
+                   @click="onSwitchBtn(1)">自提</div>
+              <div :class="{'active': switchIdx == 2}"
+                   @click="onSwitchBtn(2)">配送</div>
             </div>
           </div>
-          <div class="quhuo-addr"
+
+          <div v-if="switchIdx == 2"
+               class="quhuo-addr"
+               @click="goNextPage('address')">
+            <van-field readonly
+                       label="收货地址"
+                       right-icon="arrow"
+                       :value="address.val" />
+            <div class="addr van-hairline">
+              <div v-if="address.id"
+                   class="cell-title"
+                   style="max-width:90px;min-width:90px"></div>
+              <div v-if="address.id"
+                   class="cell-value">
+                {{ address.text }}
+              </div>
+            </div>
+          </div>
+
+          <div v-if="switchIdx == 1"
+               class="quhuo-addr"
                @click="goNextPage('warehouse')">
             <van-field :value="warehouse.tit"
                        readonly
@@ -30,32 +49,37 @@
             </div>
           </div>
 
-          <van-field :value="date"
+          <van-field v-if="switchIdx == 1"
+                     :value="date"
                      label="取货时间"
                      input-align="right"
                      readonly
                      right-icon="arrow"
                      @click="showDate = true" />
-          <van-field v-model="number"
+          <van-field v-if="switchIdx == 1"
+                     :value="get_people"
                      label="联系人"
                      input-align="right"
-                     placeholder="请输入姓名" />
-          <van-field v-model="password"
+                     placeholder="请输入姓名"
+                     @input="onInputNameKey" />
+          <van-field v-if="switchIdx == 1"
+                     :value="get_phone"
                      label="联系电话码"
                      input-align="right"
-                     placeholder="请输入电话" />
+                     placeholder="请输入电话"
+                     @input="onInputPhoneKey" />
 
         </van-cell-group>
       </div>
       <div class="product-s-box mb10">
         <div class="product-box">
           <div class="product-img-box">
-            <img src=""
+            <img :src="productImg"
                  alt=""></div>
           <div class="product-right-box">
-            <div class="product-name PingFangSC-Medium">讯纳箱/Alphard</div>
+            <div class="product-name PingFangSC-Medium">{{productName}}</div>
             <div class="product-bottom">
-              <van-stepper :value="1"
+              <van-stepper :value="productNum"
                            @change="onChange" />
             </div>
           </div>
@@ -67,22 +91,30 @@
                      right-icon="arrow"
                      input-align="right"
                      @click="showPicker = true" />
-          <van-field label="订单备注"
+          <van-field :value="text"
+                     label="订单备注"
                      input-align="right"
                      maxlength="100"
-                     placeholder="请输入备注(100字内)" />
+                     placeholder="请输入备注(100字内)"
+                     @input="onInputTextKey" />
         </van-cell-group>
       </div>
       <div class="">
         <van-collapse :value="activeNames"
                       @change="onChange1">
           <van-collapse-item title="定金"
-                             value="¥20000.00"
+                             :value="allMoney"
                              name="1"
                              is-link="false">
             <van-icon name="/static/icons/arrow-down.png"
                       slot="right-icon" />
-            <div>这里是箱子名称</div>
+            <div class="collapse-itm-box">
+              <div class="collapse-itm-l">
+                <div class="collapse-itm-l-l">{{productName}}</div>
+                <div class="collapse-itm-l-r PingFangSC-Medium">x{{productNum}}</div>
+              </div>
+              <div class="collapse-itm-r PingFangSC-Medium">{{allMoney}}</div>
+            </div>
           </van-collapse-item>
         </van-collapse>
       </div>
@@ -118,33 +150,41 @@
     <div class="bottom-btn-box">
       <div class="bbb-l">
         <span class="bbb-l-r">合计:</span>
-        <span class="bbb-l-l Oswald-Medium">¥20000.00</span>
+        <span class="bbb-l-l Oswald-Medium">{{allMoney}}</span>
       </div>
       <div class="bbb-r">
         <van-button size="small"
                     color="#97D700"
                     custom-style="width: 120px"
                     round
-                    type="default">立即付款</van-button>
+                    type="default"
+                    @click="submit">提交订单</van-button>
       </div>
     </div>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog"
+                confirmButtonColor="#97D700" />
   </div>
 </template>
 <script>
-
+import Toast from '../../../static/vant/toast/toast'
+import Dialog from '../../../static/vant/dialog/dialog'
+import { order } from '@/api/getData'
 let globalThat = null
 
 export default {
   data () {
     return {
       routers: {
+        address: '/pages/user/address/main',
         warehouse: '/pages/warehouse/main'
       },
-      switchIdx: 0,
+      switchIdx: 1,
       activeNames: [],
       columns: [],
       date: '',
       long: '',
+      day: 1,
       showDate: false,
       showPicker: false,
       currentDate: new Date().getTime(),
@@ -161,15 +201,49 @@ export default {
       setData (key, value) {
         globalThat[key] = value
       },
+
+      id: null,
+      is_buy: null,
+      goods_format_id_arr: null,
+      address: {
+        id: '',
+        val: '',
+        text: ''
+      },
       warehouse: {
         id: '',
         val: '',
         tit: ''
-      }
+      },
+      house_id: null,
+      transport_id: null,
+      transfer_fee: null,
+
+      text: null,
+
+      allMoney: null,
+
+      productName: null,
+      productImg: null,
+      productId: null,
+      productMoney: null,
+      productNum: null
     }
   },
   onLoad (options) {
     console.log(options)
+    this.id = options.id
+    this.is_buy = options.is_buy
+    this.goods_format_id_arr = options.goods_format_id_arr
+    this.house_id = options.house_id
+    this.transport_id = options.transport_id
+    this.productName = options.name
+    this.productImg = options.img
+    this.productId = options.goods_id
+    this.productMoney = options.money
+    this.productNum = options.stepperVal
+
+    this.allMoney = `¥${parseInt(options.stepperVal) * parseInt(options.money)}.00`
   },
   mounted () {
     globalThat = this
@@ -183,9 +257,21 @@ export default {
     },
     onChange (event) {
       console.log(event.mp.detail)
+      this.productNum = event.mp.detail
+      this.allMoney = `¥${parseInt(this.productNum) * parseInt(this.productMoney) * this.day}.00`
+      // this.calculateFee()
     },
     onChange1 (event) {
       this.activeNames = event.mp.detail
+    },
+    onInputNameKey (event) {
+      this.get_people = event.mp.detail
+    },
+    onInputPhoneKey (event) {
+      this.get_phone = event.mp.detail
+    },
+    onInputTextKey (event) {
+      this.text = event.mp.detail
     },
     onInput (event) {
       this.currentDate = event.mp.detail
@@ -199,14 +285,85 @@ export default {
       this.showDate = false
     },
     onPickerConfirm (e) {
-      console.log(e.mp.detail)
+      let str = e.mp.detail.value
+
+      this.day = parseInt(str.slice(0, str.length - 1))
       this.long = e.mp.detail.value
+      this.allMoney = `¥${parseInt(this.productNum) * parseInt(this.productMoney) * this.day}.00`
       this.showPicker = false
     },
     goNextPage (r) {
       mpvue.navigateTo({
         url: this.routers[r]
       })
+    },
+    calculateFee () {
+      let transferFee = this.transfer_unit_fee ? parseInt(this.transfer_unit_fee) : 0
+      let coupon = this.coupon ? parseInt(this.coupon) : 0
+      let money = parseInt(this.productNum) * parseInt(this.productMoney)
+
+      this.orderPrice = `¥${money + (transferFee * parseInt(this.productNum)) - coupon}`
+    },
+    async submit () {
+      if (this.switchIdx === 1) {
+        if (!this.warehouse.id) {
+          Toast.fail('请选择仓库')
+          return
+        }
+        if (!this.date) {
+          Toast.fail('请选择取货时间')
+          return
+        }
+        if (!this.get_people) {
+          Toast.fail('请输入取货人')
+          return
+        }
+        if (!this.get_phone) {
+          Toast.fail('请输入联系方式')
+          return
+        }
+      } else {
+        if (!this.address.id) {
+          Toast.fail('请选择地址')
+          return
+        }
+        this.warehouse.id = this.house_id
+      }
+
+      console.log(this.coupon_id)
+      try {
+        let data = {
+          goods_id: this.id,
+          get_methods: this.switchIdx,
+          get_time: this.date, // 取货时间**
+          get_people: this.get_people, // 取货人**
+          get_phone: this.get_phone, // 取货联系方式
+          push_add: this.address.id,
+          goods_format_id_arr: this.goods_format_id_arr,
+          goods_num: this.productNum,
+          use_time: this.long,
+          text: this.text,
+          coupons: this.coupon_id,
+          is_buy: this.is_buy,
+          house_id: this.warehouse.id || this.house_id,
+          card_id: null
+        }
+        console.log(data)
+        const res = await order(data)
+        if (res.data.code === 1) {
+          Dialog.alert({
+            title: '下载提示',
+            message: '订单已提交，请使用 APP 端进行支付'
+          }).then(() => {
+            mpvue.navigateBack()
+          })
+        } else {
+          Toast.fail(res.data.msg)
+        }
+      } catch (error) {
+        console.log('* submit error', error)
+        Toast.fail(error.data.msg)
+      }
     }
   }
 }
@@ -298,7 +455,27 @@ export default {
 .product-bottom {
   margin-top: 10px;
 }
-
+.collapse-itm-box {
+  display: flex;
+}
+.collapse-itm-l {
+  /* flex: 1; */
+  display: flex;
+  width: 204px;
+}
+.collapse-itm-l-l {
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.collapse-itm-l-r {
+  padding-left: 20px;
+}
+.collapse-itm-r {
+  flex: 1;
+  text-align: right;
+}
 .bottom-btn-box {
   width: 92%;
   height: 49px;

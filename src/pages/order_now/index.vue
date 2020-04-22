@@ -4,16 +4,16 @@
       <div class="mb10">
         <van-cell-group>
           <div class="sbb-cell-box">
-            <van-field v-model="text"
+            <van-field 
                        label="取货方式"
                        disabled />
             <div class="switch-btn-box">
-              <div :class="{ active: switchIdx == 0 }"
-                   @click="onSwitchBtn(0)">
-                自提
-              </div>
               <div :class="{ active: switchIdx == 1 }"
                    @click="onSwitchBtn(1)">
+                自提
+              </div>
+              <div :class="{ active: switchIdx == 2 }"
+                   @click="onSwitchBtn(2)">
                 配送
               </div>
             </div>
@@ -71,10 +71,11 @@
                      label="租赁时长"
                      right-icon="arrow"
                      @click="showPicker = true" /> -->
-          <van-field v-model="number"
+          <van-field :value="text"
                      label="订单备注"
                      input-align="right"
-                     placeholder="请输入备注(100字内)" />
+                     placeholder="请输入备注(100字内)"
+                     @input="onInput" />
         </van-cell-group>
       </div>
       <div class="mb10">
@@ -175,32 +176,31 @@
       </div>
     </van-popup> -->
 
-    <!-- <div v-if="!showDate && !showPicker && !showCoupon"
-         class="bottom-btn">
-      <van-submit-bar :price="2000000"
-                      button-text="提交订单"
-                      bind:submit="onSubmit"
-                      price-class="b-b-price"
-                      button-class="b-b-btn" />
-    </div> -->
     <div class="bottom-btn-box">
       <div class="bbb-l">
         <span class="bbb-l-r">合计:</span>
-        <span class="bbb-l-l Oswald-Medium">¥20000.00</span>
+        <span class="bbb-l-l Oswald-Medium">{{orderPrice}}</span>
       </div>
       <div class="bbb-r">
         <van-button size="small"
                     color="#97D700"
                     custom-style="width: 120px"
                     round
-                    type="default">立即付款</van-button>
+                    type="default"
+                    @click="submit">提交订单</van-button>
       </div>
     </div>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog"
+                confirmButtonColor="#97D700" />
   </div>
 </template>
 <script>
 import couponComponent from '@/components/coupon'
-import { getTransportMoney } from '@/api/getData'
+import Toast from '../../../static/vant/toast/toast'
+import Dialog from '../../../static/vant/dialog/dialog'
+
+import { getTransportMoney, getCoupons, order } from '@/api/getData'
 let globalThat = null
 
 export default {
@@ -211,7 +211,7 @@ export default {
       },
       // ========↑ 路由========
 
-      switchIdx: 0,
+      switchIdx: 1,
       activeNames: [],
       columns: [],
       date: '',
@@ -234,7 +234,9 @@ export default {
         globalThat[key] = value
       },
       // ========↑ 页面配置========
-
+      id: null,
+      is_buy: null,
+      goods_format_id_arr: null,
       address: {
         id: '',
         val: '',
@@ -249,22 +251,16 @@ export default {
       productMoney: null,
       productNum: null,
 
+      text: null,
+
       allMoney: null,
 
-      couponDatas: [{
-        a: 1000,
-        b: 1000,
-        c: 'fjadslkfjasl'
-      }, {
-        a: 200,
-        b: 1000,
-        c: 'fjadslkfjasl'
-      }, {
-        a: 20000,
-        b: 1000,
-        c: 'fjadslkfjasl'
-      }],
-      couponResult: ''
+      couponDatas: [],
+      coupon_id: null,
+      coupon: '',
+      couponResult: '',
+
+      orderPrice: null
     }
   },
   components: {
@@ -272,6 +268,9 @@ export default {
   },
   onLoad (options) {
     console.log(options)
+    this.id = options.id
+    this.is_buy = options.is_buy
+    this.goods_format_id_arr = options.goods_format_id_arr
     this.house_id = options.house_id
     this.transport_id = options.transport_id
     this.productName = options.name
@@ -279,6 +278,10 @@ export default {
     this.productMoney = options.money
     this.productNum = options.stepperVal
     this.allMoney = `¥${parseInt(options.stepperVal) * parseInt(options.money)}.00`
+
+    this.getCoupons()
+
+    this.calculateFee()
   },
   onShow () {
     this.getTransportMoney()
@@ -295,23 +298,38 @@ export default {
         if (!this.address.id) return
         let data = { address_id: this.address.id, house_id: this.house_id, transport_id: this.transport_id }
         const res = await getTransportMoney(data)
-        this.transfer_fee = res.data.data ? `¥${res.data.data}.00` : null
         console.log(res)
+        this.transfer_unit_fee = parseInt(res.data.data)
+        this.transfer_fee = res.data.data ? `¥${parseInt(res.data.data) * parseInt(this.productNum)}.00` : null
+        this.calculateFee()
       } catch (error) {
-
+        console.log('* getTransportMoney error', error)
+      }
+    },
+    async getCoupons () {
+      try {
+        const res = await getCoupons({ goods_id: this.id })
+        console.log('* getCoupons', res)
+        this.couponDatas = res.data.data
+      } catch (error) {
+        console.log('* getCoupons error', error)
       }
     },
     onSwitchBtn (i) {
       this.switchIdx = i
     },
     onChange (event) {
-      console.log(event.mp.detail)
+      this.productNum = event.mp.detail
+      this.allMoney = `¥${parseInt(this.productNum) * parseInt(this.productMoney)}.00`
+      this.calculateFee()
+      if (!this.transfer_unit_fee) return
+      this.transfer_fee = `¥${parseInt(this.productNum) * parseInt(this.transfer_unit_fee)}.00`
     },
     onChange1 (event) {
       this.activeNames = event.mp.detail
     },
     onInput (event) {
-      this.currentDate = event.mp.detail
+      this.text = event.mp.detail
     },
     onDateConfirm (e) {
       var date = new Date(e.mp.detail)
@@ -325,20 +343,72 @@ export default {
       this.showDate = false
     },
     onPickerConfirm (e) {
-      console.log(e.mp.detail)
       this.showPicker = false
     },
     onCouponChecbox (e) {
       this.couponResult = e.mp.detail
     },
     addEventListenerChildCoupon (e) {
+      console.log(e)
       this.showCoupon = e.showCoupon
-      this.couponResult = '-￥' + e.couponResult
+      this.coupon_id = e.couponResult.id
+      this.coupon = e.couponResult.del_price
+      this.couponResult = '-¥' + e.couponResult.del_price
+
+      this.calculateFee()
     },
     goNextPage (r) {
       mpvue.navigateTo({
         url: `${this.routers[r]}?f=detail`
       })
+    },
+    calculateFee () {
+      let transferFee = this.transfer_unit_fee ? parseInt(this.transfer_unit_fee) : 0
+      let coupon = this.coupon ? parseInt(this.coupon) : 0
+      let money = parseInt(this.productNum) * parseInt(this.productMoney)
+
+      this.orderPrice = `¥${money + (transferFee * parseInt(this.productNum)) - coupon}`
+    },
+    async submit () {
+      if (!this.address.id) {
+        Toast.fail('请选择地址')
+        return
+      }
+      console.log(this.coupon_id)
+      try {
+        let data = {
+          goods_id: this.id,
+          get_methods: this.switchIdx,
+          get_time: null, // 取货时间**
+          get_people: null, // 取货人**
+          get_phone: null, // 取货联系方式
+          push_add: this.address.id,
+          goods_format_id_arr: this.goods_format_id_arr,
+          goods_num: this.productNum,
+          use_time: null,
+          text: this.text,
+          coupons: this.coupon_id,
+          is_buy: this.is_buy,
+          house_id: this.house_id,
+          card_id: null
+        }
+        console.log(data)
+        const res = await order(data)
+        console.log(res)
+        if (res.data.code === 1) {
+          Dialog.alert({
+            title: '下载提示',
+            message: '订单已提交，请使用 APP 端进行支付'
+          }).then(() => {
+            mpvue.navigateBack()
+          })
+        } else {
+          Toast.fail(res.data.msg)
+        }
+      } catch (error) {
+        console.log('* submit error', error)
+        Toast.fail(error.data.msg)
+      }
     }
   }
 }
@@ -497,11 +567,6 @@ export default {
 }
 ._van-stepper {
   float: right;
-}
-.van-submit-bar__bar {
-}
-.van-submit-bar__text {
-  text-align: left !important;
 }
 .van-popup--bottom,
 .van-picker {
