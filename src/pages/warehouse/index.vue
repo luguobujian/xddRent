@@ -7,44 +7,49 @@
            :data-id="item.id"
            class="item van-hairline"
            @click="onClick">
-        <div class="item-name PingFangSC-Medium">{{item.tit}}</div>
+        <div class="item-name PingFangSC-Medium">{{item.name}}</div>
         <div class="item-content">
           <div class="item-left">
             <van-icon name="/static/icons/addres_icon.png"
                       size="12px"
                       custom-style="vertical-align: 6%" />
           </div>
-          <div class="item-right">{{item.val}}</div>
+          <div class="item-right">{{item.areatext}}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { getWarehouse } from '@/api/getData'
 export default {
   data () {
     return {
-      dataList: [
-        {
-          id: 1,
-          tit: '这里是地址这里是地址这里是地址这里地址这',
-          val: '里是这里是地地这里是地址这里是地址'
-        }, {
-          id: 2,
-          tit: '这里是地址这里是地址这里是地址这里地址这',
-          val: '里是这里是地地这里是地址这里是地址'
-        }
-      ]
+      id: null,
+      dataList: null
     }
   },
+  onLoad (options) {
+    this.id = options.id
+    this.getWarehouse()
+  },
   methods: {
+    async getWarehouse () {
+      try {
+        const res = await getWarehouse({ goods_id: this.id })
+        this.dataList = res.data.data
+        console.log(res)
+      } catch (error) {
+
+      }
+    },
     onClick (e) {
       const { index, id } = e.currentTarget.dataset
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]
       const indexData = this.dataList[index]
 
-      prev.data.$root[0].setData('warehouse', { id, tit: indexData.tit, val: indexData.val })
+      prev.data.$root[0].setData('warehouse', { id, tit: indexData.name, val: `${indexData.area_name}${indexData.areatext}` })
 
       console.log(prev)
 

@@ -17,7 +17,8 @@
           </div>
         </div>
         <!-- 还货图片 -->
-        <div class="img-box">
+        <div v-if="detail.status === 5 || detail.status === 6 ||detail.status === 7"
+             class="img-box">
           <div class="img-tit PingFangSC-Medium">还货图片</div>
           <div class="img-items-box">
             <div class="img-item"><img src=""
@@ -31,7 +32,8 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div class="img-box">
+        <div v-if="detail.status === 5 || detail.status === 6 ||detail.status === 7"
+             class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
             <div class="img-item">
@@ -57,7 +59,8 @@
           </div>
         </div>
         <!-- 物流信息 -->
-        <div class="wuliu-box mb10"
+        <div v-if="detail.status === 5 || detail.status === 6 ||detail.status === 7"
+             class="wuliu-box mb10"
              @click="goNextPage">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/wuliu-icon.png"
@@ -73,7 +76,8 @@
           </div>
         </div>
         <!-- 收货信息 -->
-        <div class=" shouhuo-box wuliu-box mb10">
+        <div v-if="detail.status === 5 || detail.status === 6 ||detail.status === 7"
+             class=" shouhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
                       color="#1989fa" />
@@ -88,32 +92,33 @@
           </div>
         </div>
         <!-- 还货信息 -->
-        <div class=" shouhuo-box huanhuo-box wuliu-box mb10">
+        <div v-if="detail.get_methods === 1"
+             class=" shouhuo-box huanhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
                       color="#1989fa" />
           </div>
           <div class="wuliu-info shouhuo-info huanhuo-info">
             <div class="sh-info van-hairline">
-              <span class="PingFangSC-Medium">李先生</span>
-              <span class="">18632763762</span>
-              <span class="s-t-icon PingFangSC-Medium">还</span>
+              <span class="PingFangSC-Medium">{{detail.get_people}}</span>
+              <span class="">{{detail.get_phone}}</span>
+              <span class="s-t-icon PingFangSC-Medium">收</span>
             </div>
             <div class="huanhuo-text-box">
               <div class="huanhuo-text-t-box van-hairline">
                 <div class="htt-l">取货时间</div>
-                <div class="htt-r">2020.02.21</div>
+                <div class="htt-r">{{detail.get_phone}}</div>
               </div>
               <div class="huanhuo-text-t-box van-hairline">
-                <div class="htt-l">取货时间</div>
+                <div class="htt-l">仓库信息</div>
                 <div class="htt-r">
-                  <div class="htt-r-t">这里是仓库名称</div>
-                  <div class="htt-r-b">这里是地址这里是地址这里是地址这里是地址这里是地址</div>
+                  <div class="htt-r-t">{{detail.house.name}}</div>
+                  <div class="htt-r-b">{{detail.house.area_name}}{{detail.house.areatext}}</div>
                 </div>
               </div>
               <div class="huanhuo-text-t-box van-hairline">
                 <div class="htt-l">仓库电话</div>
-                <div class="htt-r">1862736273</div>
+                <div class="htt-r">{{detail.house.mobile || ''}}</div>
               </div>
             </div>
           </div>
@@ -122,29 +127,15 @@
         <div class="product-info mb10">
           <div class="pi-box">
             <div class="pi-box-img">
-              <img src=""
+              <img :src="detail.goodsimages"
                    alt="">
             </div>
             <div class="pi-box-r">
-              <div class="pbr-t PingFangSC-Medium">讯纳箱/Alphard</div>
-              <div class="pbr-m">红色/大号</div>
+              <div class="pbr-t PingFangSC-Medium">{{detail.goods_name}}</div>
+              <div class="pbr-m">{{detail.goods_format}}</div>
               <div class="pbr-b">
                 <div class="pbrb-l PingFangSC-Medium">¥69.9</div>
-                <div class="pbrb-r">x1</div>
-              </div>
-            </div>
-          </div>
-          <div class="pi-box">
-            <div class="pi-box-img">
-              <img src=""
-                   alt="">
-            </div>
-            <div class="pi-box-r">
-              <div class="pbr-t PingFangSC-Medium">讯纳箱/Alphard</div>
-              <div class="pbr-m">红色/大号</div>
-              <div class="pbr-b">
-                <div class="pbrb-l PingFangSC-Medium">¥69.9</div>
-                <div class="pbrb-r">x1</div>
+                <div class="pbrb-r">x{{detail.goods_num}}</div>
               </div>
             </div>
           </div>
@@ -153,20 +144,18 @@
         <div class="order-mark-box mb10">
           <div class="count-day-box">
             <div class="om-tit">租赁时长</div>
-            <div class="cd-n van-hairline">30天</div>
+            <div class="cd-n van-hairline">{{detail.use_time}}天</div>
           </div>
           <div class="order-mark-info">
-            <div class="om-tit">订单备注
-              
-            </div>
-            <div class="omi-c PingFangSC-Medium">这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注这里是备注</div>
+            <div class="om-tit">订单备注</div>
+            <div class="omi-c PingFangSC-Medium">{{detail.text}}</div>
           </div>
         </div>
         <!-- 订单时间相关 -->
         <div class="some-time-box mb10">
           <div>
             <span class="some-time-title">订单编号：</span>
-            <span class="PingFangSC-Medium">1238612964129</span>
+            <span class="PingFangSC-Medium">{{detail.order_id}}</span>
           </div>
           <div>
             <span class="some-time-title">创建时间：</span>
@@ -197,43 +186,44 @@
         <div class="amount-box">
           <div class="ab-tit">
             <span class="PingFangSC-Medium">定金</span>
-            <span class="abt-r PingFangSC-Medium">合计：¥20000.00</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥{{detail.get_price}}</span>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
-              <span class="oil-l">这里是箱子名称</span>
-              <span class="PingFangSC-Medium">x2</span>
+              <span class="oil-l">{{detail.goods_name}}</span>
+              <span class="PingFangSC-Medium">x{{detail.goods_num}}</span>
             </div>
-            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥{{detail.get_price}}</div>
           </div>
-          <div class="one-info-box">
+          <!-- <div class="one-info-box">
             <div class="oi-l">
-              <span class="oil-l">这里是箱子名称</span>
+              <span class="oil-l">{{detail.goods_name}}</span>
               <span class="PingFangSC-Medium">x2</span>
             </div>
             <div class="oi-r PingFangSC-Medium">¥5000.00</div>
-          </div>
+          </div> -->
         </div>
         <!-- 运费信息 -->
-        <div class="amount-box">
+        <div class="amount-box"
+             v-if="detail.get_methods === 2">
           <div class="ab-tit">
             <span class="PingFangSC-Medium">运费</span>
-            <span class="abt-r PingFangSC-Medium">合计：¥20000.00</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥{{detail.transport_money}}</span>
           </div>
           <div class="one-info-box">
             <div class="oi-l">
-              <span class="oil-l">这里是箱子名称</span>
-              <span class="PingFangSC-Medium">x2</span>
+              <span class="oil-l">{{detail.goods_name}}</span>
+              <span class="PingFangSC-Medium">x{{detail.goods_num}}</span>
             </div>
             <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
-          <div class="one-info-box">
+          <!-- <div class="one-info-box">
             <div class="oi-l">
-              <span class="oil-l">这里是箱子名称</span>
+              <span class="oil-l">{{detail.goods_name}}</span>
               <span class="PingFangSC-Medium">x2</span>
             </div>
             <div class="oi-r PingFangSC-Medium">¥5000.00</div>
-          </div>
+          </div> -->
         </div>
         <!-- 租金信息 -->
         <div class="amount-box">
@@ -243,25 +233,25 @@
           </div>
           <div class="one-info-box">
             <div class="oi-l">
-              <span class="oil-l">这里是箱子名称</span>
-              <span class="PingFangSC-Medium">x2</span>
+              <span class="oil-l">{{detail.goods_name}}</span>
+              <span class="PingFangSC-Medium">x{{detail.goods_num}}</span>
             </div>
             <div class="oi-r PingFangSC-Medium">¥5000.00</div>
           </div>
-          <div class="one-info-box">
+          <!-- <div class="one-info-box">
             <div class="oi-l">
               <span class="oil-l">这里是箱子名称</span>
               <span class="PingFangSC-Medium">x2</span>
             </div>
             <div class="oi-r PingFangSC-Medium">¥5000.00</div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
     <div class="bottom-btn-box">
       <div class="bbb-l">
         <span class="bbb-l-r">应付:</span>
-        <span class="bbb-l-l Oswald-Medium">¥20000.00</span>
+        <span class="bbb-l-l Oswald-Medium">¥{{detail.pay_price}}</span>
       </div>
       <div>
         <van-button plain
@@ -281,16 +271,32 @@
   </div>
 </template>
 <script>
+
+import { getOrderDetail } from '@/api/getData'
 export default {
   data () {
     return {
-
+      id: null,
+      detail: null
     }
+  },
+  onLoad (options) {
+    this.id = options.id
+    this.getOrderDetail()
   },
   mounted () {
 
   },
   methods: {
+    async getOrderDetail () {
+      try {
+        const res = await getOrderDetail({ order_id: this.id })
+        console.log(res)
+        this.detail = res.data.data
+      } catch (error) {
+
+      }
+    },
     goNextPage () {
       mpvue.navigateTo({
         url: '/pages/order/transport/main'

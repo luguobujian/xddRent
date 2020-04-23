@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "订单",
+  "enablePullDownRefresh": true,
   "usingComponents": {
     "van-grid": "/static/vant/grid/index",
     "van-grid-item": "/static/vant/grid-item/index",
@@ -8,6 +9,8 @@
     "van-icon": "/static/vant/icon/index",
     "van-tab": "/static/vant/tab/index",
     "van-tabs": "/static/vant/tabs/index",
-    "van-count-down": "/static/vant/count-down/index"
+    "van-count-down": "/static/vant/count-down/index",
+    "van-overlay": "/static/vant/overlay/index",
+    "van-loading": "/static/vant/loading/index"
   }
 }

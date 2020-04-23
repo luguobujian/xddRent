@@ -83,6 +83,12 @@ export const getCoupons = (data) =>
   API.request('api/Order/userCoupons', data, 'post')
 
 /**
+ *获取优惠卷列表数据
+ */
+export const getWarehouse = (data) =>
+  API.request('api/Order/chooseHouse', data, 'post')
+
+/**
  *获取收货地址列表数据
  */
 export const getMyAddress = () =>
@@ -123,3 +129,9 @@ export const order = (data) =>
 */
 export const getOrder = (data) =>
   API.request('api/Order/myOrder', data, 'post')
+
+/**
+*获取订单详情数据
+*/
+export const getOrderDetail = (data) =>
+  API.request('api/Order/orderInfo', data, 'post')

@@ -294,7 +294,7 @@ export default {
     },
     goNextPage (r) {
       mpvue.navigateTo({
-        url: this.routers[r]
+        url: `${this.routers[r]}?id=${this.id}`
       })
     },
     calculateFee () {

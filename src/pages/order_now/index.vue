@@ -4,8 +4,7 @@
       <div class="mb10">
         <van-cell-group>
           <div class="sbb-cell-box">
-            <van-field 
-                       label="取货方式"
+            <van-field label="取货方式"
                        disabled />
             <div class="switch-btn-box">
               <div :class="{ active: switchIdx == 1 }"
@@ -359,7 +358,7 @@ export default {
     },
     goNextPage (r) {
       mpvue.navigateTo({
-        url: `${this.routers[r]}?f=detail`
+        url: `${this.routers[r]}?id=${this.id}&f=detail`
       })
     },
     calculateFee () {
