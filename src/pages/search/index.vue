@@ -13,7 +13,8 @@
           <view class="r-icon-box"
                 slot="action"
                 bind:tap="onClick">
-            <van-icon name="/static/icons/close.png"
+            <van-icon class="search-ico"
+                      name="/static/icons/close.png"
                       size="20px" />
           </view>
         </van-search>
@@ -214,6 +215,8 @@ export default {
 }
 </style>
 <style>
+
+
 .van-search--withaction {
   padding-top: 3px !important;
 }

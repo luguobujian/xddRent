@@ -73,7 +73,7 @@ export default {
 .label-style {
   font-size: 15px !important;
   color: #333333 !important;
-  margin-top: 0 !important;
+  /* margin-top: 0 !important; */
 }
 .bottom-btn-margin {
   margin: 30px 15px !important;

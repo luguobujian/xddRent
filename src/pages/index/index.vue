@@ -47,7 +47,7 @@
     <div class="items-box">
       <div class="item"
            @click="goNextPage('product', {title: '汽车领域', fromCode: 3, type: 1})">
-        <div class="item-tit">汽车领域</div>
+        <div class="item-tit PingFangSC-Medium">汽车领域</div>
         <div class="sub-item-tit">Automotive field</div>
         <div class="item-img">
           <img src="/static/images/item1.png"
@@ -56,8 +56,8 @@
       </div>
       <div class="item item-bg item-middle"
            @click="goNextPage('product', {title: '零售领域', fromCode: 3, type: 2})">
-        <div class="item-tit">零售领域</div>
-        <div class="sub-item-tit"></div>
+        <div class="item-tit PingFangSC-Medium">零售领域</div>
+        <div class="sub-item-tit">Retail area</div>
         <div class="item-img">
           <img src="/static/images/item2.png"
                alt="">
@@ -65,8 +65,8 @@
       </div>
       <div class="item item-bg"
            @click="goNextPage('product', {title: '运输领域', fromCode: 3, type: 3})">
-        <div class="item-tit">运输领域</div>
-        <div class="sub-item-tit"></div>
+        <div class="item-tit PingFangSC-Medium">运输领域</div>
+        <div class="sub-item-tit">Transportation field</div>
         <div class="item-img">
           <img src="/static/images/item3.png"
                alt="">

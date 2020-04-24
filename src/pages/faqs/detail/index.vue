@@ -1,18 +1,49 @@
 <template>
   <div class="container">
     <div>
-      <div class="title-box">title</div>
-      <div class="content-box">content</div>
+      <div class="title-box">{{title}}</div>
+      <div class="content-box">
+        <wxParse :content="content"
+                 @preview="preview"
+                 @navigate="navigate" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import wxParse from 'mpvue-wxparse'
+import { getProblemInfo } from '@/api/getData'
 export default {
   data () {
     return {
-      title: '这里是问题这里是问题这里是问题这里是问题？',
-      content: '这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容这里是解答内容'
+      id: null,
+      title: '',
+      content: '  '
+    }
+  },
+  components: {
+    wxParse
+  },
+  onLoad (options) {
+    this.id = options.id
+    this.getProblemInfo()
+  },
+  methods: {
+    async getProblemInfo () {
+      try {
+        const res = await getProblemInfo({ id: this.id })
+        console.log(res)
+        this.title = res.data.data.title
+        this.content = res.data.data.content
+      } catch (error) {
+
+      }
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }

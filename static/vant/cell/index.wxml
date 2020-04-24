@@ -35,8 +35,8 @@
 
   <van-icon
     wx:if="{{ isLink }}"
-    name="{{ arrowDirection ? 'arrow' + '-' + arrowDirection : '/static/icons/arrow-gray.png' }}"
-    size="12px"
+    name="{{ arrowDirection ? 'arrow' + '-' + arrowDirection : 'arrow' }}"
+    size="15px"
     class="van-cell__right-icon-wrap right-icon-class"
     custom-class="van-cell__right-icon"
   />

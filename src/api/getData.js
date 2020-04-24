@@ -7,6 +7,24 @@ export const exchangeCode = (data) =>
   API.request('api/user/wxxtLogin', data, 'POST')
 
 /**
+ *发送短信
+ */
+export const sms = (data) =>
+  API.request('api/sms/send', data, 'POST')
+
+/**
+*短信验证
+*/
+export const smsCheck = (data) =>
+  API.request('api/sms/check', data, 'POST')
+
+/**
+ *小程序绑定手机号
+ */
+export const wxxBindMobile = (data) =>
+  API.request('api/user/wxxBindMobile', data, 'POST')
+
+/**
  *获取首页banner数据
  */
 export const getBanner = () => API.request('api/Index/baner')
@@ -135,3 +153,33 @@ export const getOrder = (data) =>
 */
 export const getOrderDetail = (data) =>
   API.request('api/Order/orderInfo', data, 'post')
+
+/**
+*获取订单详情数据
+*/
+export const getUserInfo = () =>
+  API.request('api/user/getUserInfo', {}, 'post')
+
+/**
+*获取我的邀请码数据
+*/
+export const getMyCode = () =>
+  API.request('api/user/myCode', {}, 'post')
+
+/**
+*意见反馈
+*/
+export const getfeedBack = data =>
+  API.request('api/Problems/feedBack', data, 'post')
+
+/**
+*获取常见问题数据
+*/
+export const getProblemList = () =>
+  API.request('api/Problems/problemList', {}, 'post')
+
+/**
+*获取常见问题详情数据
+*/
+export const getProblemInfo = (data) =>
+  API.request('api/Problems/problemInfo', data, 'post')

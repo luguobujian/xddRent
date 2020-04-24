@@ -2,7 +2,7 @@
   <div class="container">
     <div class="top-box">
       <div class="tip-box">我的邀请码</div>
-      <div class="code-box Oswald-Medium">827362</div>
+      <div class="code-box Oswald-Medium">{{detail.code}}</div>
     </div>
     <div class="items-box">
       <div class="items">
@@ -27,16 +27,32 @@
     </div>
   </div>
 </template>
-
 <script>
+
+import { getMyCode } from '@/api/getData'
 export default {
   data () {
     return {
+      detail: null,
       dataList: [
         { avatar: '', t1: '深海淹死一条鱼', t2: '18627263623', t3: '500元优惠券', t4: '2020.02.05' },
         { avatar: '', t1: '深海淹死一条鱼', t2: '18627263623', t3: '500元优惠券', t4: '2020.02.05' }
       ]
 
+    }
+  },
+  onLoad () {
+    this.getMyCode()
+  },
+  methods: {
+    async getMyCode () {
+      try {
+        const res = await getMyCode()
+        console.log(res)
+        this.detail = res.data.data
+      } catch (error) {
+
+      }
     }
   }
 }

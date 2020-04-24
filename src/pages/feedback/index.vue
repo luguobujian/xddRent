@@ -2,21 +2,22 @@
   <div class="container">
     <div>
       <div class="textarea-box">
-        <van-field :value="message"
+        <van-field :value="text"
                    autosize
                    type="textarea"
                    maxlength="200"
                    placeholder="请详细描述您的问题"
-                   @change="changeMessage" />
-        <div class="message-length-box">{{message.length}}/200</div>
+                   @change="onInputKeyText" />
+        <div class="message-length-box">{{text.length}}/200</div>
       </div>
       <div class="input-box">
-        <van-field :value="mg"
+        <van-field :value="mobile"
                    autosize
                    label="联系方式"
                    input-align="right"
                    placeholder="请输入您的联系方式(选填)"
-                   show-word-limit />
+                   show-word-limit
+                   @change="onInputKeyMobile" />
 
       </div>
       <div class="bottom-btn-box">
@@ -28,25 +29,39 @@
                       @click="submit">保存</van-button>
         </div>
       </div>
+      <van-toast id="van-toast" />
     </div>
   </div>
 </template>
 
 <script>
+import Toast from '../../../static/vant/toast/toast'
+import { getfeedBack } from '@/api/getData'
 export default {
   data () {
     return {
-      message: '',
-      mg: ''
+      text: '',
+      mobile: ''
     }
   },
   methods: {
-    changeMessage (e) {
-      console.log(e)
-      this.message = e.mp.detail
+    onInputKeyText (e) {
+      this.text = e.mp.detail
     },
-    submit () {
-      console.log(this.message)
+    onInputKeyMobile (e) {
+      this.mobile = e.mp.detail
+    },
+    async submit () {
+      try {
+        const res = await getfeedBack({ text: this.text, mobile: this.mobile })
+        console.log(res)
+        if (res.data.code === 1) {
+          Toast.success('提交成功')
+        }
+      } catch (error) {
+        console.log('* submit error', error)
+        Toast.fail(error.data.msg)
+      }
     }
   }
 }
@@ -78,7 +93,7 @@ export default {
   border: none !important;
 }
 .van-field__body--textarea.van-field__body--ios {
-  margin-top: 0px !important;
+  /* margin-top: 0px !important; */
 }
 
 .van-button--small {

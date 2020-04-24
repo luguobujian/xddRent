@@ -32,22 +32,22 @@ export default {
       global: true,
       family: 'PingFangSC-Medium',
       source: `url("${API.baseUrl}PingFangSC/PingFangSC-Medium.ttf")`,
-      success (res) { console.log(res) },
-      fail (res) { console.log(res) }
+      success (res) { console.log('PingFangSC-Medium', res) },
+      fail (res) { console.log('PingFangSC-Medium', res) }
     })
     wx.loadFontFace({
       global: true,
       family: 'PingFangSC-Regular',
       source: `url("${API.baseUrl}PingFangSC/PingFangSC-Regular.ttf")`,
-      success (res) { console.log(res) },
-      fail (res) { console.log(res) }
+      success (res) { console.log('PingFangSC-Regular', res) },
+      fail (res) { console.log('PingFangSC-Regular', res) }
     })
     wx.loadFontFace({
       global: true,
       family: 'Oswald-Medium',
       source: `url("${API.baseUrl}PingFangSC/Oswald-Medium.ttf")`,
-      success (res) { console.log(res) },
-      fail (res) { console.log(res) }
+      success (res) { console.log('Oswald-Medium', res) },
+      fail (res) { console.log('Oswald-Medium', res) }
     })
     // this.privateWxLogin().then(r => this.exchangeCode(r.code))
   },
@@ -103,9 +103,10 @@ page {
   font-size: 15px;
   background-color: #f9f9f9;
 }
-image.van-icon__image {
+/* image.van-icon__image {
   display: block;
-}
+} */
+
 .PingFangSC-Regular {
   font-family: "PingFangSC-Regular";
 }

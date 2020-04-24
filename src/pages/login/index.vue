@@ -29,9 +29,11 @@
         <div class="tip-btn">“隐私协议”</div>
       </van-checkbox>
     </div>
+    <van-toast id="van-toast" />
   </div>
 </template>
 <script>
+import Toast from '../../../static/vant/toast/toast'
 export default {
   data () {
     return {
@@ -49,6 +51,10 @@ export default {
       this.checked = e.mp.detail
     },
     openPage (i) {
+      if (!this.checked) {
+        Toast('您还未同意隐私政策和用户协议')
+        return
+      }
       mpvue.navigateTo({
         url: this.routers[i].url
       })

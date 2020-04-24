@@ -3,9 +3,12 @@
     <div class="main-box">
       <div class="main-tit">设置登录密码</div>
       <div>
-        <van-field v-model="value"
+        <van-field :value="password"
+                   :password="hidepass"
                    placeholder="请输入6～16位数字或字母密码"
-                   right-icon="/static/icons/eye.png" />
+                   right-icon="/static/icons/eye.png"
+                   @clickIcon="showPassword"
+                   @input="onInputKeyPassword" />
       </div>
       <div class="bottom-btn-box">
         <div class="bottom-btn-margin">
@@ -17,20 +20,59 @@
         </div>
       </div>
     </div>
+    <van-toast id="van-toast" />
   </div>
 </template>
 <script>
+import { wxxBindMobile } from '@/api/getData'
+import Toast from '../../../../static/vant/toast/toast'
 export default {
   data () {
     return {
-
+      hidepass: true,
+      mobile: null,
+      code: null,
+      password: null
     }
   },
+  onLoad (options) {
+    console.log(options)
+    this.mobile = options.mobile
+    this.code = options.code
+  },
   methods: {
+    async wxxBindMobile () {
+      try {
+        if (!this.password) {
+          Toast.fail('请输入密码')
+          return
+        }
+        const res = await wxxBindMobile({ code: this.code, mobile: this.mobile, password: this.password })
+        console.log(res)
+        if (res.data.code === 1) {
+          Toast('设置成功')
+          mpvue.switchTab({
+            url: '/pages/index/main'
+          })
+        }
+      } catch (error) {
+
+      }
+    },
     goNextPage () {
       mpvue.switchTab({
         url: '/pages/index/main'
       })
+    },
+    showPassword (e) {
+      if (this.hidepass) {
+        this.hidepass = false
+      } else {
+        this.hidepass = true
+      }
+    },
+    onInputKeyPassword (e) {
+      this.password = e.mp.detail
     }
   }
 }

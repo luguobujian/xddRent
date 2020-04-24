@@ -162,7 +162,7 @@ export default {
   color: #999999 !important;
 }
 .van-field__body--textarea.van-field__body--ios {
-  margin-top: 0px !important;
+  /* margin-top: 0px !important; */
 }
 
 .van-button--small {

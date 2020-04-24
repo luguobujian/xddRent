@@ -4,6 +4,7 @@
     "van-cell": "/static/vant/cell/index",
     "van-button": "/static/vant/button/index",
     "van-icon": "/static/vant/icon/index",
-    "van-field": "/static/vant/field/index"
+    "van-field": "/static/vant/field/index",
+    "van-toast": "/static/vant/toast/index"
   }
 }

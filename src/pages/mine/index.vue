@@ -3,16 +3,24 @@
     <div class="top-info clearfix"
          @click="goNextPage('userItems', 0)">
       <div class="avatar-box fl">
-        <img src=""
+        <img :src="detail.avatar"
              alt="">
-        <van-icon class="gender-i"
+        <van-icon v-if="detail.gender === 1"
+                  class="gender-i"
+                  name="/static/icons/female.png"
+                  size="16px" />
+        <van-icon v-else
+                  class="gender-i"
                   name="/static/icons/male.png"
                   size="16px" />
+
       </div>
       <div class="fl">
-        <div class="name-box">深海淹死一条鱼 </div>
-        <div class="city-box">北京</div>
-        <div class="company-box">
+        <div class="name-box">{{detail.username}}</div>
+        <div v-if="detail.area"
+             class="city-box">{{detail.area}}</div>
+        <div v-if="detail.group_id === 0"
+             class="company-box">
           <div class="company-info-box clearfix">
             <img class="company-icon fl"
                  src="/static/icons/m-mark.png"
@@ -63,10 +71,11 @@
 </template>
 
 <script>
-
+import { getUserInfo } from '@/api/getData'
 export default {
   data () {
     return {
+      detail: null,
       userItems: [{ path: '/pages/user/main' }],
       gridItems: [{
         text: '认证企业',
@@ -97,12 +106,29 @@ export default {
   components: {
 
   },
-
+  onLoad () {
+    this.getUserInfo()
+  },
   methods: {
+    async getUserInfo () {
+      try {
+        const res = await getUserInfo()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.detail = res.data.data
+        }
+      } catch (error) {
+
+      }
+    },
     goNextPage (t, i) {
       console.log(this[t][i].path)
+      let url = this[t][i].path
+      if (this.detail.group_id === 3) {
+        url = '/pages/login/main'
+      }
       mpvue.navigateTo({
-        url: this[t][i].path
+        url
       })
     }
   }
@@ -199,7 +225,7 @@ export default {
 .van-grid-item__content {
   color: #333;
   font-size: 13px;
-  padding: 20px 0 !important;
+  padding: 18px 0 !important;
 }
 
 .van-grid .van-hairline--bottom::after,

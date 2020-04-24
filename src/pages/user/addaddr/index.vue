@@ -214,7 +214,7 @@ export default {
   min-height: 42px !important;
 }
 .van-field__body--textarea.van-field__body--ios {
-  margin-top: 0px !important;
+  /* margin-top: 0px !important; */
 }
 .van-button--small {
   color: #fff;

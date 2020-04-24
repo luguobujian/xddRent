@@ -3,13 +3,18 @@
     <div class="main-box">
       <div class="main-tit">绑定手机号</div>
       <div>
-        <van-field :value="value"
-                   placeholder="请输入手机号"/>
+        <van-field :value="mobile"
+                   placeholder="请输入手机号"
+                   @change="onInputKeyMobile" />
       </div>
       <div class="sms-code-box van-hairline">
-        <van-field class="inp-box"
-                   placeholder="请输入验证码" />
-        <span class="sms-btn">获取验证码</span>
+        <van-field :value="code"
+                   class="inp-box"
+                   placeholder="请输入验证码"
+                   @change="onInputKeyCode" />
+        <span class="sms-btn"
+              :class="{active: !getSmsCodeIng}"
+              @click="onClickGetSmsBtn">{{getSmsCodeBtnText}}</span>
       </div>
 
       <div class="bottom-btn-box">
@@ -18,7 +23,7 @@
                       size="small"
                       round
                       block
-                      @click="openPage(0)">提交</van-button>
+                      @click="smsCheck">提交</van-button>
         </div>
       </div>
     </div>
@@ -32,23 +37,88 @@
         <div class="tip-btn">“隐私协议”</div>
       </van-checkbox>
     </div>
+    <van-toast id="van-toast" />
   </div>
 </template>
 <script>
+import { sms, smsCheck } from '@/api/getData'
+import Toast from '../../../../static/vant/toast/toast'
 export default {
   data () {
     return {
       routers: [{
         url: '/pages/login/set_password/main'
-      }]
+      }],
+      checked: true,
+      getSmsCodeBtnText: '获取验证码',
+      getSmsCodeIng: false,
+      getSmsCodeClock: 60,
+
+      mobile: null,
+      code: null
     }
   },
   methods: {
+    async sms () {
+      try {
+        // if (this.getSmsCodeIng) return
+        const res = await sms({ mobile: this.mobile, event: 'register' })
+        console.log(res)
+        if (res.data.code === 1) {
+          Toast.success('发送成功')
+        }
+      } catch (error) {
+
+      }
+    },
+    async smsCheck () {
+      try {
+        if (!this.checked) {
+          Toast('您还未同意隐私政策和用户协议')
+          return
+        }
+        if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
+          Toast.fail('请输入正确手机号')
+          return
+        }
+        console.log({ captcha: this.code, mobile: this.mobile, event: 'register' })
+        const res = await smsCheck({ captcha: this.code, mobile: this.mobile, event: 'register' })
+        console.log(res)
+        if (res.data.code === 1) {
+          this.openPage(0)
+        }
+      } catch (error) {
+
+      }
+    },
+    onClickGetSmsBtn () {
+      if (this.getSmsCodeIng) return
+      this.sms()
+      let timer = setInterval(() => {
+        this.getSmsCodeIng = true
+        this.getSmsCodeBtnText = `${this.getSmsCodeClock--}秒后重试`
+        if (this.getSmsCodeClock < 1) {
+          this.getSmsCodeBtnText = '获取验证码'
+          this.getSmsCodeClock = 60
+          this.getSmsCodeIng = false
+          clearInterval(timer)
+        }
+      }, 1000)
+    },
     openPage (i) {
       console.log(i)
       mpvue.navigateTo({
-        url: this.routers[i].url
+        url: `${this.routers[i].url}?mobile=${this.mobile}&code=${this.code}`
       })
+    },
+    onInputKeyCode (e) {
+      this.code = e.mp.detail
+    },
+    onInputKeyMobile (e) {
+      this.mobile = e.mp.detail
+    },
+    onChange (e) {
+      this.checked = e.mp.detail
     }
   }
 }
@@ -78,6 +148,9 @@ export default {
   color: #97d700;
   padding: 17px 15px;
   background: #fff;
+}
+.sms-btn.active:active {
+  color: #999;
 }
 .bottom-btn-margin {
   margin: 30px 0 !important;

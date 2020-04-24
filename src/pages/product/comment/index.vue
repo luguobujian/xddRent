@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="top-summary-box mb10">
       <div class="left-rate ">
         <div class="top-summary-item">
