@@ -10,17 +10,18 @@
           </div>
           <div class="fr">
             <img class="avatar"
-                 src="/static/images/user.png"
+                 :src="avatar || '/static/images/user.png'"
                  alt=""></div>
         </div>
         <div>
           <van-cell-group>
-            <van-field v-model="value1"
+            <van-field :value="username"
                        label="账户名"
                        right-icon="arrow"
                        placeholder="请输入"
-                       input-align="right" />
-            <van-field v-model="value"
+                       input-align="right"
+                       @input="onInputUsernameKey" />
+            <van-field :value="showCity.name"
                        label="选择地区"
                        right-icon="arrow"
                        placeholder="请选择"
@@ -28,9 +29,9 @@
                        readonly
                        clickable
                        name="area"
-                       :value="value"
-                       @click="showArea = true" />
-            <van-field :value="gender"
+                       data-from="area"
+                       @click="goNextPage" />
+            <van-field :value="genderDesc"
                        label="性别"
                        right-icon="arrow"
                        placeholder="请选择"
@@ -38,15 +39,18 @@
                        clickable
                        input-align="right"
                        @click="showGender=true" />
-            <van-field :value="tel"
+            <van-field :value="mobile"
                        label="绑定手机"
-                       placeholder="显示图标"
-                       input-align="right" />
-            <van-field v-model="value1"
+                       disabled
+                       placeholder="请输入"
+                       input-align="right"
+                       @input="onInputMobileKey" />
+            <van-field :value="bio"
                        label="个人简介"
                        right-icon="arrow"
                        placeholder="请输入"
-                       input-align="right" />
+                       input-align="right"
+                       @input="onInputBioKey" />
           </van-cell-group>
           <van-popup :show="showArea"
                      position="bottom"
@@ -65,7 +69,8 @@
                     size="small"
                     custon-style="font-size: 15px"
                     round
-                    block>保存</van-button>
+                    block
+                    @click="submit">保存</van-button>
       </div>
     </div>
     <van-action-sheet :show="showGender"
@@ -73,27 +78,74 @@
                       cancel-text="取消"
                       @select="selectGender"
                       @cancel="showGender= false" />
+    <van-toast id="van-toast" />
   </div>
 </template>
 
 <script>
+import Toast from '../../../static/vant/toast/toast'
 import AreaList from '../../../static/vant/area/area'
+import { getUserInfo, refreshInfo } from '@/api/getData'
+let globalThat = null
 export default {
   data () {
     return {
-      value: '',
-      tel: '133333333',
+      routers: {
+        area: '/pages/city/main'
+      },
       showGender: false,
       showArea: false,
-      gender: '',
       actions: [
-        { name: '男', color: '#000' },
-        { name: '女', color: '#000' }
+        { code: 0, name: '男', color: '#000' },
+        { code: 1, name: '女', color: '#000' }
       ],
-      areaList: AreaList // 数据格式见 Area 组件文档
+      areaList: AreaList, // 数据格式见 Area 组件文档
+      setData (key, value) {
+        globalThat[key] = value
+      },
+      showCity: {
+        name: '',
+        cityid: null
+      },
+      avatar: null,
+      username: null,
+      genderDesc: null,
+      gender: null,
+      mobile: null,
+      bio: null,
+      openid_qq: null,
+      openid_wx: null,
+      area: null
     }
   },
+
+  onLoad () {
+    this.getUserInfo()
+  },
+  onShow () {
+    this.getUserInfo()
+  },
+  mounted () {
+    globalThat = this
+  },
   methods: {
+    async getUserInfo () {
+      try {
+        const res = await getUserInfo()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.avatar = res.data.data.avatar
+          this.username = res.data.data.username
+          this.genderDesc = this.actions[res.data.data.gender].name
+          this.gender = res.data.data.gender
+          this.mobile = res.data.data.mobile
+          this.bio = res.data.data.bio
+          this.showCity.name = res.data.data.area
+        }
+      } catch (error) {
+        console.log('* getUserInfo error ', error)
+      }
+    },
     onConfirm (e) {
       let values = e.target.values
       this.value = values.map(item => item.name).join('/')
@@ -101,54 +153,78 @@ export default {
     },
     selectGender (e) {
       console.log(e)
-      this.gender = e.mp.detail.name
+      this.genderDesc = e.mp.detail.name
+      this.gender = e.mp.detail.code
       this.showGender = false
     },
-    goNextPage () {
+    onInputUsernameKey (e) {
+      console.log(e)
+      this.username = e.mp.detail
+    },
+    onInputMobileKey (e) {
+      console.log(e)
+      this.mobile = e.mp.detail
+    },
+    onInputBioKey (e) {
+      console.log(e)
+      this.bio = e.mp.detail
+    },
+    async submit () {
+      try {
+        if (!this.username) {
+          Toast.fail('账号名不能为空')
+          return
+        }
+        if (!this.showCity.cityid) {
+          Toast.fail('所在地区不能为空')
+          return
+        }
+        if (!this.gender) {
+          Toast.fail('性别不能为空')
+          return
+        }
+        if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
+          Toast.fail('请输入正确手机号')
+          return
+        }
+        if (!this.bio) {
+          Toast.fail('个人简介不能为空')
+          return
+        }
+        const res = await refreshInfo({ avatar: this.avatar, username: this.username, gender: this.gender, mobile: this.mobile, bio: this.bio, area: this.showCity.name })
+        console.log(res)
+        if (res.data.code === 1) {
+          mpvue.navigateBack()
+        }
+      } catch (error) {
+        console.log('*submit　error', error)
+      }
+    },
+    goNextPage (p) {
+      console.log(p)
+      if (p.mp.currentTarget.dataset.from) {
+        p = p.mp.currentTarget.dataset.from
+        mpvue.navigateTo({
+          url: `${this.routers[p]}`
+        })
+        return
+      }
       mpvue.chooseImage({
         count: 1,
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
-          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
           const src = res.tempFilePaths[0]
           mpvue.navigateTo({
             url: `/pages/upload/main?src=${src}`
           })
         }
       })
-      // mpvue.navigateTo({
-      //   url: '/pages/upload/main'
-      // })
     },
     uploadImage (path) {
-      // var _this = this
       mpvue.showLoading({
         title: '正在上传..'
       })
-      // mpvue.uploadFile({
-      //   url: app.globalData.domain + 'user/uploadimage',
-      //   filePath: path,
-      //   name: 'file',
-      //   formData: {
-      //     'uid': app.globalData.userId
-      //   },
-      //   success: function (res) {
-      //     var data = JSON.parse(res.data)
-      //     if (data.status == 0) {
-      //       mpvue.showToast({
-      //         title: data.err,
-      //         duration: 2000
-      //       })
-      //       return false
-      //     }
-      //     mpvue.hideLoading()
-      //     _this.setData({
-      //       imageurls: 'Uploads/' + data.urls,
-      //       postimage: path
-      //     })
-      //   }
-      // })
     }
   }
 }

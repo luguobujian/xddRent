@@ -16,7 +16,7 @@
                       size="small"
                       round
                       block
-                      @click="goNextPage">提交</van-button>
+                      @click="wxxBindMobile">提交</van-button>
         </div>
       </div>
     </div>

@@ -7,12 +7,14 @@
                src="/static/images/top-bg.png"
                alt="">
         </div>
-        <div class="txt-tip-box">
+        <div class="txt-tip-box"
+             :style="{top: top}">
           <div class="m-s-box">
             <van-icon name="warning-o"
-                      size="19px" />未通过
+                      size="19px" />{{statusText}}
           </div>
-          <div class="cause-box">未通过原因：联系方式不正确</div>
+          <div v-if="detail.text"
+               class="cause-box">未通过原因：{{detail.text}}</div>
         </div>
       </div>
       <div class="txt-main-box">
@@ -23,15 +25,16 @@
         <div class="right-info-box">
           <van-cell-group>
             <van-field class="name-box"
-                       :value="name" />
+                       :value="detail.name" />
             <van-field label="电话"
-                       :value="tel" />
+                       :value="detail.phone" />
             <van-field label="地址"
                        type="textarea"
                        autosize=true
-                       :value="addr" />
-            <van-field label="邮箱"
-                       :value="email" />
+                       :value="detail.address" />
+            <van-field v-if="detail.mai"
+                       label="邮箱"
+                       :value="detail.mai" />
           </van-cell-group>
         </div>
       </div>
@@ -40,28 +43,66 @@
           营业执照
         </div>
         <div class="img-box">
-          <img src="../../../../static/images/zz.png"
+          <img :src="detail.images"
                alt="">
         </div>
       </div>
     </div>
-    <div class="bottom-btn-margin">
+    <div v-if="status === 2"
+         class="bottom-btn-margin">
       <van-button color="#97D700"
                   size="small"
                   custom-style="font-size:13px"
                   round
-                  block>再次提交</van-button>
+                  block
+                  @click="goNextPage">再次提交</van-button>
     </div>
   </div>
 </template>
 <script>
+import { statusProve } from '@/api/getData'
 export default {
   data () {
     return {
-      name: '名字',
-      tel: '1333333333',
-      addr: '这里是地址这里是地址这里是地址这里是地址这里是地址',
-      email: '1862736273@qq.com'
+      detail: null,
+      top: '66rpx',
+      status: null,
+      statusText: null
+    }
+  },
+  onLoad (options) {
+    console.log(options)
+    this.status = options.status
+    switch (parseInt(options.status)) {
+      case 1:
+        this.statusText = '已认证'
+        break
+      case 2:
+        this.statusText = '未通过'
+        this.top = '50rpx'
+        break
+      case 0:
+        this.statusText = '审核中'
+        break
+    }
+    this.statusProve()
+  },
+  methods: {
+    async statusProve () {
+      try {
+        const res = await statusProve()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.detail = res.data.data.msg
+        }
+      } catch (error) {
+        console.log('* statusProve error ', error)
+      }
+    },
+    goNextPage () {
+      wx.redirectTo({
+        url: '/pages/company/main'
+      })
     }
   }
 }
@@ -146,7 +187,7 @@ export default {
 </style>>
 <style>
 .m-s-box ._van-icon {
-  vertical-align: -16%;
+  vertical-align: -12%;
   margin-right: 6px;
 }
 .name-box .van-cell {

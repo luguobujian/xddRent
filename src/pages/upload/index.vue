@@ -20,7 +20,8 @@
     }">
     </canvas>
     <div class="bottom-btn-box">
-      <div class="bottom-btn">
+      <div class="bottom-btn"
+           @click="submit">
         上传头像
       </div>
     </div>
@@ -29,7 +30,8 @@
 
 <script>
 import WeCropper from 'we-cropper'
-
+import API from '@/api/api'
+// import { upload } from '@/api/getData'
 const device = mpvue.getSystemInfoSync()
 const width = device.windowWidth
 const height = device.windowHeight - 40 // 底部留好完成按钮
@@ -95,6 +97,57 @@ export default {
         .on('beforeDraw', (...args) => {
           this.$emit('beforeDraw', ...args)
         })
+    },
+    async getStorageToken () {
+      return new Promise((resolve, reject) => {
+        mpvue.getStorage({
+          key: 'token',
+          success (res) {
+            resolve(res.data)
+          },
+          fail (res) {
+            console.log('* FAIL getStorageToken', res)
+            resolve('')
+          }
+        })
+      })
+    },
+    async submit () {
+      try {
+        const file = await this.getCropperImage()
+        const token = await this.getStorageToken()
+        console.log(token)
+        let header = {
+          'token': token,
+          'openId': '',
+          'content-type': 'application/x-www-form-urlencoded'
+        }
+        mpvue.uploadFile({
+          url: `${API.baseUrl}api/Upload/upload`, // 仅为示例，非真实的接口地址
+          filePath: file,
+          name: 'file',
+          header,
+          success (res) {
+            console.log(res)
+            if (res.statusCode === 200) {
+              const result = JSON.parse(res.data)
+              console.log(result)
+              if (result.code === 1) {
+                const pages = getCurrentPages()
+                const prevPage = pages[pages.length - 2]
+                prevPage.data.$root[0].setData('avatar', result.data)
+                mpvue.navigateBack()
+              }
+            }
+          },
+          fail (res) {
+            console.log(res)
+            // do something
+          }
+        })
+      } catch (error) {
+        console.log('*uploadFile　error', error)
+      }
     }
   },
   onLoad (option) {

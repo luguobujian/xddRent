@@ -167,6 +167,24 @@ export const getMyCode = () =>
   API.request('api/user/myCode', {}, 'post')
 
 /**
+*完善个人信息
+*/
+export const refreshInfo = data =>
+  API.request('api/PeopleInfo/refreshInfo', data, 'post')
+
+/**
+*企业认证状态
+*/
+export const statusProve = data =>
+  API.request('api/Prove/statusProve', data, 'post')
+
+/**
+*企业认证
+*/
+export const companyProve = data =>
+  API.request('api/Prove/companyProve', data, 'post')
+
+/**
 *意见反馈
 */
 export const getfeedBack = data =>
@@ -183,3 +201,9 @@ export const getProblemList = () =>
 */
 export const getProblemInfo = (data) =>
   API.request('api/Problems/problemInfo', data, 'post')
+
+/**
+*图片上传
+*/
+export const upload = (data) =>
+  API.request('api/Upload/upload', data, 'post')

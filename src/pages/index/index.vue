@@ -293,7 +293,7 @@ image {
 }
 .sub-item-tit {
   height: 15px;
-  font-size: 10px;
+  font-size: 8px;
   color: rgba(3, 3, 3, 0.2);
   line-height: 15px;
 }

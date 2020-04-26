@@ -25,8 +25,9 @@
             <img class="company-icon fl"
                  src="/static/icons/m-mark.png"
                  alt="">
-            <div class="company-name-box fl">
-              公司
+            <div v-if="company"
+                 class="company-name-box fl">
+              {{company}}
             </div>
           </div>
         </div>
@@ -71,11 +72,14 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/api/getData'
+import { getUserInfo, statusProve } from '@/api/getData'
 export default {
   data () {
     return {
       detail: null,
+      status: null,
+      prove: null,
+      company: null,
       userItems: [{ path: '/pages/user/main' }],
       gridItems: [{
         text: '认证企业',
@@ -108,6 +112,7 @@ export default {
   },
   onLoad () {
     this.getUserInfo()
+    this.statusProve()
   },
   methods: {
     async getUserInfo () {
@@ -118,7 +123,20 @@ export default {
           this.detail = res.data.data
         }
       } catch (error) {
-
+        console.log('* getUserInfo error ', error)
+      }
+    },
+    async statusProve () {
+      try {
+        const res = await statusProve()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.status = res.data.data.status
+          this.Prove = res.data.data.msg.status
+          this.company = res.data.data.msg.name
+        }
+      } catch (error) {
+        console.log('* statusProve error ', error)
       }
     },
     goNextPage (t, i) {
@@ -126,6 +144,9 @@ export default {
       let url = this[t][i].path
       if (this.detail.group_id === 3) {
         url = '/pages/login/main'
+      }
+      if (i === 0 && this.status === 1) {
+        url = `/pages/company/verify/main?status=${this.status}`
       }
       mpvue.navigateTo({
         url
