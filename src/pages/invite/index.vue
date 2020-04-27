@@ -11,38 +11,44 @@
              class="items-m clearfix">
           <div class="avatar-box fl">
             <img class="avatar"
-                 src=""
+                 :src="item.user.avatar"
                  alt="">
           </div>
           <div class="tl fl">
-            <div class="title-box PingFangSC-Medium">{{item.t1}}</div>
-            <div class="sub-title-box">{{item.t2}}</div>
+            <div class="title-box PingFangSC-Medium">{{item.user.username}}</div>
+            <div class="sub-title-box">{{item.user.mobile}}</div>
           </div>
           <div class="tr fl">
-            <div class="title-box PingFangSC-Medium">奖励：{{item.t3}}</div>
-            <div class="sub-title-box">注册时间：{{item.t4}}</div>
+            <div class="title-box PingFangSC-Medium">奖励：{{item.del_price}}</div>
+            <div class="sub-title-box">注册时间：{{item.use_time}}</div>
           </div>
         </div>
       </div>
     </div>
+    <nomoreComponents :tipBoxTop="tipBoxTop"
+                      :tipSrc="tipSrc"
+                      :dataList="dataList"></nomoreComponents>
+    <van-toast id="van-toast" />
   </div>
 </template>
 <script>
 
 import { getMyCode } from '@/api/getData'
+import Toast from '../../../static/vant/toast/toast'
+import nomoreComponents from '@/components/nomore'
 export default {
   data () {
     return {
       detail: null,
-      dataList: [
-        { avatar: '', t1: '深海淹死一条鱼', t2: '18627263623', t3: '500元优惠券', t4: '2020.02.05' },
-        { avatar: '', t1: '深海淹死一条鱼', t2: '18627263623', t3: '500元优惠券', t4: '2020.02.05' }
-      ]
+      dataList: null
 
     }
   },
   onLoad () {
     this.getMyCode()
+  },
+  components: {
+    nomoreComponents
   },
   methods: {
     async getMyCode () {
@@ -50,8 +56,9 @@ export default {
         const res = await getMyCode()
         console.log(res)
         this.detail = res.data.data
+        this.dataList = res.data.data.list
       } catch (error) {
-
+        Toast.fail(error.data.msg)
       }
     }
   }

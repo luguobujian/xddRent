@@ -25,6 +25,42 @@ export const wxxBindMobile = (data) =>
   API.request('api/user/wxxBindMobile', data, 'POST')
 
 /**
+*快捷登录
+*/
+export const mobilelogin = (data) =>
+  API.request('api/user/mobilelogin', data, 'POST')
+
+/**
+*注册
+*/
+export const register = (data) =>
+  API.request('api/user/register', data, 'POST')
+
+/**
+*登录
+*/
+export const login = (data) =>
+  API.request('api/user/login', data, 'POST')
+
+/**
+*忘记密码
+*/
+export const resetpwd = (data) =>
+  API.request('api/user/resetpwd', data, 'POST')
+
+/**
+*隐私协议
+*/
+export const userPrivacy = () =>
+  API.request('api/user/userPrivacy', {}, 'POST')
+
+/**
+*用户协议
+*/
+export const userAgreement = () =>
+  API.request('api/user/userAgreement', {}, 'POST')
+
+/**
  *获取首页banner数据
  */
 export const getBanner = () => API.request('api/Index/baner')
@@ -183,6 +219,24 @@ export const statusProve = data =>
 */
 export const companyProve = data =>
   API.request('api/Prove/companyProve', data, 'post')
+
+/**
+*我的余额
+*/
+export const myMoney = data =>
+  API.request('api/Money/myMoney', data, 'post')
+
+/**
+*收益明细
+*/
+export const walletRecord = data =>
+  API.request('api/Money/walletRecord', data, 'post')
+
+/**
+*提现记录
+*/
+export const pullWalletRecord = data =>
+  API.request('api/Money/pullWalletRecord', data, 'post')
 
 /**
 *意见反馈

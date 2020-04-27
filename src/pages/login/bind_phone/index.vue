@@ -19,7 +19,7 @@
 
       <div class="bottom-btn-box">
         <div class="bottom-btn-margin">
-          <van-button color="#97D700"
+          <van-button :color="(mobile && code)? '#97D700': '#EBF8CD'"
                       size="small"
                       round
                       block
@@ -32,9 +32,11 @@
                     checked-color="#07c160"
                     :value="checked"
                     @change="onChange">我已阅读并同意
-        <div class="tip-btn">“用户协议”</div>
+        <div class="tip-btn"
+             @click.stop="openPage(1)">“用户协议”</div>
         和
-        <div class="tip-btn">“隐私协议”</div>
+        <div class="tip-btn"
+             @click.stop="openPage(2)">“隐私协议”</div>
       </van-checkbox>
     </div>
     <van-toast id="van-toast" />
@@ -48,6 +50,10 @@ export default {
     return {
       routers: [{
         url: '/pages/login/set_password/main'
+      }, {
+        url: '/pages/login/detail/main?f=1'
+      }, {
+        url: '/pages/login/detail/main?f=2'
       }],
       checked: true,
       getSmsCodeBtnText: '获取验证码',
@@ -61,6 +67,10 @@ export default {
   methods: {
     async sms () {
       try {
+        if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
+          Toast.fail('请输入正确手机号')
+          return
+        }
         // if (this.getSmsCodeIng) return
         const res = await sms({ mobile: this.mobile, event: 'register' })
         console.log(res)
@@ -68,11 +78,12 @@ export default {
           Toast.success('发送成功')
         }
       } catch (error) {
-
+        console.log(`* sms error`, error)
       }
     },
     async smsCheck () {
       try {
+        if (!this.mobile || !this.code) return
         if (!this.checked) {
           Toast('您还未同意隐私政策和用户协议')
           return
@@ -86,9 +97,12 @@ export default {
         console.log(res)
         if (res.data.code === 1) {
           this.openPage(0)
+        } else {
+          Toast.fail(res.data.msg)
         }
       } catch (error) {
-
+        console.log(`* smsCheck error`, error)
+        Toast.fail(error.data.msg)
       }
     },
     onClickGetSmsBtn () {
@@ -107,8 +121,14 @@ export default {
     },
     openPage (i) {
       console.log(i)
+      let url
+      if (i === 1 || i === 2) {
+        url = `${this.routers[i].url}`
+      } else {
+        url = `${this.routers[i].url}?mobile=${this.mobile}&code=${this.code}`
+      }
       mpvue.navigateTo({
-        url: `${this.routers[i].url}?mobile=${this.mobile}&code=${this.code}`
+        url
       })
     },
     onInputKeyCode (e) {

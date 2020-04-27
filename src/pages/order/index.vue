@@ -178,10 +178,10 @@ export default {
                 statusText = '租赁中'
                 break
               case 7:
-                statusText = '租赁中'
+                statusText = '已归还'
                 break
               case 8:
-                statusText = '退钱中'
+                statusText = '退定金中'
                 break
               case 9:
                 statusText = '已退款'

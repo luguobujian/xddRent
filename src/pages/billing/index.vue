@@ -3,7 +3,7 @@
     <div class="main-box">
       <div class="top-box">
         <div class="top-tit-box">钱包余额(元)</div>
-        <div class="num-box Oswald-Medium">6300.00</div>
+        <div class="num-box Oswald-Medium">{{money}}</div>
         <div class="bottom-btn-margin">
           <van-button color="#97D700"
                       size="small"
@@ -27,6 +27,7 @@
   </div>
 </template>
 <script>
+import { myMoney } from '@/api/getData'
 export default {
   data () {
     return {
@@ -35,13 +36,26 @@ export default {
         { text: '查看明细', path: '/pages/billing/detail/main' },
         { text: '提现记录', path: '/pages/billing/history/main' }
       ],
-      bottomBtn: [{ text: '管理提现账户', path: '/pages/billing/affiliate/main' }]
+      bottomBtn: [{ text: '管理提现账户', path: '/pages/billing/affiliate/main' }],
+      money: '0.00'
     }
+  },
+  onLoad () {
+    this.myMoney()
   },
   mounted () {
     console.log(getCurrentPages())
   },
   methods: {
+    async myMoney () {
+      try {
+        const res = await myMoney()
+        console.log(res)
+        this.money = res.data.data.money
+      } catch (error) {
+        console.log('* myMoney error', error)
+      }
+    },
     goNextPage (t, i) {
       console.log(this[t][i].path)
       mpvue.navigateTo({

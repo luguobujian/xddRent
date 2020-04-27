@@ -39,6 +39,7 @@
     "pages/login/set_password/main",
     "pages/login/signin/main",
     "pages/login/signin2/main",
+    "pages/login/detail/main",
     "pages/login/reset_password/main"
   ],
   "permission": {

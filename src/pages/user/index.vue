@@ -122,9 +122,9 @@ export default {
   onLoad () {
     this.getUserInfo()
   },
-  onShow () {
-    this.getUserInfo()
-  },
+  // onShow () {
+  //   this.getUserInfo()
+  // },
   mounted () {
     globalThat = this
   },

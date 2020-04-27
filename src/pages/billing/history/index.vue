@@ -6,15 +6,15 @@
            class="item">
         <div class="van-hairline--bottom table-tit">
           <div class="clearfix">
-            <div class="fl">订单编号：283728462421</div>
-            <div class="fr">2020.02.21</div>
+            <div class="fl">订单编号：{{item.order}}</div>
+            <div class="fr">{{item.time}}</div>
           </div>
         </div>
         <div class="title-box clearfix">
-          <div class="fl">{{item.sum}}</div>
+          <div class="fl">{{item.money}}</div>
           <div class="fr fail">{{item.title}}</div>
         </div>
-        <div class="some-info-box">订单号：{{item.orderId}}</div>
+        <div class="some-info-box">订单号：{{item.order}}</div>
         <div class="some-info-box">订单日期：{{item.date}}</div>
         <div class="some-info-box">订单日期：{{item.date}}</div>
         <div class="some-info-box fail">提现失败原因：账户错误</div>
@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import { pullWalletRecord } from '@/api/getData'
 export default {
   data () {
     return {
@@ -52,6 +53,22 @@ export default {
         orderId: '283721946129',
         date: '2020.01.21'
       }]
+    }
+  },
+  onLoad () {
+    this.pullWalletRecord()
+  },
+  methods: {
+    async pullWalletRecord () {
+      try {
+        const res = await pullWalletRecord()
+        console.log(res)
+        if (res.data.code === 1) {
+          // this.detailList = res.data.data
+        }
+      } catch (error) {
+
+      }
     }
   }
 }

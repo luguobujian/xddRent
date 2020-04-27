@@ -110,6 +110,10 @@ export default {
   components: {
 
   },
+  onShow () {
+    this.getUserInfo()
+    this.statusProve()
+  },
   onLoad () {
     this.getUserInfo()
     this.statusProve()

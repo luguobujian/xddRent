@@ -5,22 +5,31 @@
       <div class="sub-tit">已有账号？<div>点击登录</div>
       </div>
       <div>
-        <van-field v-model="value"
-                   placeholder="请输入手机号" />
+        <van-field :value="mobile"
+                   placeholder="请输入手机号"
+                   @change="onInputKeyMobile" />
       </div>
       <div class="sms-code-box van-hairline">
         <van-field class="inp-box"
-                   placeholder="请输入验证码" />
-        <span class="sms-btn">获取验证码</span>
+                   :value="code"
+                   placeholder="请输入验证码"
+                   @change="onInputKeyCode" />
+        <span class="sms-btn"
+              :class="{active: !getSmsCodeIng}"
+              @click="sms">{{getSmsCodeBtnText}}</span>
       </div>
       <div>
-        <van-field v-model="value"
-                   placeholder="请输入邀请码(选填)" />
+        <van-field :value="user_code"
+                   placeholder="请输入邀请码(选填)"
+                   @change="onInputUCodekey" />
       </div>
       <div>
-        <van-field v-model="value"
+        <van-field :value="password"
+                   :password="hidepass"
                    placeholder="请输入6～16位数字或字母密码"
-                   right-icon="/static/icons/eye.png" />
+                   right-icon="/static/icons/eye.png"
+                   @change="onInputPasswordkey"
+                   @clickIcon="showPassword" />
       </div>
       <div class="bottom-btn-box">
         <div class="bottom-btn-margin">
@@ -28,7 +37,7 @@
                       size="small"
                       round
                       block
-                      @click="go">提交</van-button>
+                      @click="submit">提交</van-button>
         </div>
       </div>
     </div>
@@ -42,11 +51,124 @@
         <div class="tip-btn">“隐私协议”</div>
       </van-checkbox>
     </div>
+    <van-toast id="van-toast" />
   </div>
 </template>
 <script>
+import { sms, register } from '@/api/getData'
+import Toast from '../../../../static/vant/toast/toast'
 export default {
+  data () {
+    return {
+      hidepass: true,
+      getSmsCodeBtnText: '获取验证码',
+      getSmsCodeIng: false,
+      getSmsCodeClock: 60,
 
+      checked: true,
+
+      mobile: null,
+      code: null,
+      password: null,
+      user_code: null
+    }
+  },
+  methods: {
+    async sms () {
+      try {
+        if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
+          Toast.fail('手机号错误')
+          return
+        }
+        // if (this.getSmsCodeIng) return
+        const res = await sms({ mobile: this.mobile, event: 'register' })
+        console.log(res)
+        if (res.data.code === 1) {
+          Toast.success('发送成功')
+          this.onClickGetSmsBtn()
+        }
+      } catch (error) {
+        console.log(`* sms error`, error)
+        Toast.fail(error.data.msg)
+      }
+    },
+
+    onClickGetSmsBtn () {
+      if (this.getSmsCodeIng) return
+      // this.sms()
+      let timer = setInterval(() => {
+        this.getSmsCodeIng = true
+        this.getSmsCodeBtnText = `${this.getSmsCodeClock--}秒后重试`
+        if (this.getSmsCodeClock < 1) {
+          this.getSmsCodeBtnText = '获取验证码'
+          this.getSmsCodeClock = 60
+          this.getSmsCodeIng = false
+          clearInterval(timer)
+        }
+      }, 1000)
+    },
+    async submit () {
+      try {
+        if (!this.mobile) {
+          Toast.fail('手机号不能为空')
+          return
+        }
+        if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
+          Toast.fail('手机号错误')
+          return
+        }
+        if (!this.code) {
+          Toast.fail('验证码不能为空')
+          return
+        }
+        if (!this.password) {
+          Toast.fail('密码不能为空')
+          return
+        }
+        if (!(/^[a-z0-9]{6,16}$/.test(this.password))) {
+          Toast.fail('密码格式错误')
+          return
+        }
+        if (!this.checked) {
+          Toast('您还未同意隐私政策和用户协议')
+          return
+        }
+        const res = await register({ mobile: this.mobile, code: this.code, password: this.password, user_code: this.user_code })
+        console.log(res)
+        if (res.data.code === 1) {
+          Toast.success(res.data.msg)
+          mpvue.navigateBack()
+        } else {
+          Toast.fail(res.data.msg)
+        }
+      } catch (error) {
+        console.log(`* submit error`, error)
+        Toast.fail(error.data.msg)
+      }
+    },
+    onInputKeyCode (e) {
+      this.code = e.mp.detail
+    },
+    onInputKeyMobile (e) {
+      this.mobile = e.mp.detail
+    },
+    onInputUCodekey (e) {
+      this.user_code = e.mp.detail
+    },
+    onInputPasswordkey (e) {
+      this.password = e.mp.detail
+    },
+    showPassword (e) {
+      if (this.hidepass) {
+        this.hidepass = false
+      } else {
+        this.hidepass = true
+      }
+    },
+    onChange (e) {
+      this.checked = e.mp.detail
+    }
+  }
 }
 </script>
 <style scoped>

@@ -24,9 +24,11 @@
                     checked-color="#07c160"
                     :value="checked"
                     @change="onChange">我已阅读并同意
-        <div class="tip-btn">“用户协议”</div>
+        <div class="tip-btn"
+             @click.stop="openPage(2)">“用户协议”</div>
         和
-        <div class="tip-btn">“隐私协议”</div>
+        <div class="tip-btn"
+             @click.stop="openPage(3)">“隐私协议”</div>
       </van-checkbox>
     </div>
     <van-toast id="van-toast" />
@@ -42,6 +44,10 @@ export default {
         url: '/pages/login/bind_phone/main'
       }, {
         url: '/pages/login/signin/main'
+      }, {
+        url: '/pages/login/detail/main?f=1'
+      }, {
+        url: '/pages/login/detail/main?f=2'
       }]
     }
   },
