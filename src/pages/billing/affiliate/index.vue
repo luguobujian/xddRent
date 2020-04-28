@@ -1,94 +1,89 @@
 <template>
   <div class="container van-hairline-top">
     <div class="itmes-box">
-      <div class="item">
+      <div class="item"
+           v-for="(item, index) in detailList"
+           :key="index">
         <div class="title-box clearfix">
-          <div class="fl">银行卡</div>
+          <div v-if="item.type === '1'"
+               class="fl">支付宝</div>
+          <div v-if="item.type === '2'"
+               class="fl">微信</div>
+          <div v-if="item.type === '3'"
+               class="fl">银行卡</div>
           <div class="fr"
-               @click="goNextPage">
+               :data-type="item.type"
+               @click="goNextPage(item)">
             <img class="icon-btn"
                  src="/static/icons/edit-icon.png"
                  alt=""></div>
         </div>
-        <div class="some-info-box">
-          <div class="some-info-tit">持卡人</div>
-          <div class="some-info-text">马小哈</div>
+        <div class="some-info-box"
+             v-if="item.type !== '2'">
+          <div class="some-info-tit">{{item.type === '3'?'持卡人': '姓名'}}</div>
+          <div class="some-info-text">{{item.name}}</div>
         </div>
         <div class="some-info-box">
-          <div class="some-info-tit">开户行</div>
-          <div class="some-info-text">中国工商银行北京北太平桥支行</div>
+          <div class="some-info-tit">{{item.type === '3'?'开户行': '绑定手机号'}}</div>
+          <div class="some-info-text">{{item.address}}</div>
         </div>
         <div class="some-info-box">
-          <div class="some-info-tit">银行卡号</div>
-          <div class="some-info-text">62357237218451285</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="title-box clearfix">
-          <div class="fl">支付宝</div>
-          <div class="fr"
-               @click="goNextPage">
-            <img class="icon-btn"
-                 src="/static/icons/edit-icon.png"
-                 alt=""></div>
-        </div>
-        <div class="some-info-box">
-          <div class="some-info-tit">绑定手机</div>
-          <div class="some-info-text">186372636253</div>
-        </div>
-        <div class="some-info-box">
-          <div class="some-info-tit">帐号</div>
-          <div class="some-info-text">273627153@qq.com</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="title-box clearfix">
-          <div class="fl">微信</div>
-          <div class="fr"
-               @click="goNextPage">
-            <img class="icon-btn"
-                 src="/static/icons/edit-icon.png"
-                 alt=""></div>
-        </div>
-        <div class="some-info-box">
-          <div class="some-info-tit">绑定手机</div>
-          <div class="some-info-text">186372636253</div>
-        </div>
-        <div class="some-info-box">
-          <div class="some-info-tit">微信号</div>
-          <div class="some-info-text">273627153@qq.com</div>
+          <div class="some-info-tit"
+               v-if="item.type === '1'">支付宝账号</div>
+          <div class="some-info-tit"
+               v-if="item.type === '2'">微信账号</div>
+          <div class="some-info-tit"
+               v-if="item.type === '3'">银行卡号</div>
+          <div class="some-info-text">{{item.number}}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { accountList } from '@/api/getData'
 export default {
   data () {
     return {
-      detailList: [{
-        title: '银行卡',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }, {
-        title: '支付宝',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }, {
-        title: '微信',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }]
+      detailList: []
     }
+  },
+  onLoad () {
+    this.accountList()
   },
   mounted () {
 
   },
   methods: {
-    goNextPage () {
+    async accountList () {
+      try {
+        const res = await accountList()
+        console.log(res)
+        this.detailList = res.data.data
+      } catch (error) {
+
+      }
+    },
+    goNextPage (e) {
+      console.log(e)
+      // let type = e.mp.currentTarget.dataset.type
       mpvue.navigateTo({
-        url: '/pages/billing/pay/main'
+        url: `/pages/billing/pay/main?${this.parseParams(e)}`
       })
+    },
+    parseParams (data) {
+      try {
+        var tempArr = []
+        for (var i in data) {
+          var key = encodeURIComponent(i)
+          var value = encodeURIComponent(data[i])
+          tempArr.push(key + '=' + value)
+        }
+        var urlParamsStr = tempArr.join('&')
+        return urlParamsStr
+      } catch (err) {
+        return ''
+      }
     }
   }
 }

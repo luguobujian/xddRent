@@ -21,7 +21,7 @@
            :data-id="item.id"
            @click="goNextPage">
         <div class="result-item-img-box">
-          <img :src="item.images"
+          <img :src="item.pro_img"
                alt="">
         </div>
         <div class="result-name PingFangSC-Medium">{{item.name}}</div>
@@ -88,16 +88,31 @@ export default {
       try {
         if (this.fromCode === 1) {
           const res1 = await getRecommentGoods({ area_id: this.city.id, page: '', page_size: '' })
-          this.reuslts = res1.data.data
-          console.log(this.reuslts)
+          console.log(res1)
+          // this.reuslts = res1.data.data
+          let arr = res1.data.data
+          arr.forEach((item, key) => {
+            item.pro_img = item.images.split(',')[0]
+          })
+          this.reuslts = arr
         } else if (this.fromCode === 2) {
           const res2 = await getSpePriceGoods({ area_id: this.city.id, page: '', page_size: '' })
-          this.reuslts = res2.data.data
           console.log(res2)
+          // this.reuslts = res2.data.data
+          let arr = res2.data.data
+          arr.forEach((item, key) => {
+            item.pro_img = item.images.split(',')[0]
+          })
+          this.reuslts = arr
         } else if (this.fromCode === 3) {
           const res3 = await getGoodsList({ type_id: this.typeId, area_id: this.city.id, page: '', page_size: '' })
-          this.reuslts = res3.data.data
           console.log(res3)
+          // this.reuslts = res3.data.data
+          let arr = res3.data.data
+          arr.forEach((item, key) => {
+            item.pro_img = item.images.split(',')[0]
+          })
+          this.reuslts = arr
         }
       } catch (error) {
         console.log('* getGoodsList error', error)

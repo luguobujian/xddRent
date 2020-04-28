@@ -95,16 +95,20 @@
         </div> -->
       </van-tab>
       <van-tab title="未支付">
-        <orderItemComponent :dataList="dataList"></orderItemComponent>
+        <orderItemComponent :dataList="dataList"
+                            @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
       <van-tab title="未收货">
-        <orderItemComponent :dataList="dataList"></orderItemComponent>
+        <orderItemComponent :dataList="dataList"
+                            @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
       <van-tab title="租赁中">
-        <orderItemComponent :dataList="dataList"></orderItemComponent>
+        <orderItemComponent :dataList="dataList"
+                            @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
       <van-tab title="已还货">
-        <orderItemComponent :dataList="dataList"></orderItemComponent>
+        <orderItemComponent :dataList="dataList"
+                            @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
     </van-tabs>
     <van-overlay :show="showOverlay"
@@ -156,43 +160,98 @@ export default {
         this.showOverlay = false
         console.log(res)
         if (res.data.code === 1) {
-          this.dataList.forEach((item, key) => {
+          this.dataList.forEach((val, key) => {
             let statusText = null
-            switch (parseInt(item.status)) {
-              case 1:
-                statusText = '待支付'
-                break
-              case 2:
-                statusText = '待发货'
-                break
-              case 3:
-                statusText = '待收货'
-                break
-              case 4:
-                statusText = '待确认收货'
-                break
-              case 5:
-                statusText = '租赁中'
-                break
-              case 6:
-                statusText = '租赁中'
-                break
-              case 7:
-                statusText = '已归还'
-                break
-              case 8:
-                statusText = '退定金中'
-                break
-              case 9:
-                statusText = '已退款'
-                break
-              default:
-                statusText = '已关闭'
-                break
+            let customMark = null
+            if (val.status === '1') {
+              statusText = '待支付'
+              customMark = 'DZF'
+            } else if (val.is_buy === 1 && val.get_methods === 1 && (val.status === '3' || val.status === '2' || val.status === '4')) {
+              statusText = '待提货'
+              customMark = 'DTH'
+            } else if (val.is_buy === 1 && val.status === '2') {
+              statusText = '待发货'
+              customMark = 'DFH'
+            } else if (val.is_buy === 1 && val.status === '3') {
+              statusText = '待收货'
+              customMark = 'DSH'
+            } else if (val.is_buy === 1 && val.status === '') {
+              statusText = '已关闭'
+              customMark = 'YGB'
+            } else if (val.status === '11') {
+              statusText = '待确认'
+              customMark = 'DQR'
+            } else if (val.is_buy === 1) {
+              statusText = '已收货'
+              customMark = 'YSH'
+            } else if (val.is_buy === 0 && val.get_methods === 1 && (val.status === '3' || val.status === '2' || val.status === '4')) {
+              statusText = '待提货'
+              customMark = 'DTH'
+            } else if (val.is_buy === 0 && val.status === '2') {
+              statusText = '待发货'
+              customMark = 'DFH'
+            } else if (val.is_buy === 0 && val.status === '3') {
+              statusText = '待收货'
+              customMark = 'DSH'
+            } else if (val.is_buy === 0 && val.status === '5') {
+              statusText = '租赁中'
+              customMark = 'ZLZ'
+            } else if (val.is_buy === 0 && val.status === '5') {
+              statusText = '租赁中'
+              customMark = 'ZLZ'
+            } else if (val.is_buy === 0 && val.status === '6') {
+              statusText = '租赁中'
+              customMark = 'ZLZ'
+            } else if (val.is_buy === 0 && val.status === '7') {
+              statusText = '已归还'
+              customMark = 'YGH'
+            } else if (val.is_buy === 0 && val.status === '8') {
+              statusText = '退定金中'
+              customMark = 'TDJZ'
+            } else if (val.is_buy === 0 && val.status === '9') {
+              statusText = '已退款'
+              customMark = 'YTK'
+            } else if (val.is_buy === 0 && val.status === '') {
+              statusText = '已关闭'
+              customMark = 'YGB'
+            } else {
+              statusText = '未知'
             }
+            // switch (parseInt(item.status)) {
+            //   case 1:
+            //     statusText = '待支付'
+            //     break
+            //   case 2:
+            //     statusText = '待发货'
+            //     break
+            //   case 3:
+            //     statusText = '待收货'
+            //     break
+            //   case 4:
+            //     statusText = '待确认收货'
+            //     break
+            //   case 5:
+            //     statusText = '租赁中'
+            //     break
+            //   case 6:
+            //     statusText = '租赁中'
+            //     break
+            //   case 7:
+            //     statusText = '已归还'
+            //     break
+            //   case 8:
+            //     statusText = '退定金中'
+            //     break
+            //   case 9:
+            //     statusText = '已退款'
+            //     break
+            //   default:
+            //     statusText = '已关闭'
+            //     break
+            // }
             this.dataList[key].statusText = statusText
-
-            let timeDown = item.createtime + (12 * 60 * 60) - (new Date().getTime() / 1000)
+            this.dataList[key].customMark = customMark
+            let timeDown = val.createtime + (12 * 60 * 60) - (new Date().getTime() / 1000)
             timeDown = timeDown > 0 ? parseInt(timeDown * 1000) : 0
             this.dataList[key].down = timeDown
           })
@@ -205,12 +264,13 @@ export default {
     onChange (e) {
       this.active = e.mp.detail.name
       this.showOverlay = true
+      this.page_size = 8
       this.getOrder()
     },
     goNextPage (e) {
       console.log(e)
       mpvue.navigateTo({
-        url: `/pages/order/detail/main?id=${e.id}`
+        url: `/pages/order/detail/main?id=${e.id}&mark=${e.mark}&statusText=${e.statusText}`
       })
     }
   }

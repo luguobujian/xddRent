@@ -191,7 +191,13 @@ export const getOrderDetail = (data) =>
   API.request('api/Order/orderInfo', data, 'post')
 
 /**
-*获取订单详情数据
+*获取订单物流信息
+*/
+export const getTranspost = (data) =>
+  API.request('api/Transpost/info', data, 'post')
+
+/**
+*获取用户详情数据
 */
 export const getUserInfo = () =>
   API.request('api/user/getUserInfo', {}, 'post')
@@ -237,6 +243,18 @@ export const walletRecord = data =>
 */
 export const pullWalletRecord = data =>
   API.request('api/Money/pullWalletRecord', data, 'post')
+
+/**
+*账号列表
+*/
+export const accountList = () =>
+  API.request('api/Money/accountList', {}, 'post')
+
+/**
+*编辑账号
+*/
+export const editAccount = (data) =>
+  API.request('api/Money/editAccount', data, 'post')
 
 /**
 *意见反馈

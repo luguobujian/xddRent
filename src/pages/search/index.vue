@@ -12,7 +12,7 @@
                     left-icon="/static/icons/search2.png">
           <view class="r-icon-box"
                 slot="action"
-                bind:tap="onClick">
+                @click="onClick">
             <van-icon class="search-ico"
                       name="/static/icons/close.png"
                       size="20px" />
@@ -21,7 +21,8 @@
       </div>
       <div v-if="!reuslts"
            class="bottom-items-box">
-        <div class="history-box">
+        <div class="history-box"
+             v-if="historys.length!=0">
           <div class="title">历史搜索
             <van-icon class="fr"
                       name="/static/icons/del-icon.png"
@@ -36,7 +37,8 @@
             </div>
           </div>
         </div>
-        <div class="hot-box">
+        <div class="hot-box"
+             v-if="hots.length!=0">
           <div class="title">热门搜索</div>
           <div class="hot-items-box">
             <div v-for="(item, index) in hots"
@@ -50,11 +52,13 @@
       </div>
       <div v-if="reuslts"
            class="result-box">
-        <div v-for="(item, index) in reuslts"
+        <div class="result-item"
+             v-for="(item, index) in reuslts"
              :key="index"
-             class="result-item">
+             :data-id="item.id"
+             @click="goNextPage">
           <div class="result-item-img-box">
-            <img :src="item.images"
+            <img :src="item.pro_img"
                  alt="">
           </div>
           <div class="result-name PingFangSC-Medium">{{item.name}}</div>
@@ -71,23 +75,22 @@
           </div>
         </div>
       </div>
+      <nomoreComponents v-if="reuslts"
+                        :tipBoxTop="tipBoxTop"
+                        :tipSrc="tipSrc"
+                        :dataList="reuslts"></nomoreComponents>
     </div>
   </div>
 </template>
 <script>
 import { onSearch, getSearchHistory, getHotSearch } from '@/api/getData'
+import Toast from '../../../static/vant/toast/toast'
+import nomoreComponents from '@/components/nomore'
+
 export default {
   data () {
     return {
-      historys: [{
-        t: '国庆'
-      }, {
-        t: '大阅兵仪式'
-      }, {
-        t: '消防员用叉子吃饭'
-      }, {
-        t: '国庆'
-      }],
+      historys: [],
       hots: [],
       reuslts: null,
       area: null,
@@ -102,42 +105,79 @@ export default {
     this.getSearchHistory()
     this.getHotSearch()
   },
+  components: {
+    nomoreComponents
+  },
   methods: {
     async getSearchHistory () {
       try {
         const res = await getSearchHistory()
         console.log(res)
+        if (res.data.code === 1) {
+          this.historys = res.data.data
+        } else {
+          Toast.fail(res.data.msg)
+        }
       } catch (error) {
-
+        Toast.fail(error.data.msg)
       }
     },
     async getHotSearch () {
       try {
         const res = await getHotSearch()
         console.log(res)
-        this.hots = res.data.data
+        if (res.data.code === 1) {
+          this.hots = res.data.data
+        } else {
+          Toast.fail(res.data.msg)
+        }
       } catch (error) {
-
+        Toast.fail(error.data.msg)
+      }
+    },
+    async onSearch () {
+      try {
+        const res = await onSearch({ card: this.keyword, area: this.area })
+        console.log(res)
+        if (res.data.code === 1) {
+          let arr = res.data.data
+          arr.forEach((item, key) => {
+            item.pro_img = item.images.split(',')[0]
+          })
+          this.reuslts = arr
+        } else {
+          Toast.fail(res.data.msg)
+        }
+      } catch (error) {
+        console.log('* error', error)
+        Toast.fail(error.data.msg)
       }
     },
     onChange (e) {
       this.keyword = e.mp.detail
       if (!this.keyword) { this.reuslts = null }
     },
-    async onSearch () {
-      try {
-        const res = await onSearch({ card: this.keyword, area: this.area })
-        this.reuslts = res.data.data
-        console.log(res)
-      } catch (error) {
-
-      }
-    },
     onClear () {
       this.keyword = ''
     },
+    onClick () {
+      mpvue.navigateBack()
+    },
     chsItem (e) {
       this.keyword = e
+      this.onSearch()
+    },
+    goNextPage (e) {
+      console.log(e)
+      let id = e.mp.currentTarget.dataset.id
+      mpvue.navigateTo({
+        url: `/pages/product/detail/main?id=${id}`
+      })
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }
@@ -215,8 +255,6 @@ export default {
 }
 </style>
 <style>
-
-
 .van-search--withaction {
   padding-top: 3px !important;
 }

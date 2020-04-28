@@ -25,20 +25,23 @@
       <div>
         <div class="some-set-tit">当前定位</div>
         <div class="some-set-box">
-          <div v-if="selectedCity.name"
-               class="this-one-city">{{selectedCity.name}}</div>
+          <div v-if="selectedCity && selectedCity.name"
+               class="this-one-city">{{selectedCity && selectedCity.name}}</div>
           <div class="get-location">
             <van-icon name="../../../static/icons/loca.png"
                       size="16px" />重新定位
           </div>
         </div>
       </div>
-      <div>
+      <div v-if="hisCitys.length !==0">
         <div class="some-set-tit">最近访问</div>
         <div class="some-set-box citys-item-box">
-          <div class="citys-item">北京</div>
-          <div class="citys-item">北京</div>
-          <div class="citys-item">北京</div>
+          <div class="citys-item"
+               v-for="(item, index) in hisCitys"
+               :key="index"
+               :data-city="itm.name"
+               :data-id="itm.cityid"
+               @click="chsCitys">{{item.name}}</div>
         </div>
       </div>
       <div v-if="hotCitys && hotCitys!=0">
@@ -91,6 +94,7 @@ export default {
         cityid: 2
       },
 
+      hisCitys: [],
       hotCitys: null,
       searchRes: []
     }
@@ -104,8 +108,15 @@ export default {
     }
   },
   onLoad () {
+    let that = this
     this.getHotCity()
-
+    mpvue.getStorage({
+      key: 'hisCitys',
+      success (res) {
+        console.log(res.data)
+        that.hisCitys = res.data
+      }
+    })
     // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
     wx.getSetting({
       success (res) {
@@ -197,6 +208,22 @@ export default {
       prevPage.data.$root[0].setData('showCity', this.selectedCity)
 
       this.keyword = ''
+
+      let hisCitys = this.hisCitys
+      let arr = this.hisCitys.map(item => item.cityid)
+      console.log(arr)
+      if (!arr.includes(this.selectedCity.cityid)) {
+        if (hisCitys.length > 6) {
+          hisCitys.shift()
+          console.log('hisCitys', hisCitys)
+        }
+        hisCitys.push(this.selectedCity)
+      }
+      mpvue.setStorage({
+        key: 'hisCitys',
+        data: hisCitys
+      })
+
       mpvue.navigateBack()
     },
     searchRes () {

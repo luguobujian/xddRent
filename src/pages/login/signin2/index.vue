@@ -67,8 +67,11 @@ export default {
       checked: true,
       hidepass: true,
 
-      mobile: null,
-      password: null
+      // mobile: null,
+      // password: null
+
+      mobile: '18055779894',
+      password: 654321
     }
   },
   methods: {

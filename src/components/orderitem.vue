@@ -4,22 +4,24 @@
       <div class="item"
            v-for="(item, index) in dataList"
            :key="index"
-           @click="onClick(item.order_id)">
+           @click="onClick(item.order_id, item.customMark, item.statusText)">
         <div class="order-no-info-box van-hairline">
           <div class="order-no-box">订单编号：{{item.order_id}}</div>
-          <div class="order-status-box PingFangSC-Medium">{{ (item.status === '2' && item.get_methods ===1)?'待提货' :item.statusText}}</div>
+          <div class="order-status-box PingFangSC-Medium">{{ item.statusText}}</div>
         </div>
-        <div class="product-info-box van-hairline">
+        <div class="product-info-box van-hairline"
+             v-for="(itm, idx) in item.goods_arr"
+             :key="idx">
           <div class="product-img-box">
             <img class="product-img"
-                 :src="item.goodsimages"
+                 :src="itm.goodsimages"
                  alt="">
           </div>
           <div class="product-text-box">
-            <div class="product-name PingFangSC-Medium">{{item.goods_name}}</div>
+            <div class="product-name PingFangSC-Medium">{{itm.goods_name}}</div>
             <div class="product-skus-n">
-              <span class="product-skus">{{item.goods_format}}</span>
-              <span class="product-n">x{{item.goods_num}}</span>
+              <span class="product-skus">{{itm.goods_format}}</span>
+              <span class="product-n">x{{itm.goods_num}}</span>
             </div>
           </div>
         </div>
@@ -97,8 +99,8 @@ export default {
     nomoreComponents
   },
   methods: {
-    onClick (id) {
-      this.$emit('childEvent', { id })
+    onClick (id, mark, statusText) {
+      this.$emit('childEvent', { id, mark, statusText })
     }
   }
 }
