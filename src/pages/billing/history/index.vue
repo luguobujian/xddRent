@@ -7,56 +7,44 @@
         <div class="van-hairline--bottom table-tit">
           <div class="clearfix">
             <div class="fl">订单编号：{{item.order}}</div>
-            <div class="fr">{{item.time}}</div>
+            <div class="fr">{{item.ymdhms}}</div>
           </div>
         </div>
         <div class="title-box clearfix">
           <div class="fl">{{item.money}}</div>
-          <div class="fr fail">{{item.title}}</div>
+          <div class="fr"
+               :class="[{'fail': item.status === '2'}, {'success': item.status === '1'}, {'warning': item.status === '0'}]">{{item.statusText}}</div>
         </div>
-        <div class="some-info-box">订单号：{{item.order}}</div>
-        <div class="some-info-box">订单日期：{{item.date}}</div>
-        <div class="some-info-box">订单日期：{{item.date}}</div>
-        <div class="some-info-box fail">提现失败原因：账户错误</div>
+        <div v-if="item.name"
+             class="some-info-box">持卡人:{{item.name}}</div>
+        <div class="some-info-box">开户行:{{item.address}}</div>
+        <div class="some-info-box">银行卡号:{{item.number}}</div>
+        <div v-if="item.status === '2'"
+             class="some-info-box fail">提现失败原因：{{item.text}}</div>
       </div>
+      <nomoreComponents :tipBoxTop="tipBoxTop"
+                        :tipSrc="tipSrc"
+                        :dataList="detailList"></nomoreComponents>
     </div>
+
   </div>
 </template>
 <script>
+import moment from 'moment'
 import { pullWalletRecord } from '@/api/getData'
+import nomoreComponents from '@/components/nomore'
+
 export default {
   data () {
     return {
-      detailList: [{
-        title: '占位符',
-        sum: '¥200.00',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }, {
-        title: '占位符',
-        sum: '¥200.00',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }, {
-        title: '占位符',
-        sum: '¥200.00',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }, {
-        title: '占位符',
-        sum: '¥200.00',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }, {
-        title: '占位符',
-        sum: '¥200.00',
-        orderId: '283721946129',
-        date: '2020.01.21'
-      }]
+      detailList: null
     }
   },
   onLoad () {
     this.pullWalletRecord()
+  },
+  components: {
+    nomoreComponents
   },
   methods: {
     async pullWalletRecord () {
@@ -64,7 +52,18 @@ export default {
         const res = await pullWalletRecord()
         console.log(res)
         if (res.data.code === 1) {
-          // this.detailList = res.data.data
+          let arr = res.data.data
+          arr.forEach((item, key) => {
+            item.ymdhms = moment(item.time * 1000).format('YYYY-MM-DD HH:mm:ss ')
+            if (item.status === '0') {
+              item.statusText = '审核中'
+            } else if (item.status === '1') {
+              item.statusText = '已提现'
+            } else if (item.status === '2') {
+              item.statusText = '提现失败'
+            }
+          })
+          this.detailList = arr
         }
       } catch (error) {
 

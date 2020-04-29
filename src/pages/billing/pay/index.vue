@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form-box">
-      <!-- <div v-if="payType == '2'"
+      <div v-if="payType == '2'"
            class="wxpay">
         <van-field :value="address"
                    label-class="label-style"
@@ -17,13 +17,10 @@
                    placeholder="请输入帐号"
                    input-align="right"
                    @input="onInputNumberKey" />
-      </div> -->
-      <div class="card">
+      </div>
+      <div v-if="payType == '3'"
+           class="card">
         <van-field :value="name"
-                   label="用户名"
-                   placeholder="请输入用户名"
-                   input-align="right" />
-        <!-- <van-field :value="name"
                    label="持卡人"
                    placeholder="请输入持卡人"
                    input-align="right"
@@ -41,9 +38,9 @@
                    maxlength="30"
                    placeholder="请输入银行卡号"
                    input-align="right"
-                   @input="onInputNumberKey" /> -->
+                   @input="onInputNumberKey" />
       </div>
-      <!-- <div v-if="payType == '1'"
+      <div v-if="payType == '1'"
            class="alipay">
         <van-field :value="address"
                    label-class="label-style"
@@ -67,9 +64,9 @@
                    input-align="right"
                    maxlength="30"
                    @input="onInputNameKey" />
-      </div> -->
+      </div>
     </div>
-    <!-- <div class="bottom-btn-box">
+    <div class="bottom-btn-box">
       <div class="bottom-btn-margin">
         <van-button :color="btnColor"
                     size="small"
@@ -78,7 +75,7 @@
                     block
                     @click="submit">确定</van-button>
       </div>
-    </div> -->
+    </div>
     <van-toast id="van-toast" />
 
   </div>
@@ -157,7 +154,7 @@ export default {
         console.log(res)
         if (res.data.code === 1) {
           Toast('提交成功')
-          this.goNextPage()
+          mpvue.navigateBack()
         } else {
           Toast.fail(res.data.msg)
         }
@@ -174,6 +171,11 @@ export default {
     },
     onInputAddressKey (e) {
       this.address = e.mp.detail
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }

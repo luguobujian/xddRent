@@ -2,8 +2,13 @@
   <div class="container">
     <div class="info-box">
       <div class="info-tit-box">收款账户</div>
-      <div class="o-info-box">支付宝账户</div>
-      <div class="o-info-box">收款支付宝帐号：1877263726</div>
+      <div v-if="radio === 'alipay'"
+           class="o-info-box">支付宝账户</div>
+      <div v-if="radio === 'card'"
+           class="o-info-box">银行卡账户</div>
+      <div v-if="radio === 'wxpay'"
+           class="o-info-box">微信账户</div>
+      <div class="o-info-box">收款帐号：{{(radioInfo && radioInfo.number) || ''}}</div>
     </div>
     <div class="form-box">
       <div>
@@ -11,9 +16,13 @@
                    label="￥"
                    placeholder="请输入提现金额"
                    label-width="22px"
-                   custom-style="font-family:'Oswald-Medium'" />
+                   custom-style="font-family:'Oswald-Medium'"
+                   :value="money"
+                   @input="onInputMoneyKey" />
       </div>
-      <div class="tip-box">当前余额：¥300.00 <span class="colorBtn">全部提现</span></div>
+      <div class="
+                   tip-box">当前余额：¥{{haveMoney}} <span class="colorBtn">全部提现</span>
+      </div>
     </div>
     <div class="bottom-btn-box">
       <div class="bottom-btn-margin">
@@ -35,90 +44,224 @@
       <div class="payout-box">
         <div class="payout-tit">选择提现账户</div>
         <div class="payout-type-box">
-          <van-radio-group>
-            <div class="type-item card">
+          <van-radio-group :value="radio"
+                           @input="onChange">
+            <div class="type-item card"
+                 @click="onClick">
               <div class="type-item-left">
                 <div class="type-item-tit">银行卡</div>
                 <div class="type-item-cell">
                   <div class="small-tit">持卡人</div>
-                  <div>马小哈</div>
+                  <div>{{cardInfo && cardInfo.name}}</div>
                 </div>
                 <div class="type-item-cell">
                   <div class="small-tit">开户行</div>
-                  <div>中国工商银行北京北太平桥支行</div>
+                  <div>{{cardInfo &&cardInfo.address}}</div>
                 </div>
                 <div class="type-item-cell">
                   <div class="small-tit">银行卡号</div>
-                  <div>62357237218451285</div>
+                  <div>{{cardInfo &&cardInfo.number}}</div>
                 </div>
               </div>
               <div class="type-item-right">
                 <van-radio class="type-item-radio"
                            checked-color="#97D700"
-                           name="a"></van-radio>
+                           name="card"></van-radio>
               </div>
             </div>
-            <div class="type-item alipay">
+            <div class="type-item alipay"
+                 @click="onClick">
               <div class="type-item-left">
                 <div class="type-item-tit">支付宝</div>
                 <div class="type-item-cell">
                   <div class="small-tit">绑定手机</div>
-                  <div>186372636253</div>
+                  <div>{{alipayInfo && alipayInfo.address}}</div>
                 </div>
                 <div class="type-item-cell">
                   <div class="small-tit">帐号</div>
-                  <div>273627153@qq.com</div>
+                  <div>{{alipayInfo && alipayInfo.number}}</div>
                 </div>
               </div>
               <div class="type-item-right">
                 <van-radio class="type-item-radio"
                            checked-color="#97D700"
-                           name="b"></van-radio>
+                           name="alipay"></van-radio>
               </div>
             </div>
-            <div class="type-item wxpay">
+            <div class="type-item wxpay"
+                 @click="onClick">
               <div class="type-item-left">
                 <div class="type-item-tit">微信</div>
                 <div class="type-item-cell">
-                  <div class="small-tit">暂无微信账户信息</div>
-                  <!-- <div>186372636253</div> -->
+                  <div v-if="!wxpayInfo"
+                       class="small-tit">暂无微信账户信息</div>
+                  <div v-if="wxpayInfo"
+                       class="small-tit">绑定手机</div>
+                  <div v-if="wxpayInfo">{{wxpayInfo && wxpayInfo.address}}</div>
                 </div>
-                <!-- <div class="type-item-cell">
+                <div v-if="wxpayInfo"
+                     class="type-item-cell">
                   <div class="small-tit">帐号</div>
-                  <div>273627153@qq.com</div>
-                </div> -->
+                  <div>{{wxpayInfo && wxpayInfo.number}}</div>
+                </div>
               </div>
               <div class="type-item-right">
-                <!-- <van-radio class="type-item-radio"
+                <van-radio v-if="wxpayInfo"
+                           class="type-item-radio"
                            checked-color="#97D700"
-                           name="b"></van-radio> -->
-                <div class="add-button">去添加</div>
+                           name="wxpay"></van-radio>
+                <div v-if="!wxpayInfo"
+                     class="add-button">去添加</div>
               </div>
             </div>
           </van-radio-group>
         </div>
       </div>
-
     </van-popup>
+    <van-toast id="van-toast" />
+    <van-dialog :show="show"
+                id="van-dialog"
+                use-slot
+                title="输入提现密码"
+                show-cancel-button
+                confirmButtonColor="#97D700"
+                @confirm="submit">
+
+      <div class="inp-box">
+        <van-cell-group>
+          <van-field :value="password"
+                     type="password"
+                     border
+                     placeholder="请输入提现密码"
+                     @input="onInputPassword" />
+        </van-cell-group>
+      </div>
+      <div class="tip-text"
+           @click="goGetPassPage">忘记密码?</div>
+    </van-dialog>
   </div>
 </template>
 <script>
+// import Dialog from '../../../../static/vant/dialog/dialog'
+import Toast from '../../../../dist/wx/static/vant/toast/toast'
+import { pullWallet, myMoney, firstPay, accountList } from '@/api/getData'
 export default {
   data () {
     return {
-      showPayout: false
+      showPayout: false,
+      radio: null,
+      radioInfo: null,
+      // accountList: null,
+      cardInfo: null,
+      alipayInfo: null,
+      wxpayInfo: null,
+      type: null,
+      number: null,
+      money: null,
+      haveMoney: null,
+      show: false,
+      hasPassword: null,
+      password: null
     }
+  },
+  onLoad () {
+    this.myMoney()
+    this.firstPay()
+    this.accountList()
   },
   mounted () {
 
   },
   methods: {
+    async myMoney () {
+      try {
+        const res = await myMoney()
+        console.log(res)
+        this.haveMoney = res.data.data.money
+      } catch (error) {
+        console.log('* myMoney error', error)
+        Toast.fail(error.data.msg)
+      }
+    },
+    async firstPay () {
+      try {
+        const res = await firstPay()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.hasPassword = res.data.data
+        }
+      } catch (error) {
+        console.log('* firstPay error', error)
+      }
+    },
+    async accountList () {
+      try {
+        const res = await accountList()
+        console.log(res)
+        let arr = res.data.data
+        arr.forEach((item, key) => {
+          if (item.type === '1') {
+            this.alipayInfo = item
+          } else if (item.type === '2') {
+            this.wxpayInfo = item
+          } else if (item.type === '3') {
+            this.cardInfo = item
+          }
+        })
+      } catch (error) {
+        console.log('* accountList error', error)
+      }
+    },
+    async submit () {
+      try {
+        if (!this.radioInfo) {
+          Toast.fail('请选择提现账号')
+          return
+        }
+        if (!this.radioInfo.number) {
+          Toast.fail('提现账号获取失败')
+          return
+        }
+        if (!this.money) {
+          Toast.fail('提现金额不能为空')
+          return
+        }
+        const res = await pullWallet({ type: this.radioInfo.type, number: this.radioInfo.number, money: this.money, pwd: this.password })
+        console.log(res)
+        if (res.data.code === 1) {
+          Toast.success('提交成功')
+          setTimeout(() => { mpvue.navigateBack() }, 1500)
+        }
+      } catch (error) {
+        console.log('* submit error', error)
+      }
+    },
+    onInputMoneyKey (e) {
+      this.money = e.mp.detail
+    },
+    onInputPassword (e) {
+      this.password = e.mp.detail
+    },
+    onChange (e) {
+      console.log(e)
+      this.radio = e.mp.detail
+      this.radioInfo = this[e.mp.detail + 'Info']
+      if (this.hasPassword === 1) {
+        this.show = true
+      } else {
+        mpvue.navigateTo({
+          url: '/pages/billing/settings/main?from=setPass'
+        })
+      }
+
+      this.showPayout = false
+    },
     goPayout () {
       this.showPayout = true
     },
-    go () {
+    goGetPassPage () {
       mpvue.navigateTo({
-        url: '/pages/billing/settings/main'
+        url: '/pages/billing/settings/main?from=getPass'
       })
     }
   }
@@ -210,7 +353,7 @@ export default {
 <style>
 .van-cell {
   font-size: 24px !important;
-  padding: 22px 0 !important;
+  padding: 22px 16px 10px !important;
 }
 .van-cell__title {
   flex: none !important;
@@ -235,6 +378,16 @@ export default {
   margin-top: 27px;
 }
 .wxpay .small-tit {
-  width: auto;
+  /* width: auto; */
+}
+.inp-box {
+  margin: 0 30px;
+}
+.tip-text {
+  font-size: 13px;
+  color: #666666;
+  text-align: right;
+  line-height: 30px;
+  margin: 0 30px;
 }
 </style>

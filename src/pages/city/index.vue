@@ -27,7 +27,8 @@
         <div class="some-set-box">
           <div v-if="selectedCity && selectedCity.name"
                class="this-one-city">{{selectedCity && selectedCity.name}}</div>
-          <div class="get-location">
+          <div class="get-location"
+               @click="wxGetSetting">
             <van-icon name="../../../static/icons/loca.png"
                       size="16px" />重新定位
           </div>
@@ -77,10 +78,6 @@ import citys from './city'
 
 import { getHotCity } from '@/api/getData'
 
-import QQMapWX from '../../../static/qqmap-wx-jssdk1.2/qqmap-wx-jssdk.js'
-let qqmapsdk = new QQMapWX({
-  key: '7URBZ-BJHKG-WUDQL-I6COI-YRTOK-RMFWF'
-})
 export default {
   data () {
     return {
@@ -93,7 +90,6 @@ export default {
         name: '北京市',
         cityid: 2
       },
-
       hisCitys: [],
       hotCitys: null,
       searchRes: []
@@ -117,40 +113,7 @@ export default {
         that.hisCitys = res.data
       }
     })
-    // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
-    wx.getSetting({
-      success (res) {
-        if (!res.authSetting['scope.record']) {
-          wx.authorize({
-            scope: 'scope.userLocation',
-            success () {
-              wx.getLocation({
-                type: 'wgs84',
-                success (res) {
-                  console.log(res)
-                  qqmapsdk.reverseGeocoder({
-                    coord_type: 0,
-                    location: {
-                      latitude: res.latitude,
-                      longitude: res.longitude
-                    },
-                    success (res) {
-                      console.log(res)
-                    },
-                    fail (err) {
-                      console.log(err)
-                    },
-                    complete (err) {
-                      console.log(err)
-                    }
-                  })
-                }
-              })
-            }
-          })
-        }
-      }
-    })
+    this.wxGetSetting()
   },
   mounted () {
     let citys = this.citys
@@ -161,6 +124,35 @@ export default {
     this.primaryListData = tempData
   },
   methods: {
+    wxGetSetting () {
+      let that = this
+      wx.getSetting({
+        success (res) {
+          if (!res.authSetting['scope.record']) {
+            wx.authorize({
+              scope: 'scope.userLocation',
+              success () {
+                wx.getLocation({
+                  type: 'wgs84',
+                  success (res) {
+                    console.log(res)
+                    that.getCityInfo(res)
+                  }
+                })
+              }
+            })
+          } else {
+            wx.getLocation({
+              type: 'wgs84',
+              success (res) {
+                console.log(res)
+                that.getCityInfo(res)
+              }
+            })
+          }
+        }
+      })
+    },
     async getHotCity () {
       try {
         const res = await getHotCity()
@@ -195,20 +187,35 @@ export default {
       }
       this.searchRes = arr
     },
+    getCityInfo (res) {
+      let that = this
+      wx.request({
+        url: 'https://api.map.baidu.com/geocoder/v2/?ak=LmUqsfoEtzX3YH0Zuv5v7B664w0jytO9&location=' + res.latitude + ',' + res.longitude + '&output=json',
+        success: function (res) {
+          console.log(res.data.result)
+          let cityName = res.data.result.addressComponent.city
+          for (let i = 0; i < that.primaryListData.length; i++) {
+            let item = that.primaryListData[i]
+            if (cityName === item.name) {
+              that.selectedCity = {
+                name: item.name,
+                cityid: item.cityid
+              }
+            }
+          }
+        }
+      })
+    },
     chsCitys (e) {
       console.log(e)
       this.selectedCity = {
         name: e.mp.currentTarget.dataset.city,
         cityid: e.mp.currentTarget.dataset.id
       }
-
       const pages = getCurrentPages()
       const prevPage = pages[pages.length - 2]
-
       prevPage.data.$root[0].setData('showCity', this.selectedCity)
-
       this.keyword = ''
-
       let hisCitys = this.hisCitys
       let arr = this.hisCitys.map(item => item.cityid)
       console.log(arr)
@@ -223,7 +230,6 @@ export default {
         key: 'hisCitys',
         data: hisCitys
       })
-
       mpvue.navigateBack()
     },
     searchRes () {

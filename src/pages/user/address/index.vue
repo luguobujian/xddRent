@@ -50,7 +50,7 @@
                     @click="goNextPage">新增地址</van-button>
       </div>
     </div>
-    <van-dialog id="van-dialog"
+    <van-dialog  id="van-dialog"
                 confirmButtonColor="#97D700" />
   </div>
 </template>

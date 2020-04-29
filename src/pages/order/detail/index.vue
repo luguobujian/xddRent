@@ -5,7 +5,7 @@
         <div class="p-t-box">
           <div>
             <img class="top-s-box"
-                 src="/static/images/top-bg.png"
+                 src="/static/images/top-bg.jpg"
                  alt="">
           </div>
           <div class="txt-tip-box"
@@ -265,7 +265,8 @@
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-l Oswald-Medium">¥{{detail.pay_price}}</span>
       </div>
-      <div class="">
+      <div class=""
+           @click="goShare">
         <van-button v-if="mark==='DTH' || mark==='DZF' || mark==='DFH' || mark==='DFH'"
                     plain
                     size="small"
@@ -352,11 +353,11 @@ export default {
           this.getimages = result.getimages.split(',')
           this.returnimages = result.returnimages.split(',')
 
-          this.createtime = moment(String(result.createtime * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 创建时间
-          this.paytime = moment(String(result.paytime * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 支付时间
-          // this.get_time = moment(String(result.get_time * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 取货时间
-          this.returntime = moment(String(result.returntime * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 还货时间
-          this.push_goods_time = moment(String(result.push_goods_time * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 返款时间
+          this.createtime = moment(result.createtime * 1000).format('YYYY-MM-DD HH:mm:ss ') // 创建时间
+          this.paytime = moment(result.paytime * 1000).format('YYYY-MM-DD HH:mm:ss ') // 支付时间
+          // this.get_time = moment(result.get_time * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 取货时间
+          this.returntime = moment(result.returntime * 1000).format('YYYY-MM-DD HH:mm:ss ') // 还货时间
+          this.push_goods_time = moment(result.push_goods_time * 1000).format('YYYY-MM-DD HH:mm:ss ') // 返款时间
         }
       } catch (error) {
 
@@ -376,6 +377,11 @@ export default {
     goNextPage () {
       mpvue.navigateTo({
         url: '/pages/order/transport/main'
+      })
+    },
+    goShare () {
+      mpvue.navigateTo({
+        url: '/pages/share/main'
       })
     }
   }

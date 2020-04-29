@@ -5,6 +5,7 @@
     "pages/city/main",
     "pages/order/main",
     "pages/order/detail/main",
+    "pages/share/main",
     "pages/order/transport/main",
     "pages/order_now/main",
     "pages/rent_now/main",

@@ -51,6 +51,9 @@ export default {
   onLoad () {
     this.accountList()
   },
+  onShow () {
+    this.accountList()
+  },
   mounted () {
 
   },
@@ -61,7 +64,7 @@ export default {
         console.log(res)
         this.detailList = res.data.data
       } catch (error) {
-
+        console.log('* accountList error', error)
       }
     },
     goNextPage (e) {

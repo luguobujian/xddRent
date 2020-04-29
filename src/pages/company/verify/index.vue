@@ -4,7 +4,7 @@
       <div class="p-t-box">
         <div>
           <img class="top-s-box"
-               src="/static/images/top-bg.png"
+               src="/static/images/top-bg.jpg"
                alt="">
         </div>
         <div class="txt-tip-box"

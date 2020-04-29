@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import citys from '../city/city'
 import { getBanner, getGoodsType } from '@/api/getData'
 let that = null
 export default {
@@ -96,6 +97,7 @@ export default {
       setData: function (key, value) {
         that[key] = value
       },
+      citys: citys.city,
       showCity: {
         name: '北京市',
         cityid: 2
@@ -104,10 +106,16 @@ export default {
   },
   onLoad () {
     this.getBanner()
+    this.wxGetSetting()
     // this.getGoodsType()
   },
   mounted () {
-    that = this
+    let citys = this.citys
+    let tempData = []
+    citys.forEach((item, key) => {
+      tempData = tempData.concat(item.cities)
+    })
+    this.primaryListData = tempData
   },
   methods: {
     /**
@@ -132,6 +140,54 @@ export default {
       } catch (error) {
         console.log('* error', error)
       }
+    },
+    wxGetSetting () {
+      let that = this
+      wx.getSetting({
+        success (res) {
+          if (!res.authSetting['scope.record']) {
+            wx.authorize({
+              scope: 'scope.userLocation',
+              success () {
+                wx.getLocation({
+                  type: 'wgs84',
+                  success (res) {
+                    console.log(res)
+                    that.getCityInfo(res)
+                  }
+                })
+              }
+            })
+          } else {
+            wx.getLocation({
+              type: 'wgs84',
+              success (res) {
+                console.log(res)
+                that.getCityInfo(res)
+              }
+            })
+          }
+        }
+      })
+    },
+    getCityInfo (res) {
+      let that = this
+      wx.request({
+        url: 'https://api.map.baidu.com/geocoder/v2/?ak=LmUqsfoEtzX3YH0Zuv5v7B664w0jytO9&location=' + res.latitude + ',' + res.longitude + '&output=json',
+        success: function (res) {
+          console.log(res.data.result)
+          let cityName = res.data.result.addressComponent.city
+          for (let i = 0; i < that.primaryListData.length; i++) {
+            let item = that.primaryListData[i]
+            if (cityName === item.name) {
+              that.showCity = {
+                name: item.name,
+                cityid: item.cityid
+              }
+            }
+          }
+        }
+      })
     },
     bindChange (e) {
       this.indicatorDots = e.mp.detail.current

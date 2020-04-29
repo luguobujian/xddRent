@@ -233,16 +233,34 @@ export const myMoney = data =>
   API.request('api/Money/myMoney', data, 'post')
 
 /**
+*提现
+*/
+export const pullWallet = data =>
+  API.request('api/Money/pullWallet', data, 'post')
+
+/**
+*首次支付密码验证
+*/
+export const firstPay = () =>
+  API.request('api/Money/firstPay', {}, 'post')
+
+/**
+*设置提现密码
+*/
+export const setPwd = (data) =>
+  API.request('api/Money/setPwd', data, 'post')
+
+/**
 *收益明细
 */
-export const walletRecord = data =>
-  API.request('api/Money/walletRecord', data, 'post')
+export const walletRecord = () =>
+  API.request('api/Money/walletRecord', {}, 'post')
 
 /**
 *提现记录
 */
-export const pullWalletRecord = data =>
-  API.request('api/Money/pullWalletRecord', data, 'post')
+export const pullWalletRecord = () =>
+  API.request('api/Money/pullWalletRecord', {}, 'post')
 
 /**
 *账号列表
