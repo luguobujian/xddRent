@@ -2,8 +2,9 @@
   <div class="container">
     <van-sticky>
       <div class="top-search-btn van-hairline">
-        <div class="city-box">
-          <div class="city PingFangSC-Medium">{{city.name}}</div>
+        <div class="city-box"
+             @click="goChsCitys">
+          <div class="city PingFangSC-Medium">{{showCity.name}}</div>
           <van-icon name="/static/icons/arrow-down.png" />
         </div>
         <div class="search-btn-box">
@@ -24,7 +25,7 @@
           <img :src="item.pro_img"
                alt="">
         </div>
-        <div class="result-name PingFangSC-Medium">{{item.name}}</div>
+        <div class="result-name PingFangSC-Medium">{{item && item.name}}</div>
         <div class="n-address-box">
           <div class="location-box PingFangSC-Regular">
             <van-icon class="location-ico"
@@ -54,18 +55,23 @@
 <script>
 import { getRecommentGoods, getSpePriceGoods, getGoodsList } from '@/api/getData'
 import nomoreComponents from '@/components/nomore'
-
+let that = null
 export default {
   data () {
     return {
-      city: {
+      showCity: {
         name: '北京市',
         tags: 'BEIJING,北京市',
         cityid: 2
       },
+      setData: function (key, value) {
+        that[key] = value
+      },
       fromCode: null,
       typeId: null,
       reuslts: null,
+      page: 1,
+      page_size: 8,
       tipBoxTop: '50px'
     }
   },
@@ -74,21 +80,29 @@ export default {
   },
   onLoad (options) {
     console.log(options)
+    that = this
     mpvue.setNavigationBarTitle({
       title: decodeURI(options.title)
     })
 
     this.fromCode = Number(options.fromCode)
-    this.typeId = options.type_id
-
+    this.typeId = options.type
+    this.showCity = {
+      name: options.city,
+      tags: '',
+      cityid: options.cityid
+    }
+    this.getGoodsList()
+  },
+  onShow () {
     this.getGoodsList()
   },
   methods: {
     async getGoodsList () {
       try {
         if (this.fromCode === 1) {
-          const res1 = await getRecommentGoods({ area_id: this.city.id, page: '', page_size: '' })
-          console.log(res1)
+          const res1 = await getRecommentGoods({ area_id: this.showCity.cityid, page: this.page, page_size: this.page_size })
+          console.log('res1', res1)
           // this.reuslts = res1.data.data
           let arr = res1.data.data
           arr.forEach((item, key) => {
@@ -96,8 +110,8 @@ export default {
           })
           this.reuslts = arr
         } else if (this.fromCode === 2) {
-          const res2 = await getSpePriceGoods({ area_id: this.city.id, page: '', page_size: '' })
-          console.log(res2)
+          const res2 = await getSpePriceGoods({ area_id: this.showCity.cityid, page: this.page, page_size: this.page_size })
+          console.log('res2', res2)
           // this.reuslts = res2.data.data
           let arr = res2.data.data
           arr.forEach((item, key) => {
@@ -105,8 +119,8 @@ export default {
           })
           this.reuslts = arr
         } else if (this.fromCode === 3) {
-          const res3 = await getGoodsList({ type_id: this.typeId, area_id: this.city.id, page: '', page_size: '' })
-          console.log(res3)
+          const res3 = await getGoodsList({ type_id: this.typeId, area_id: this.showCity.cityid, page: this.page, page_size: this.page_size })
+          console.log('res2', res3)
           // this.reuslts = res3.data.data
           let arr = res3.data.data
           arr.forEach((item, key) => {
@@ -117,6 +131,11 @@ export default {
       } catch (error) {
         console.log('* getGoodsList error', error)
       }
+    },
+    goChsCitys () {
+      mpvue.navigateTo({
+        url: `/pages/city/main?city=${this.showCity.name}&cityid=${this.showCity.cityid}`
+      })
     },
     goNextPage (e) {
       console.log(e)

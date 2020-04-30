@@ -214,6 +214,8 @@ export default {
       }
       const pages = getCurrentPages()
       const prevPage = pages[pages.length - 2]
+      console.dir(prevPage)
+      console.dir(this.selectedCity)
       prevPage.data.$root[0].setData('showCity', this.selectedCity)
       this.keyword = ''
       let hisCitys = this.hisCitys

@@ -46,7 +46,7 @@
     </div>
     <div class="items-box">
       <div class="item"
-           @click="goNextPage('product', {title: '汽车领域', fromCode: 3, type: 1})">
+           @click="goNextPage('product', {title: '汽车领域', fromCode: 3, type: 2})">
         <div class="item-tit PingFangSC-Medium">汽车领域</div>
         <div class="sub-item-tit">Automotive field</div>
         <div class="item-img">
@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class="item item-bg item-middle"
-           @click="goNextPage('product', {title: '零售领域', fromCode: 3, type: 2})">
+           @click="goNextPage('product', {title: '零售领域', fromCode: 3, type: 3})">
         <div class="item-tit PingFangSC-Medium">零售领域</div>
         <div class="sub-item-tit">Retail area</div>
         <div class="item-img">
@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="item item-bg"
-           @click="goNextPage('product', {title: '运输领域', fromCode: 3, type: 3})">
+           @click="goNextPage('product', {title: '运输领域', fromCode: 3, type: 4})">
         <div class="item-tit PingFangSC-Medium">运输领域</div>
         <div class="sub-item-tit">Transportation field</div>
         <div class="item-img">
@@ -105,6 +105,7 @@ export default {
     }
   },
   onLoad () {
+    that = this
     this.getBanner()
     this.wxGetSetting()
     // this.getGoodsType()
@@ -194,7 +195,7 @@ export default {
     },
     goNextPage (p, data) {
       mpvue.navigateTo({
-        url: `${this.routers[p]}?${this.parseParams(data)}`
+        url: `${this.routers[p]}?${this.parseParams(data)}&city=${this.showCity.name}&cityid=${this.showCity.cityid}`
       })
     },
     parseParams (data) {

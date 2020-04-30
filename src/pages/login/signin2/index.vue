@@ -89,6 +89,10 @@ export default {
           Toast.fail('密码不能为空')
           return
         }
+        if (!(/^[a-z0-9]{6,16}$/.test(this.password))) {
+          Toast.fail('密码格式错误')
+          return
+        }
         const res = await login({ account: this.mobile, password: this.password })
         console.log(res)
         if (res.data.code === 1) {
