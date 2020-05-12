@@ -48,7 +48,8 @@
               <div class="coupons-item-box"
                    v-for="(item, index) in couponsArr"
                    :key="index">
-                <div class="coupons-item">
+                <div v-if="index < 2"
+                     class="coupons-item">
                   <div>满{{item.del_rules}}减{{item.del_price}}</div>
                 </div>
               </div>
@@ -199,7 +200,7 @@
 </template>
 <script>
 import wxParse from 'mpvue-wxparse'
-import Toast from '../../../../static/vant/toast/toast.js'
+// import Toast from '../../../../static/vant/toast/toast.js'
 import { getGoodsInfo, getCoupons, getGoodsFormat } from '@/api/getData'
 let pnum = null
 export default {
@@ -333,8 +334,8 @@ export default {
     },
     goOrderPage (r, is) {
       if (this.specificationCombination.length !== this.specification.length) {
-        Toast.fail('请选择产品规格')
-        setTimeout(() => { this.showAttrs = true }, 1500)
+        // Toast.fail('请选择产品规格')
+        this.showAttrs = true
         return
       }
       this.is_buy = is

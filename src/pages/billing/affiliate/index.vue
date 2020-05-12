@@ -1,5 +1,5 @@
 <template>
-  <div class="container van-hairline-top">
+  <div class="container van-hairline--top">
     <div class="itmes-box">
       <div class="item"
            v-for="(item, index) in detailList"
@@ -45,14 +45,29 @@ import { accountList } from '@/api/getData'
 export default {
   data () {
     return {
-      detailList: []
+      detailList: [{
+        address: '',
+        name: '',
+        number: '',
+        type: '3'
+      }, {
+        address: '',
+        name: '',
+        number: '',
+        type: '1'
+      }, {
+        address: '',
+        name: '',
+        number: '',
+        type: '2'
+      }]
     }
   },
   onLoad () {
-    this.accountList()
+    // this.accountList()
   },
   onShow () {
-    this.accountList()
+    // this.accountList()
   },
   mounted () {
 

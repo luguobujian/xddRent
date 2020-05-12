@@ -1,5 +1,5 @@
 <template>
-  <div class="container van-hairline-top">
+  <div class="container van-hairline--top">
     <div class="billing-detail-box">
       <div class="title-box clearfix">
         <div class="fl">提成收益</div>

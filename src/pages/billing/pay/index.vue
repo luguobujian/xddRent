@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="form-box">
       <div v-if="payType == '2'"
            class="wxpay">

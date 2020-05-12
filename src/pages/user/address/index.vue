@@ -50,7 +50,7 @@
                     @click="goNextPage">新增地址</van-button>
       </div>
     </div>
-    <van-dialog  id="van-dialog"
+    <van-dialog id="van-dialog"
                 confirmButtonColor="#97D700" />
   </div>
 </template>
@@ -132,7 +132,7 @@ export default {
         this.addressResult = ''
         this.addressIndex = ''
         const res = delAddress({ id })
-        console.log(res)
+        console.log('delAddress', res)
         if (res['_v'].data.code === 1) {
           Toast.success('删除成功')
           this.getMyAddress()

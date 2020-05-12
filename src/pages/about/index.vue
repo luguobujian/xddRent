@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="top-main-box">
       <div>
         <div class="logo-box">
@@ -34,9 +34,9 @@ export default {
     }
   },
   methods: {
-    goNextPage () {
+    goNextPage (i) {
       mpvue.navigateTo({
-        url: '/pages/about/detail/main?id=1'
+        url: `/pages/about/detail/main?idx=${i + 1}&tit=${this.cellItems[i].text}`
       })
     }
   }

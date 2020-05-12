@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="info-box">
       <div class="info-tit-box">收款账户</div>
       <div v-if="radio === 'alipay'"
@@ -10,6 +10,10 @@
            class="o-info-box">微信账户</div>
       <div class="o-info-box">收款帐号：{{(radioInfo && radioInfo.number) || ''}}</div>
     </div>
+    <van-icon class="chs-btn"
+              size="14"
+              name="arrow"
+              @click="showPayout = true" />
     <div class="form-box">
       <div>
         <van-field type="number"
@@ -21,7 +25,8 @@
                    @input="onInputMoneyKey" />
       </div>
       <div class="
-                   tip-box">当前余额：¥{{haveMoney}} <span class="colorBtn">全部提现</span>
+                   tip-box">当前余额：¥{{haveMoney}} <span class="colorBtn"
+              @click="getAll">全部提现</span>
       </div>
     </div>
     <div class="bottom-btn-box">
@@ -125,6 +130,7 @@
                 title="输入提现密码"
                 show-cancel-button
                 confirmButtonColor="#97D700"
+                @cancel="show=false"
                 @confirm="submit">
 
       <div class="inp-box">
@@ -246,6 +252,35 @@ export default {
       console.log(e)
       this.radio = e.mp.detail
       this.radioInfo = this[e.mp.detail + 'Info']
+      // if (this.hasPassword === 1) {
+      //   this.show = true
+      // } else {
+      //   mpvue.navigateTo({
+      //     url: '/pages/billing/settings/main?from=setPass'
+      //   })
+      // }
+
+      this.showPayout = false
+    },
+    getAll () {
+      this.money = this.haveMoney
+    },
+    goPayout () {
+      if (!this.money) {
+        Toast.fail('提现金额不能为空')
+        return
+      }
+
+      if (!this.radioInfo) {
+        Toast.fail('请选择提现账号')
+        return
+      }
+
+      if (this.money > this.haveMoney) {
+        Toast.fail('提现金额不可大于当前金额')
+        return
+      }
+
       if (this.hasPassword === 1) {
         this.show = true
       } else {
@@ -255,9 +290,6 @@ export default {
       }
 
       this.showPayout = false
-    },
-    goPayout () {
-      this.showPayout = true
     },
     goGetPassPage () {
       mpvue.navigateTo({
@@ -302,6 +334,11 @@ export default {
   margin: 36px 15px !important;
 }
 
+.chs-btn {
+  position: absolute;
+  top: 16px;
+  right: 15px;
+}
 /* =======↓=payout======== */
 .payout-tit {
   font-size: 17px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div>
       <van-field :value="mobile"
                  placeholder="请输入手机号"

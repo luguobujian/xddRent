@@ -1,9 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="main-box">
       <div class="top-box">
         <div class="top-tit-box">钱包余额(元)</div>
         <div class="num-box Oswald-Medium">{{money}}</div>
+        <div class="sub-num-box PingFangSC-Regular">免押金额度：{{mymoney}}</div>
         <div class="bottom-btn-margin">
           <van-button color="#97D700"
                       size="small"
@@ -37,7 +38,8 @@ export default {
         { text: '提现记录', path: '/pages/billing/history/main' }
       ],
       bottomBtn: [{ text: '管理提现账户', path: '/pages/billing/affiliate/main' }],
-      money: '0.00'
+      money: '0.00',
+      mymoney: '0.00'
     }
   },
   onLoad () {
@@ -52,6 +54,7 @@ export default {
         const res = await myMoney()
         console.log(res)
         this.money = res.data.data.money
+        this.mymoney = res.data.data.mymoney
       } catch (error) {
         console.log('* myMoney error', error)
       }
@@ -78,7 +81,7 @@ export default {
   font-size: 15px;
   color: #999999;
   line-height: 21px;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 .bottom-box {
@@ -92,13 +95,17 @@ export default {
   line-height: 51px;
   margin-top: 5px;
 }
+.sub-num-box {
+  font-size: 15px;
+  color: #999999;
+}
 .cell-group-box {
   margin-top: 30px;
 }
 .bottom-btn-margin {
   font-size: 15px;
   text-align: center;
-  padding: 30px 15px 15px !important;
+  padding: 20px 15px 15px !important;
 }
 </style>
 <style >

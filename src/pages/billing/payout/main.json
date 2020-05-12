@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "编辑微信",
+  "navigationBarTitleText": "提现",
   "usingComponents": {
     "van-cell": "/static/vant/cell/index",
     "van-field": "/static/vant/field/index",

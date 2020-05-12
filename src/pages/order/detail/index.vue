@@ -15,7 +15,14 @@
                         size="19px" />{{statusText}}
             </div>
             <div v-if="showSubtit"
-                 class="cause-box">未通过原因：联系方式不正确</div>
+                 class="cause-box">
+              <!-- 未通过原因：联系方式不正确 -->
+              <div v-if="mark === 'DZF'">剩余
+                <van-count-down :time="countDown"
+                                format="HH 时 mm 分" /> 自动关闭订单</div>
+              <div v-if="mark === 'YTK'">定金已于{{push_goods_time}}退还</div>
+              <div v-if="mark === 'ZLZ'">已使用30天</div>
+            </div>
           </div>
         </div>
         <!-- 还货图片 -->
@@ -101,7 +108,7 @@
           </div>
         </div>
         <!-- 收货信息 -->
-        <div v-if=" detail.get_methods===2"
+        <div v-if="detail.get_methods===2"
              class=" shouhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
@@ -189,19 +196,19 @@
             <span class="some-time-title">创建时间：</span>
             <span class="PingFangSC-Medium">{{createtime}}</span>
           </div>
-          <div v-if="detail.paytime">
+          <div v-if="detail.paytime && detail.paytime !=='0'">
             <span class="some-time-title">支付时间：</span>
             <span class="PingFangSC-Medium">{{paytime}}</span>
           </div>
-          <div v-if="detail.get_time">
+          <div v-if="detail.get_time && detail.get_time !=='0'">
             <span class="some-time-title">取货时间：</span>
             <span class="PingFangSC-Medium">{{detail.get_time}}</span>
           </div>
-          <div v-if="detail.returntime">
+          <div v-if="detail.returntime && detail.returntime !=='0'">
             <span class="some-time-title">还货时间：</span>
             <span class="PingFangSC-Medium">{{returntime}}</span>
           </div>
-          <div v-if="detail.push_goods_time">
+          <div v-if="detail.push_goods_time && detail.push_goods_time !=='0'">
             <span class="some-time-title">返款时间：</span>
             <span class="PingFangSC-Medium">{{push_goods_time}}</span>
           </div>
@@ -259,7 +266,7 @@
       </div>
     </div>
     <div class="bottom-btn-box">
-      <div class="ab-tit">
+      <div class="">
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-r">应付:</span>
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
@@ -274,7 +281,7 @@
                     custom-style="width: 90px"
                     round
                     type="default">取消订单</van-button>
-        <van-button v-if="mark==='DZF' && detial.get_methods === 2"
+        <van-button v-if="mark==='DZF' && detail.get_methods === 2"
                     size="small"
                     color="#97D700"
                     custom-style="width: 90px"
@@ -311,12 +318,14 @@ import { getOrderDetail, getTranspost } from '@/api/getData'
 export default {
   data () {
     return {
-      top: '66rpx',
+      top: '50rpx',
       id: null,
       mark: null,
+      countDown: null,
       statusText: null,
       showSubtit: true,
       detail: null,
+      get_methods: null,
       getimages: null,
       returnimages: null,
       createtime: null,
@@ -346,21 +355,28 @@ export default {
     async getOrderDetail () {
       try {
         const res = await getOrderDetail({ order_id: this.id })
-        console.log(res)
+        console.log('getOrderDetail', res)
         if (res.data.code === 1) {
           let result = res.data.data
           this.detail = res.data.data
-          this.getimages = result.getimages.split(',')
-          this.returnimages = result.returnimages.split(',')
-
-          this.createtime = moment(result.createtime * 1000).format('YYYY-MM-DD HH:mm:ss ') // 创建时间
-          this.paytime = moment(result.paytime * 1000).format('YYYY-MM-DD HH:mm:ss ') // 支付时间
+          this.get_methods = res.data.data.get_methods
+          this.createtime = moment(result.createtime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 创建时间
+          this.paytime = moment(result.paytime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 支付时间
           // this.get_time = moment(result.get_time * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 取货时间
           this.returntime = moment(result.returntime * 1000).format('YYYY-MM-DD HH:mm:ss ') // 还货时间
           this.push_goods_time = moment(result.push_goods_time * 1000).format('YYYY-MM-DD HH:mm:ss ') // 返款时间
+
+          this.getimages = result.getimages && result.getimages.split(',')
+          this.returnimages = result.returnimages && result.returnimages.split(',')
+
+          if (this.mark === 'DZF') {
+            let timeDown = result.createtime + (12 * 60 * 60) - (new Date().getTime() / 1000)
+            timeDown = timeDown > 0 ? parseInt(timeDown * 1000) : 0
+            this.countDown = timeDown
+          }
         }
       } catch (error) {
-
+        console.log('* error getOrderDetail', error)
       }
     },
     async getTranspost () {
@@ -657,6 +673,12 @@ export default {
 .bottom-btn-box .ab-tit {
   min-height: 1px;
 }
+.bottom-btn-box .bbb-l-r,
+.bottom-btn-box .bbb-l-l {
+  display: inline-block;
+  line-height: 35px;
+}
+
 .bbb-l {
   flex: 1;
   line-height: 35px;
@@ -679,6 +701,12 @@ export default {
 }
 </style>
 <style>
+.van-count-down {
+  display: inline-block;
+  color: #fff !important;
+  font-size: 13px !important;
+}
+
 .m-s-box ._van-icon {
   vertical-align: -10%;
   margin-right: 6px;

@@ -180,6 +180,11 @@ export default {
     onAddresstwoChange (e) {
       this.addresstwo = e.mp.detail
     }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
+    }
   }
 }
 </script>

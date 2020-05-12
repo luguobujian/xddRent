@@ -48,6 +48,42 @@
                      label="联系电话码"
                      input-align="right"
                      placeholder="请输入电话" /> -->
+          <div v-if="switchIdx == 1"
+               class="quhuo-addr"
+               @click="goNextPage('warehouse')">
+            <van-field :value="warehouse.tit"
+                       readonly
+                       label="取货仓库"
+                       right-icon="arrow" />
+            <div class="addr van-hairline ">
+              <div v-if="warehouse.id"
+                   class="cell-title"
+                   style="max-width:90px;min-width:90px"
+                   input-class="PingFangSC-Medium"></div>
+              <div v-if="warehouse.id"
+                   class="cell-value ">{{warehouse.val}}</div>
+            </div>
+          </div>
+
+          <van-field v-if="switchIdx == 1"
+                     :value="date"
+                     label="取货时间"
+                     input-align="right"
+                     readonly
+                     right-icon="arrow"
+                     @click="showDate = true" />
+          <van-field v-if="switchIdx == 1"
+                     :value="get_people"
+                     label="联系人"
+                     input-align="right"
+                     placeholder="请输入姓名"
+                     @input="onInputNameKey" />
+          <van-field v-if="switchIdx == 1"
+                     :value="get_phone"
+                     label="联系电话码"
+                     input-align="right"
+                     placeholder="请输入电话"
+                     @input="onInputPhoneKey" />
         </van-cell-group>
       </div>
       <div class="product-s-box mb10">
@@ -56,7 +92,6 @@
             <img src=""
                  alt="" />
           </div>
-
           <div class="product-right-box">
             <div class="product-name PingFangSC-Medium">{{productName}}</div>
             <div class="product-bottom">
@@ -74,7 +109,7 @@
                      label="订单备注"
                      input-align="right"
                      placeholder="请输入备注(100字内)"
-                     @input="onInput" />
+                     @input="onInputTextKey" />
         </van-cell-group>
       </div>
       <div class="mb10">
@@ -174,7 +209,26 @@
         </div>
       </div>
     </van-popup> -->
-
+    <van-popup :show="showDate"
+               position="bottom"
+               @cancel="showDate = false">
+      <van-datetime-picker type="date"
+                           :value="currentDate"
+                           :formatter="formatter"
+                           title="取货时间"
+                           @input="onInput"
+                           @confirm="onDateConfirm"
+                           @cancel="showDate = false" />
+    </van-popup>
+    <van-popup :show="showPicker"
+               position="bottom"
+               @cancel="showPicker = false">
+      <van-picker show-toolbar
+                  title="租赁时长"
+                  :columns="columns"
+                  @cancel="showPicker = false"
+                  @confirm="onPickerConfirm" />
+    </van-popup>
     <div class="bottom-btn-box">
       <div class="bbb-l">
         <span class="bbb-l-r">合计:</span>
@@ -206,7 +260,8 @@ export default {
   data () {
     return {
       routers: {
-        address: '/pages/user/address/main'
+        address: '/pages/user/address/main',
+        warehouse: '/pages/warehouse/main'
       },
       // ========↑ 路由========
 
@@ -241,6 +296,11 @@ export default {
         val: '',
         text: ''
       },
+      warehouse: {
+        id: '',
+        val: '',
+        tit: ''
+      },
       house_id: null,
       transport_id: null,
       transfer_fee: null,
@@ -255,7 +315,7 @@ export default {
       allMoney: null,
 
       couponDatas: [],
-      coupon_id: null,
+      coupon_id: '',
       coupon: '',
       couponResult: '',
 
@@ -309,7 +369,15 @@ export default {
       try {
         const res = await getCoupons({ goods_id: this.id })
         console.log('* getCoupons', res)
-        this.couponDatas = res.data.data
+        if (res.data.code === 1) {
+          let arr = res.data.data
+          arr.forEach((item, key) => {
+            item.del_price = parseInt(item.del_price)
+            item.del_rules = parseInt(item.del_rules)
+          })
+          console.log(arr)
+          this.couponDatas = arr
+        }
       } catch (error) {
         console.log('* getCoupons error', error)
       }
@@ -327,8 +395,17 @@ export default {
     onChange1 (event) {
       this.activeNames = event.mp.detail
     },
-    onInput (event) {
+    onInputNameKey (event) {
+      this.get_people = event.mp.detail
+    },
+    onInputPhoneKey (event) {
+      this.get_phone = event.mp.detail
+    },
+    onInputTextKey (event) {
       this.text = event.mp.detail
+    },
+    onInput (event) {
+      this.currentDate = event.mp.detail
     },
     onDateConfirm (e) {
       var date = new Date(e.mp.detail)
@@ -378,17 +455,17 @@ export default {
         let data = {
           goods_id: this.id,
           get_methods: this.switchIdx,
-          get_time: null, // 取货时间**
-          get_people: null, // 取货人**
-          get_phone: null, // 取货联系方式
+          get_time: this.date, // 取货时间**
+          get_people: this.get_people, // 取货人**
+          get_phone: this.get_phone, // 取货联系方式
           push_add: this.address.id,
           goods_format_id_arr: this.goods_format_id_arr,
           goods_num: this.productNum,
-          use_time: null,
+          use_time: this.long,
           text: this.text,
           coupons: this.coupon_id,
           is_buy: this.is_buy,
-          house_id: this.house_id,
+          house_id: this.warehouse.id || this.house_id,
           card_id: null
         }
         console.log(data)
@@ -408,6 +485,11 @@ export default {
         console.log('* submit error', error)
         Toast.fail(error.data.msg)
       }
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }

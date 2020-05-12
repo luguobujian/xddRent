@@ -281,6 +281,12 @@ export const getfeedBack = data =>
   API.request('api/Problems/feedBack', data, 'post')
 
 /**
+*法律声明 功能介绍
+*/
+export const getAllInfo = (data) =>
+  API.request('api/Problems/getAllInfo', data, 'post')
+
+/**
 *获取常见问题数据
 */
 export const getProblemList = () =>

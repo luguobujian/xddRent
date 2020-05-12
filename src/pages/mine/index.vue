@@ -3,9 +3,9 @@
     <div class="top-info clearfix"
          @click="goNextPage('userItems', 0)">
       <div class="avatar-box fl">
-        <img :src="detail.avatar"
+        <img :src="detail && detail.avatar"
              alt="">
-        <van-icon v-if="detail.gender === 1"
+        <van-icon v-if="detail &&detail.gender === 1"
                   class="gender-i"
                   name="/static/icons/female.png"
                   size="16px" />
@@ -16,10 +16,10 @@
 
       </div>
       <div class="fl">
-        <div class="name-box">{{detail.username}}</div>
-        <div v-if="detail.area"
-             class="city-box">{{detail.area}}</div>
-        <div v-if="detail.group_id === 0"
+        <div class="name-box">{{detail && detail.username}}</div>
+        <div v-if="detail && detail.area"
+             class="city-box">{{detail && detail.area}}</div>
+        <div v-if="detail && detail.group_id === 0"
              class="company-box">
           <div class="company-info-box clearfix">
             <img class="company-icon fl"
@@ -133,11 +133,11 @@ export default {
     async statusProve () {
       try {
         const res = await statusProve()
-        console.log(res)
+        console.log('statusProve', res)
         if (res.data.code === 1) {
           this.status = res.data.data.status
-          this.Prove = res.data.data.msg.status
-          this.company = res.data.data.msg.name
+          this.Prove = res.data.data.msg && res.data.data.msg.status
+          this.company = res.data.data.msg && res.data.data.msg.name
         }
       } catch (error) {
         console.log('* statusProve error ', error)
@@ -149,7 +149,7 @@ export default {
       if (this.detail.group_id === 3) {
         url = '/pages/login/main'
       }
-      if (i === 0 && this.status === 1) {
+      if (i === 0 && t === 'gridItems' && this.status === 1) {
         url = `/pages/company/verify/main?status=${this.status}`
       }
       mpvue.navigateTo({

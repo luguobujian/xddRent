@@ -2,7 +2,7 @@
 
 class API {
   constructor () {
-    this.baseUrl = 'http://47.105.55.65:10082/'
+    this.baseUrl = 'http://test.shuoxun.com:56083/'
     // this.header = {
     //   'token': '',
     //   'openId': '',

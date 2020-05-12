@@ -211,7 +211,7 @@ export default {
             } else if (val.is_buy === 0 && val.status === '9') {
               statusText = '已退款'
               customMark = 'YTK'
-            } else if (val.is_buy === 0 && val.status === '') {
+            } else if (val.is_buy === 0 && val.status === 0) {
               statusText = '已关闭'
               customMark = 'YGB'
             } else {

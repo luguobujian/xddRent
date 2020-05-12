@@ -1,5 +1,5 @@
 <template>
-  <div class="container van-hairline-top">
+  <div class="container van-hairline--top">
     <div class="itmes-box">
       <div v-for="(item, index) in detailList"
            :key="index"
