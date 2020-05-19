@@ -7,6 +7,8 @@
     "van-grid-item": "/static/vant/grid-item/index",
     "van-cell": "/static/vant/cell/index",
     "van-button": "/static/vant/button/index",
-    "van-icon": "/static/vant/icon/index"
+    "van-icon": "/static/vant/icon/index",
+    "van-overlay": "/static/vant/overlay/index",
+    "van-loading": "/static/vant/loading/index"
   }
 }

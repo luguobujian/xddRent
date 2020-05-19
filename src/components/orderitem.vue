@@ -46,7 +46,7 @@
                         size="small"
                         plain
                         color="#97d700"
-                        custom-style="width: 80px"
+                        custom-style="width: 100px"
                         round
                         type="primary">上传支付凭证</van-button>
             <van-button v-if="item.status === '2' && item.get_methods === 2"

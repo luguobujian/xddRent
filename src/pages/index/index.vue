@@ -73,12 +73,21 @@
         </div>
       </div>
     </div>
+    <van-overlay :show="showOverlay"
+                 custom-style="background: rgba(0,0,0,.3)">
+      <view class="wrapper">
+        <van-loading size="30px"
+                     vertical>加载中...</van-loading>
+      </view>
+    </van-overlay>
   </div>
 </template>
 
 <script>
+// import API from '@/api/api'
+
 import citys from '../city/city'
-import { getBanner, getGoodsType } from '@/api/getData'
+import { exchangeCode, getBanner, getGoodsType } from '@/api/getData'
 let that = null
 export default {
   data () {
@@ -101,14 +110,16 @@ export default {
       showCity: {
         name: '北京市',
         cityid: 2
-      }
+      },
+      showOverlay: true
     }
   },
   onLoad () {
     that = this
-    this.getBanner()
+    this.privateWxLogin()
+      .then(r => this.exchangeCode(r.code))
+      .then(r => this.getBanner())
     this.wxGetSetting()
-    // this.getGoodsType()
   },
   mounted () {
     let citys = this.citys
@@ -120,18 +131,56 @@ export default {
   },
   methods: {
     /**
+    *用户登录凭证（有效期五分钟）。开发者需要在开发者服务器后台调用 auth.code2Session，使用 code 换取 openid 和 session_key 等信息
+    */
+    async privateWxLogin () {
+      return new Promise((resolve, reject) => {
+        mpvue.login({
+          success (res) {
+            console.log('privateWxLogin', res)
+            if (res.code) {
+              resolve(res.code)
+            } else {
+              reject(res)
+              console.log('登录失败！' + res.errMsg)
+            }
+          }
+        })
+      })
+    },
+    /**
+    *code登录获取openid
+    */
+    async exchangeCode () {
+      try {
+        const code = await this.privateWxLogin()
+        const res = await exchangeCode({ code })
+        console.log(`App:exchangeCode ${new Date().getTime()}`, res)
+        mpvue.setStorage({
+          key: 'token',
+          data: res.data.data.userinfo.token,
+          success: res => {
+            console.log(res)
+          },
+          fail: res => {
+            console.log(res)
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
     *获取banner数据
     */
     async getBanner () {
       try {
         const res = await getBanner()
         console.log('page', res)
+        this.showOverlay = false
         this.background = res.data.data
       } catch (error) {
         console.log('* error getBanner', error)
-        if (error.statusCode === 401) {
-          this.getBanner()
-        }
       }
     },
     async getGoodsType () {
@@ -142,6 +191,9 @@ export default {
         console.log('* error', error)
       }
     },
+    /**
+    *用户权限设置
+    */
     wxGetSetting () {
       let that = this
       wx.getSetting({
@@ -212,9 +264,6 @@ export default {
         return ''
       }
     }
-  },
-  created () {
-
   }
 }
 </script>
@@ -224,7 +273,12 @@ export default {
   height: auto;
   position: relative;
 }
-
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 swiper {
   height: 350px;
 }

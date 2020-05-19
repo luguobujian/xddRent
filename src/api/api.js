@@ -11,7 +11,7 @@ class API {
     // this.request = this.request.bind(this)
   }
 
-  async getStorageToken () {
+  async getStorageToken (url) {
     return new Promise((resolve, reject) => {
       mpvue.getStorage({
         key: 'token',
@@ -19,7 +19,7 @@ class API {
           resolve(res.data)
         },
         fail (res) {
-          console.log('* FAIL getStorageToken', res)
+          console.log(`* FAIL getStorageToken ${url}`, res)
           resolve('')
         }
       })
@@ -28,8 +28,8 @@ class API {
 
   async request (url = '', data = {}, method = 'GET') {
     try {
-      const token = await this.getStorageToken()
-      console.log(`token ${new Date().getTime()}`, token)
+      const token = await this.getStorageToken(url)
+      console.log(`token ${new Date()}`, token)
       return new Promise((resolve, reject) => {
         let header = {
           'token': token,
@@ -54,7 +54,8 @@ class API {
             } else {
               if (res.data.code === 0) {
                 reject(res)
-                console.log('* FAIL res Code 0', res)
+                console.log(`* FAIL res Code 0 Url:${url}`, res)
+                console.log(`* FAIL res Code 0 Url:${url}DATA:`, data)
                 return
               }
               resolve(res)

@@ -64,9 +64,9 @@
           </div> -->
         </div>
         <!-- 收货图片 -->
-        <div v-if="mark === 'TDJZ' || mark === 'DTH'"
+        <div v-if="mark === 'TDJZ' || mark === 'DTH' || mark === 'ZLZ'"
              class="img-box">
-          <div class="img-tit PingFangSC-Medium">还货图片</div>
+          <div class="img-tit PingFangSC-Medium">收货图片</div>
           <div class="img-items-box">
             <div class="img-item"
                  v-for="(item, index) in getimages"

@@ -16,7 +16,7 @@
 
       </div>
       <div class="fl">
-        <div class="name-box">{{detail && detail.username}}</div>
+        <div class="name-box">{{(detail && detail.username) || '未登录'}}</div>
         <div v-if="detail && detail.area"
              class="city-box">{{detail && detail.area}}</div>
         <div v-if="detail && detail.group_id === 0"
@@ -58,16 +58,25 @@
                   is-link
                   @click="goNextPage('cellItems',index)" />
       </div>
-      <div class="bottom-btn-box">
+      <div class="bottom-btn-box"
+           v-if="detail.group_id !== 3">
         <van-button color="#97D700"
                     type="primary"
                     size="small"
                     custom-style="font-size: 15px"
                     plain
                     round
-                    block>退出登录</van-button>
+                    block
+                    @click="logout">退出登录</van-button>
       </div>
     </div>
+    <van-overlay :show="showOverlay"
+                 custom-style="background: rgba(0,0,0,.3)">
+      <view class="wrapper">
+        <van-loading size="30px"
+                     vertical>加载中...</van-loading>
+      </view>
+    </van-overlay>
   </div>
 </template>
 
@@ -103,7 +112,8 @@ export default {
         { text: '关于我们', path: '/pages/about/main' },
         { text: '常见问题', path: '/pages/faqs/main' },
         { text: '联系我们', path: '/pages/contact/main' }
-      ]
+      ],
+      showOverlay: true
     }
   },
 
@@ -122,6 +132,7 @@ export default {
     async getUserInfo () {
       try {
         const res = await getUserInfo()
+        this.showOverlay = false
         console.log(res)
         if (res.data.code === 1) {
           this.detail = res.data.data
@@ -155,6 +166,16 @@ export default {
       mpvue.navigateTo({
         url
       })
+    },
+    logout () {
+      mpvue.removeStorage({
+        key: 'key',
+        success (res) {
+          mpvue.switchTab({
+            url: '/pages/index/main'
+          })
+        }
+      })
     }
   }
 }
@@ -168,7 +189,12 @@ export default {
   min-height: 100%;
   background-color: #97d700;
 }
-
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .top-info {
   padding: 79px 0 30px;
   margin: 0 15px;

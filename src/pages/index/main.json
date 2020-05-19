@@ -2,6 +2,8 @@
   "navigationBarTitleText": "",
   "navigationStyle": "custom",
   "usingComponents": {
-    "van-icon": "/static/vant/icon/index"
+    "van-icon": "/static/vant/icon/index",
+    "van-overlay": "/static/vant/overlay/index",
+    "van-loading": "/static/vant/loading/index"
   }
 }

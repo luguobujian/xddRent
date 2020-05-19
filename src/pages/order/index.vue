@@ -112,8 +112,7 @@
       </van-tab>
     </van-tabs>
     <van-overlay :show="showOverlay"
-                 custom-style="background: rgba(0,0,0,.5)"
-                 bind:click="onClickHide">
+                 custom-style="background: rgba(0,0,0,.3)">
       <view class="wrapper">
         <van-loading size="30px"
                      vertical>加载中...</van-loading>
@@ -178,7 +177,7 @@ export default {
             } else if (val.is_buy === 1 && val.status === '') {
               statusText = '已关闭'
               customMark = 'YGB'
-            } else if (val.status === '11') {
+            } else if (val.status === '11' || val.status === '12') {
               statusText = '待确认'
               customMark = 'DQR'
             } else if (val.is_buy === 1) {
@@ -211,6 +210,9 @@ export default {
             } else if (val.is_buy === 0 && val.status === '9') {
               statusText = '已退款'
               customMark = 'YTK'
+            } else if (val.is_buy === 0 && val.status === '10') {
+              statusText = '已归还'
+              customMark = 'YGH'
             } else if (val.is_buy === 0 && val.status === 0) {
               statusText = '已关闭'
               customMark = 'YGB'
@@ -262,6 +264,7 @@ export default {
       }
     },
     onChange (e) {
+      console.log(e)
       this.active = e.mp.detail.name
       this.showOverlay = true
       this.page_size = 8
