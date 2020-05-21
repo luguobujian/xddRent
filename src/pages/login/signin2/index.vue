@@ -11,7 +11,7 @@
         <van-field :value="password"
                    :password="hidepass"
                    placeholder="请输入6～16位数字或字母密码"
-                   right-icon="/static/icons/eye.png"
+                   :right-icon="hidepass?'/static/icons/eye-act.png': '/static/icons/eye.png'"
                    @change="onInputPasswordkey"
                    @clickIcon="showPassword" />
       </div>
@@ -70,8 +70,8 @@ export default {
       // mobile: null,
       // password: null
 
-      mobile: '18055779894',
-      password: 654321
+      mobile: '',
+      password: ''
     }
   },
   methods: {
@@ -118,10 +118,10 @@ export default {
       }
     },
     onInputKeyMobile (e) {
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     onInputPasswordkey (e) {
-      this.password = e.mp.detail
+      this.password = e.mp.detail.trim()
     },
     onChange (e) {
       this.checked = e.mp.detail

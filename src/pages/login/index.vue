@@ -3,7 +3,7 @@
     <div class="main-box">
       <div class="logo-box">
         <img class="logo-img"
-             src=""
+             src="/static/images/108.png"
              alt="">
         <div class="logo-tip">箱当当</div>
       </div>

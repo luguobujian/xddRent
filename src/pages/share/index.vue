@@ -2,7 +2,7 @@
   <div class="container">
     <div class="main-box">
       <div class="logo-box">
-        <img src=""
+        <img src="/static/images/108.png"
              alt="">
       </div>
       <div class="title">箱当当</div>

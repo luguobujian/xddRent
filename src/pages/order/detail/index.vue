@@ -340,7 +340,7 @@ export default {
     this.mark = options.mark
     this.statusText = options.statusText
 
-    if (this.mark === 'DTH' || this.mark === 'DSH' || this.mark === 'DFH' || this.mark === 'YGH' || this.mark === 'YGB' || this.mark === 'TDJZ') {
+    if (this.mark === 'DTH' || this.mark === 'DSH' || this.mark === 'DFH' || this.mark === 'YSH' || this.mark === 'YGH' || this.mark === 'YGB' || this.mark === 'TDJZ') {
       this.top = '66rpx'
       this.showSubtit = false
     }
@@ -613,10 +613,14 @@ export default {
   color: #333333;
 }
 .pbr-m {
+  width: 265px;
   font-size: 12px;
   color: #999999;
   line-height: 17px;
   margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .pbr-b {
   font-size: 13px;

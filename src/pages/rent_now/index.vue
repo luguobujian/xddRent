@@ -14,7 +14,7 @@
             </div>
           </div>
 
-          <div v-if="switchIdx == 2"
+          <div v-if="switchIdx === 2"
                class="quhuo-addr"
                @click="goNextPage('address')">
             <van-field readonly
@@ -32,7 +32,7 @@
             </div>
           </div>
 
-          <div v-if="switchIdx == 1"
+          <div v-if="switchIdx === 1"
                class="quhuo-addr"
                @click="goNextPage('warehouse')">
             <van-field :value="warehouse.tit"
@@ -61,12 +61,14 @@
                      label="联系人"
                      input-align="right"
                      placeholder="请输入姓名"
+                     placeholder-style="font-size:15px;color:#BBBBBB;font-family:PingFangSC-Regular;"
                      @input="onInputNameKey" />
           <van-field v-if="switchIdx == 1"
                      :value="get_phone"
                      label="联系电话码"
                      input-align="right"
                      placeholder="请输入电话"
+                     placeholder-style="font-size:15px;color:#BBBBBB;font-family:PingFangSC-Regular;"
                      @input="onInputPhoneKey" />
 
         </van-cell-group>
@@ -96,6 +98,7 @@
                      input-align="right"
                      maxlength="100"
                      placeholder="请输入备注(100字内)"
+                     placeholder-style="font-size:15px;color:#BBBBBB;font-family:PingFangSC-Regular;"
                      @input="onInputTextKey" />
         </van-cell-group>
       </div>
@@ -243,12 +246,14 @@ export default {
     this.productMoney = options.money
     this.productNum = options.stepperVal
 
-    this.allMoney = `¥${parseInt(options.stepperVal) * parseInt(options.money)}.00`
+    this.allMoney = `¥${parseInt(options.money)}.00`
   },
   mounted () {
     globalThat = this
-    for (let i = 0; i <= 365; i++) {
-      this.columns.push(i + 1 + '天')
+    for (let i = 10; i <= 100; i++) {
+      if (i % 10 === 0) {
+        this.columns.push(i + '天')
+      }
     }
   },
   methods: {
@@ -258,7 +263,7 @@ export default {
     onChange (event) {
       console.log(event.mp.detail)
       this.productNum = event.mp.detail
-      this.allMoney = `¥${parseInt(this.productNum) * parseInt(this.productMoney) * this.day}.00`
+      this.allMoney = `¥${parseInt(this.productMoney)}.00`
       // this.calculateFee()
     },
     onChange1 (event) {
@@ -289,7 +294,7 @@ export default {
 
       this.day = parseInt(str.slice(0, str.length - 1))
       this.long = e.mp.detail.value
-      this.allMoney = `¥${parseInt(this.productNum) * parseInt(this.productMoney) * this.day}.00`
+      this.allMoney = `¥${parseInt(this.productMoney)}.00`
       this.showPicker = false
     },
     goNextPage (r) {
@@ -330,6 +335,11 @@ export default {
         this.warehouse.id = this.house_id
       }
 
+      if (!this.long) {
+        Toast.fail('请选择租赁时长')
+        return
+      }
+
       console.log(this.coupon_id)
       try {
         let data = {
@@ -341,7 +351,7 @@ export default {
           push_add: this.address.id,
           goods_format_id_arr: this.goods_format_id_arr,
           goods_num: this.productNum,
-          use_time: this.long,
+          use_time: parseInt(this.long),
           text: this.text,
           coupons: this.coupon_id,
           is_buy: this.is_buy,
@@ -364,6 +374,11 @@ export default {
         console.log('* submit error', error)
         Toast.fail(error.data.msg)
       }
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }
@@ -521,7 +536,6 @@ export default {
 .van-submit-bar__bar {
 }
 .van-field__input {
-  font-weight: bold;
   font-family: "PingFangSC-Medium" !important;
   text-overflow: ellipsis;
   white-space: nowrap;

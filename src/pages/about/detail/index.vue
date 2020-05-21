@@ -1,6 +1,7 @@
 <template>
   <div class="container van-hairline--top">
-    <wxParse v-if="content" :content="content"
+    <wxParse v-if="content"
+             :content="content"
              @preview="preview"
              @navigate="navigate" />
   </div>
@@ -87,6 +88,8 @@ export default {
   margin: 16px 16px 0;
 }
 .wxParse {
-  padding: 15px;
+  /* padding: 15px; */
+  word-wrap: break-word;
+  word-break: normal;
 }
 </style>

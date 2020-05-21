@@ -27,7 +27,7 @@
         <van-field :value="password"
                    :password="hidepass"
                    placeholder="请输入6～16位数字或字母密码"
-                   right-icon="/static/icons/eye.png"
+                   :right-icon="hidepass?'/static/icons/eye-act.png': '/static/icons/eye.png'"
                    @change="onInputPasswordkey"
                    @clickIcon="showPassword" />
       </div>
@@ -76,6 +76,10 @@ export default {
   methods: {
     async sms () {
       try {
+        if (!this.mobile) {
+          Toast.fail('请输入手机号')
+          return
+        }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
           Toast.fail('手机号错误')
           return
@@ -147,10 +151,10 @@ export default {
       }
     },
     onInputKeyCode (e) {
-      this.code = e.mp.detail
+      this.code = e.mp.detail.trim()
     },
     onInputKeyMobile (e) {
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     onInputUCodekey (e) {
       this.user_code = e.mp.detail

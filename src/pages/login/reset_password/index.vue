@@ -20,7 +20,7 @@
         <van-field :value="password"
                    :password="hidepass"
                    placeholder="请输入6～16位数字或字母密码"
-                   right-icon="/static/icons/eye.png"
+                   :right-icon="hidepass?'/static/icons/eye-act.png': '/static/icons/eye.png'"
                    @change="onInputPasswordkey"
                    @clickIcon="showPassword" />
       </div>
@@ -129,13 +129,13 @@ export default {
       }, 1000)
     },
     onInputKeyCode (e) {
-      this.code = e.mp.detail
+      this.code = e.mp.detail.trim()
     },
     onInputKeyMobile (e) {
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     onInputPasswordkey (e) {
-      this.password = e.mp.detail
+      this.password = e.mp.detail.trim()
     },
     showPassword (e) {
       if (this.hidepass) {

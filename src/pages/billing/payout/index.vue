@@ -149,7 +149,7 @@
 </template>
 <script>
 // import Dialog from '../../../../static/vant/dialog/dialog'
-import Toast from '../../../../dist/wx/static/vant/toast/toast'
+import Toast from '../../../../static/vant/toast/toast'
 import { pullWallet, myMoney, firstPay, accountList } from '@/api/getData'
 export default {
   data () {

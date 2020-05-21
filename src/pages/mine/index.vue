@@ -21,12 +21,12 @@
              class="city-box">{{detail && detail.area}}</div>
         <div v-if="detail && detail.group_id === 0"
              class="company-box">
-          <div class="company-info-box clearfix">
+          <div class="company-info-box clearfix"
+               v-if="status === 1">
             <img class="company-icon fl"
                  src="/static/icons/m-mark.png"
                  alt="">
-            <div v-if="company"
-                 class="company-name-box fl">
+            <div class="company-name-box fl">
               {{company}}
             </div>
           </div>
@@ -59,7 +59,7 @@
                   @click="goNextPage('cellItems',index)" />
       </div>
       <div class="bottom-btn-box"
-           v-if="detail.group_id !== 3">
+           v-if=" detail && detail.group_id !== 3">
         <van-button color="#97D700"
                     type="primary"
                     size="small"
@@ -138,6 +138,7 @@ export default {
           this.detail = res.data.data
         }
       } catch (error) {
+        this.showOverlay = false
         console.log('* getUserInfo error ', error)
       }
     },
@@ -168,9 +169,13 @@ export default {
       })
     },
     logout () {
+      let that = this
       mpvue.removeStorage({
-        key: 'key',
+        key: 'token',
         success (res) {
+          if (that.$options.data) {
+            Object.assign(that.$data, that.$options.data())
+          }
           mpvue.switchTab({
             url: '/pages/index/main'
           })
@@ -232,7 +237,7 @@ export default {
 .company-box {
   display: inline-block;
   height: 22px;
-  padding-right: 6px;
+
   margin-top: 10px;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 11px;
@@ -249,6 +254,7 @@ export default {
   font-size: 12px;
   font-weight: bold;
   line-height: 22px;
+  padding-right: 6px;
 }
 .right-arrow {
   margin: 32px 0;

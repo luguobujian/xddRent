@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="main-box">
       <div class="top-swiper"
            @click="viewImage">
@@ -50,7 +50,7 @@
                    :key="index">
                 <div v-if="index < 2"
                      class="coupons-item">
-                  <div>满{{item.del_rules}}减{{item.del_price}}</div>
+                  <div>满{{item.d_rules}}减{{item.d_price}}</div>
                 </div>
               </div>
             </div>
@@ -102,9 +102,6 @@
           <wxParse :content="content"
                    @preview="preview"
                    @navigate="navigate" />
-          <!-- 新华社北京6月5日电 高考前夕，中共中央政治局委员、国务院副总理孙春兰来到教育部考试中心检查2018年高考准备工作，通过国家教育考试考务指挥系统了解有关地方考场、试卷保管和分发场所等情况，看望高考值班工作人员，并向全国奋战在高考一线的教师、同学们致以诚挚问候，向为高考提供服务保障的各个方面表示感谢。
-          <img src="/static/images/banner_1.png"
-               alt=""> -->
         </div>
       </div>
     </div>
@@ -173,6 +170,7 @@
             <div class=" attrs-lists-tit">购买数量</div>
             <div class="stepper-btn-main">
               <van-stepper :value="stepperVal"
+                           :max="maxNum"
                            @change="onStepperChange" />
             </div>
           </div>
@@ -223,6 +221,7 @@ export default {
       showAttrs: false,
       popup_pre_price: 0,
       popup_sell_num: 0,
+      maxNum: 1,
       stepperVal: 1,
 
       id: null,
@@ -269,7 +268,15 @@ export default {
       try {
         const res = await getCoupons({ goods_id: this.id })
         console.log('* getCoupons', res)
-        this.couponsArr = res.data.data
+        if (res.data.code === 1) {
+          var arr = res.data.data
+          arr.forEach((item, key) => {
+            item.d_rules = parseInt(item.del_rules)
+            item.d_price = parseInt(item.del_price)
+          })
+          console.log('ARR', arr)
+          this.couponsArr = arr
+        }
       } catch (error) {
         console.log('* getCoupons error', error)
       }
@@ -277,9 +284,25 @@ export default {
     async getGoodsFormat () {
       try {
         const res = await getGoodsFormat({ goods_id: this.id })
-        this.specification = res.data.data.info_list
-        this.specificationCom = res.data.data.info_arr
         console.log('* getGoodsFormat', res)
+
+        if (res.data.code === 1) {
+          this.specification = res.data.data.info_list
+          this.specificationCom = res.data.data.info_arr
+          let tempArr = res.data.data.info_list
+
+          for (let i = 0; i < tempArr.length; i++) {
+            for (let j = 0; j < tempArr[i].son.length; j++) {
+              if (tempArr[i].son[j].have_num !== 0) {
+                this.specificationCombination[i] = tempArr[i].son[j].id
+                this.spcCShow[i] = tempArr[i].son[j].format_name
+                this.$set(this.specIdxArr, i, `${i}-${j}`)
+                break
+              }
+            }
+            this.setPopupChsInfo()
+          }
+        }
       } catch (error) {
         console.log('* getGoodsFormat error', error)
       }
@@ -307,7 +330,7 @@ export default {
         this.specificationCombination[sindex] = id
         this.spcCShow[sindex] = name
       }
-      this.sCShow = this.spcCShow.join('/')
+      // this.sCShow = this.spcCShow.join('/')
       // console.log(this.sCShow)
       this.setPopupChsInfo()
     },
@@ -315,14 +338,16 @@ export default {
       // console.log('---', this.specification.length)
       // console.log('===', this.specIdxArr.length)
       // console.log(this.specificationCombination)
+      this.sCShow = this.spcCShow.join('/')
 
       let sc = this.specificationCombination.join(',')
       this.popup_pre_price = this.specificationCom[sc] ? this.specificationCom[sc].pre_price : 0
       this.popup_sell_num = this.specificationCom[sc] ? this.specificationCom[sc].num - this.stepperVal : 0
+      this.maxNum = (this.specificationCom[sc] ? this.specificationCom[sc].num - this.stepperVal : 0) + 1
       pnum = this.popup_sell_num
     },
     onStepperChange (e) {
-      console.log(e)
+      console.log(e.mp.detail)
       let ep = e.mp.detail
       this.stepperVal = e.mp.detail
       this.popup_sell_num = pnum ? pnum - ep + 1 : 0
@@ -394,6 +419,7 @@ export default {
   height: auto;
   position: relative;
 }
+
 .main-box {
   flex: 1;
 }
@@ -514,7 +540,15 @@ image {
   color: #333333;
 }
 .coupons-box.spec {
+  width: 250px;
   line-height: 62px;
+  text-align: right;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* word-break: normal;
+  word-wrap: break-word; */
 }
 .coupons-item {
   /* display: inline-block; */
@@ -595,13 +629,13 @@ image {
   flex-direction: column;
 }
 .popup-main-box {
+  flex: 1;
   overflow: auto;
-  margin-bottom: 10px;
 }
 .product-info-box {
   display: flex;
-  margin-top: 20px;
-  margin-bottom: 15px;
+  padding-top: 20px;
+  padding-bottom: 15px;
 }
 .product-info-img img {
   width: 85px;
@@ -668,6 +702,10 @@ image {
 }
 </style>
 <style>
+.wxParse {
+  word-wrap: break-word;
+  word-break: normal;
+}
 ._van-icon {
   margin: 23px 0 !important;
 }

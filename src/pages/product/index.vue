@@ -39,7 +39,7 @@
         </div>
         <div class="per-address-box">
           <div class="unit-box Oswald-Medium">
-            <span>¥</span>{{item.pre_price}}
+            <span>¥</span>{{item.pre_price}}<span>/天</span>
           </div>
           <div v-if="item.switch===1"
                class="tag PingFangSC-Medium">特价</div>
@@ -214,9 +214,14 @@ export default {
   height: 170px;
 }
 .result-name {
+  width: 142px;
   line-height: 21px;
   padding-top: 10px;
   padding-left: 8px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 .n-address-box {
   display: flex;
@@ -243,11 +248,11 @@ export default {
 }
 .unit-box {
   /* flex: 1; */
-  font-size: 15px;
+  font-size: 14px;
   color: #97d700;
 }
 .unit-box span {
-  font-size: 11px;
+  font-size: 10px;
 }
 .tag {
   display: inline-block;
@@ -257,18 +262,18 @@ export default {
   color: #97d700;
   line-height: 16px;
   text-align: center;
-  padding: 0 5px;
+  padding: 0 3px;
   background: rgba(151, 215, 0, 0.2);
   border-radius: 6px 0 6px 0;
   margin-top: 3px;
-  margin-left: 8px;
+  margin-left: 6px;
 }
 .o-cost {
   font-size: 11px;
   color: #999999;
   line-height: 16px;
   margin-top: 4px;
-  margin-left: 8px;
+  margin-left: 6px;
   text-decoration: line-through;
 }
 </style>

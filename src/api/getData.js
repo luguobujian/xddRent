@@ -71,6 +71,18 @@ export const getBanner = () => API.request('api/Index/baner')
 export const getHotCity = () => API.request('api/City/hotCity')
 
 /**
+ *录入搜索历史数据
+ */
+export const historyEnter = (data) =>
+  API.request('api/City/historyEnter', data, 'post')
+
+/**
+*历史搜索 清空
+*/
+export const historyCl = () =>
+  API.request('api/City/historyCl', { type: 2 }, 'post')
+
+/**
  *获取搜索历史数据
  */
 export const getSearchHistory = () =>

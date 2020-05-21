@@ -14,7 +14,7 @@
                    @change="onInputKeyCode" />
         <span class="sms-btn"
               :class="{active: !getSmsCodeIng}"
-              @click="onClickGetSmsBtn">{{getSmsCodeBtnText}}</span>
+              @click="sms">{{getSmsCodeBtnText}}</span>
       </div>
 
       <div class="bottom-btn-box">
@@ -76,6 +76,7 @@ export default {
         console.log(res)
         if (res.data.code === 1) {
           Toast.success('发送成功')
+          this.onClickGetSmsBtn()
         }
       } catch (error) {
         console.log(`* sms error`, error)
@@ -132,10 +133,10 @@ export default {
       })
     },
     onInputKeyCode (e) {
-      this.code = e.mp.detail
+      this.code = e.mp.detail.trim()
     },
     onInputKeyMobile (e) {
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     onChange (e) {
       this.checked = e.mp.detail

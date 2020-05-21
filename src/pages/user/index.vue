@@ -159,11 +159,11 @@ export default {
     },
     onInputUsernameKey (e) {
       console.log(e)
-      this.username = e.mp.detail
+      this.username = e.mp.detail.trim()
     },
     onInputMobileKey (e) {
       console.log(e)
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     onInputBioKey (e) {
       console.log(e)

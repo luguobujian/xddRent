@@ -46,10 +46,10 @@ export default {
   },
   methods: {
     onInputKeyText (e) {
-      this.text = e.mp.detail
+      this.text = e.mp.detail.trim()
     },
     onInputKeyMobile (e) {
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     async submit () {
       try {
@@ -57,6 +57,7 @@ export default {
         console.log(res)
         if (res.data.code === 1) {
           Toast.success('提交成功')
+          setTimeout(() => { mpvue.navigateBack() }, 1500)
         }
       } catch (error) {
         console.log('* submit error', error)

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div>
       <div class="title-box">{{title}}</div>
       <div class="content-box">
@@ -84,5 +84,10 @@ export default {
   font-size: 15px;
   color: #333333;
   margin: 16px 16px 0;
+}
+.wxParse {
+  /* padding: 15px; */
+  word-wrap: break-word;
+  word-break: normal;
 }
 </style>

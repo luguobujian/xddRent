@@ -45,12 +45,15 @@ class API {
           header,
           method,
           success: res => {
-            if (res.statusCode !== 200) {
+            if (res.statusCode === 401) {
+              reject(res.statusCode)
+              mpvue.navigateTo({
+                url: '/pages/login/main'
+              })
+              console.log('* FAIL  res statusCode 401', res)
+            } else if (res.statusCode !== 200) {
               reject(res)
               console.log('* FAIL res statusCode !200', res)
-            } else if (res.statusCode === 401) {
-              reject(res.statusCode)
-              console.log('* FAIL  res statusCode 401', res)
             } else {
               if (res.data.code === 0) {
                 reject(res)

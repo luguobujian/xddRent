@@ -18,6 +18,7 @@
             </div>
           </div>
           <div class="quhuo-addr"
+               v-if="switchIdx == 2"
                @click="goNextPage('address')">
             <van-field readonly
                        label="收货地址"
@@ -77,12 +78,14 @@
                      label="联系人"
                      input-align="right"
                      placeholder="请输入姓名"
+                     placeholder-style="font-size:15px;color:#BBBBBB;font-family:PingFangSC-Regular;"
                      @input="onInputNameKey" />
           <van-field v-if="switchIdx == 1"
                      :value="get_phone"
                      label="联系电话码"
                      input-align="right"
                      placeholder="请输入电话"
+                     placeholder-style="font-size:15px;color:#BBBBBB;font-family:PingFangSC-Regular;"
                      @input="onInputPhoneKey" />
         </van-cell-group>
       </div>
@@ -109,6 +112,7 @@
                      label="订单备注"
                      input-align="right"
                      placeholder="请输入备注(100字内)"
+                     placeholder-style="font-size:15px;color:#BBBBBB;font-family:PingFangSC-Regular;"
                      @input="onInputTextKey" />
         </van-cell-group>
       </div>

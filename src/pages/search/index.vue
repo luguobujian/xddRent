@@ -26,14 +26,15 @@
           <div class="title">历史搜索
             <van-icon class="fr"
                       name="/static/icons/del-icon.png"
-                      size="20px" />
+                      size="20px"
+                      @click.stop="onDel" />
           </div>
           <div class="his-items-box">
             <div v-for="(item, index) in historys"
                  :key="index"
                  class="item"
                  @click="chsItem(item.t)">
-              {{item.t}}
+              {{item.text}}
             </div>
           </div>
         </div>
@@ -80,10 +81,13 @@
                         :tipSrc="tipSrc"
                         :dataList="reuslts"></nomoreComponents>
     </div>
+    <van-dialog id="van-dialog"
+                confirmButtonColor="#97D700" />
   </div>
 </template>
 <script>
-import { onSearch, getSearchHistory, getHotSearch } from '@/api/getData'
+import { onSearch, historyEnter, getSearchHistory, historyCl, getHotSearch } from '@/api/getData'
+import Dialog from '../../../static/vant/dialog/dialog'
 import Toast from '../../../static/vant/toast/toast'
 import nomoreComponents from '@/components/nomore'
 
@@ -122,6 +126,14 @@ export default {
         Toast.fail(error.data.msg)
       }
     },
+    async historyEnter () {
+      try {
+        const res = await historyEnter({ type: 2, text: this.keyword })
+        console.log(res)
+      } catch (error) {
+
+      }
+    },
     async getHotSearch () {
       try {
         const res = await getHotSearch()
@@ -138,12 +150,14 @@ export default {
     async onSearch () {
       try {
         const res = await onSearch({ card: this.keyword, area: this.area })
-        console.log(res)
+        console.log('* onSearch', res)
         if (res.data.code === 1) {
           let arr = res.data.data
           arr.forEach((item, key) => {
             item.pro_img = item.images.split(',')[0]
           })
+          this.historyEnter()
+          this.getSearchHistory()
           this.reuslts = arr
         } else {
           Toast.fail(res.data.msg)
@@ -153,9 +167,29 @@ export default {
         Toast.fail(error.data.msg)
       }
     },
+    onDel () {
+      Dialog.confirm({
+        title: '提示',
+        message: '确认删除历史信息？'
+      }).then(() => {
+        // on confirm
+        const res = historyCl()
+        res.then(r => {
+          console.log('historyCl', r)
+          if (r.data.code === 1) {
+            this.getSearchHistory()
+          }
+        })
+      }).catch(() => {
+        // on cancel
+      })
+    },
     onChange (e) {
       this.keyword = e.mp.detail
-      if (!this.keyword) { this.reuslts = null }
+      if (!this.keyword) {
+        this.reuslts = null
+        this.getSearchHistory()
+      }
     },
     onClear () {
       this.keyword = ''

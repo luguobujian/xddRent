@@ -153,12 +153,19 @@ export default {
 }
 .product-skus-n {
   display: flex;
+
   font-size: 12px;
   color: #999999;
   line-height: 17px;
   margin-top: 8px;
 }
-.product-skus,
+.product-skus {
+  width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .product-n {
   flex: 1;
 }

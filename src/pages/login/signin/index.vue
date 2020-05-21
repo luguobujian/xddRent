@@ -133,10 +133,10 @@ export default {
       }, 1000)
     },
     onInputKeyCode (e) {
-      this.code = e.mp.detail
+      this.code = e.mp.detail.trim()
     },
     onInputKeyMobile (e) {
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     onChange (e) {
       this.checked = e.mp.detail

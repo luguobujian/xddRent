@@ -6,7 +6,7 @@
         <van-field :value="password"
                    :password="hidepass"
                    placeholder="请输入6～16位数字或字母密码"
-                   right-icon="/static/icons/eye.png"
+                   :right-icon="hidepass?'/static/icons/eye-act.png': '/static/icons/eye.png'"
                    @clickIcon="showPassword"
                    @input="onInputKeyPassword" />
       </div>

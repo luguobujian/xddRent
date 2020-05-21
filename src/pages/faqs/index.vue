@@ -53,4 +53,11 @@ export default {
 .van-cell {
   padding: 16px 13px !important;
 }
+
+.van-cell__title,
+.van-cell__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>

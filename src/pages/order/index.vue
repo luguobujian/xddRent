@@ -137,6 +137,9 @@ export default {
   onLoad () {
     this.getOrder()
   },
+  onShow () {
+    this.getOrder()
+  },
   mounted () {
 
   },
@@ -266,6 +269,7 @@ export default {
     onChange (e) {
       console.log(e)
       this.active = e.mp.detail.name
+      this.dataList = []
       this.showOverlay = true
       this.page_size = 8
       this.getOrder()

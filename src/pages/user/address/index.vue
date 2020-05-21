@@ -59,7 +59,7 @@ import Dialog from '../../../../static/vant/dialog/dialog'
 import nomoreComponents from '@/components/nomore'
 
 import { getMyAddress, delAddress } from '@/api/getData'
-import Toast from '../../../../dist/wx/static/vant/toast/toast'
+import Toast from '../../../../static/vant/toast/toast'
 
 export default {
   data () {
@@ -159,6 +159,11 @@ export default {
       } catch (err) {
         return ''
       }
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }

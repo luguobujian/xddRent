@@ -172,10 +172,10 @@ export default {
       this.showArea = false
     },
     onNameChange (e) {
-      this.name = e.mp.detail
+      this.name = e.mp.detail.trim()
     },
     onMobileChange (e) {
-      this.mobile = e.mp.detail
+      this.mobile = e.mp.detail.trim()
     },
     onAddresstwoChange (e) {
       this.addresstwo = e.mp.detail
