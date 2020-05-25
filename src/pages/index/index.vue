@@ -116,9 +116,10 @@ export default {
   },
   onLoad () {
     that = this
-    this.privateWxLogin()
-      .then(r => this.exchangeCode(r.code))
-      .then(r => this.getBanner())
+    // this.privateWxLogin()
+    //   .then(r => this.exchangeCode(r.code))
+    //   .then(r => this.getBanner())
+    this.getBanner()
     this.wxGetSetting()
   },
   mounted () {
@@ -289,6 +290,7 @@ image {
 }
 .top-swiper {
   position: relative;
+  /* padding: env(safe-area-inset-top); */
 }
 .indicator-dots-box {
   height: 5px;

@@ -6,34 +6,42 @@
           服务:
           <van-rate class="rate-box"
                     :value="detail.score.service"
-                    size="15"
+                    size="12"
                     allow-half
                     color="#97D700"
-                    void-color="#fff"
+                    void-color="#eee"
                     void-icon="star"
-                    bind:change="onChange" />{{detail.score.service}}分
+                    readonly="true"
+                    bind:change="onChange" />
+          <div class="rate-n">{{detail.score.service}}分</div>
+
         </div>
         <div class="top-summary-item">
           服务:
           <van-rate class="rate-box"
                     :value="detail.score.transport"
-                    size="15"
+                    size="12"
                     allow-half
                     color="#97D700"
-                    void-color="#fff"
+                    void-color="#eee"
                     void-icon="star"
-                    bind:change="onChange" />{{detail.score.transport}}分
+                    readonly="true"
+                    bind:change="onChange" />
+          <div class="rate-n">{{detail.score.transport}}分</div>
+
         </div>
         <div class="top-summary-item">
           其他:
           <van-rate class="rate-box"
                     :value="detail.score.other"
-                    size="15"
+                    size="12"
                     allow-half
                     color="#97D700"
-                    void-color="#fff"
+                    void-color="#eee"
                     void-icon="star"
-                    bind:change="onChange" />{{detail.score.other}}分
+                    readonly="true"
+                    bind:change="onChange" />
+          <div class="rate-n">{{detail.score.other}}分</div>
         </div>
       </div>
       <div class="right-score">
@@ -101,11 +109,15 @@
           </div>
         </div>
       </div>
+
     </div>
+    <nomore :dataList="dataList"></nomore>
   </div>
 </template>
 <script>
 import { getGoodsValuation } from '@/api/getData'
+import nomore from '@/components/nomore'
+
 export default {
   data () {
     return {
@@ -121,6 +133,9 @@ export default {
     console.log(options)
     this.id = options.id
     this.getGoodsValuation()
+  },
+  components: {
+    nomore
   },
   methods: {
     async getGoodsValuation () {
@@ -266,9 +281,16 @@ export default {
 </style>
 <style>
 .rate-box {
-  vertical-align: -14%;
+  vertical-align: -8%;
 }
 .banke ._van-icon {
   vertical-align: 14%;
+}
+.rate-n {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 18px;
+  color: #97d700;
+  margin-left: 4px;
 }
 </style>

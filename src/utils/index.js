@@ -18,20 +18,20 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
-export function getSmsCode () {
-  console.log(this)
-  if (this.getSmsCodeIng) return
-  let timer = setInterval(() => {
-    this.getSmsCodeIng = true
-    this.getSmsCodeBtnText = `${this.getSmsCodeClock--}秒后重试`
-    if (this.getSmsCodeClock < 1) {
-      this.getSmsCodeBtnText = '获取验证码'
-      this.getSmsCodeClock = 60
-      this.getSmsCodeIng = false
-      clearInterval(timer)
-    }
-  }, 1000)
-}
+// export function getSmsCode () {
+//   console.log(this)
+//   if (this.getSmsCodeIng) return
+//   let timer = setInterval(() => {
+//     this.getSmsCodeIng = true
+//     this.getSmsCodeBtnText = `${this.getSmsCodeClock--}秒后重试`
+//     if (this.getSmsCodeClock < 1) {
+//       this.getSmsCodeBtnText = '获取验证码'
+//       this.getSmsCodeClock = 60
+//       this.getSmsCodeIng = false
+//       clearInterval(timer)
+//     }
+//   }, 1000)
+// }
 
 export default {
   formatNumber,

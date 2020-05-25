@@ -73,8 +73,27 @@ export default {
       user_code: null
     }
   },
-  methods: {
+  onLoad () {
+    let getCodeTime = mpvue.getStorageSync('getCheckCodeTimeRegister')
+    this.refreshCheckState(getCodeTime)
+  },
+  methods: { // 倒计时状态刷新
+    refreshCheckState (getCodeTime) {
+      let that = this
+      if (getCodeTime && (Date.now() - getCodeTime) < 60000) {
+        this.getSmsCodeIng = true
+        this.getSmsCodeBtnText = `${Math.ceil((getCodeTime / 1 + 60000 - Date.now()) / 1000)}秒后重试`
+        setTimeout(function () {
+          mpvue.setStorageSync('getCheckCodeTimeRegister', String(getCodeTime))
+          that.refreshCheckState(getCodeTime)
+        }, 1000)
+      } else {
+        this.getSmsCodeIng = false
+        this.getSmsCodeBtnText = '获取验证码'
+      }
+    },
     async sms () {
+      if (this.getSmsCodeIng) return
       try {
         if (!this.mobile) {
           Toast.fail('请输入手机号')
@@ -88,28 +107,13 @@ export default {
         const res = await sms({ mobile: this.mobile, event: 'register' })
         console.log(res)
         if (res.data.code === 1) {
+          this.refreshCheckState(Date.now())
           Toast.success('发送成功')
-          this.onClickGetSmsBtn()
         }
       } catch (error) {
         console.log(`* sms error`, error)
         Toast.fail(error.data.msg)
       }
-    },
-
-    onClickGetSmsBtn () {
-      if (this.getSmsCodeIng) return
-      // this.sms()
-      let timer = setInterval(() => {
-        this.getSmsCodeIng = true
-        this.getSmsCodeBtnText = `${this.getSmsCodeClock--}秒后重试`
-        if (this.getSmsCodeClock < 1) {
-          this.getSmsCodeBtnText = '获取验证码'
-          this.getSmsCodeClock = 60
-          this.getSmsCodeIng = false
-          clearInterval(timer)
-        }
-      }, 1000)
     },
     async submit () {
       try {

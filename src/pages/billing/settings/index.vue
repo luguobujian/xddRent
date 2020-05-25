@@ -12,7 +12,7 @@
                  @change="onInputKeyCode" />
       <span class="sms-btn"
             :class="{active: !getSmsCodeIng}"
-            @click="onClickGetSmsBtn">{{getSmsCodeBtnText}}</span>
+            @click="sms">{{getSmsCodeBtnText}}</span>
     </div>
     <div>
       <van-field :value="password"
@@ -51,24 +51,40 @@ export default {
       password: null
     }
   },
-  onLoad (options) {
-    console.log(options)
+  onLoad () {
+    let getCodeTime = mpvue.getStorageSync('paypwd')
+    this.refreshCheckState(getCodeTime)
   },
   methods: {
     async sms () {
       try {
-        // if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-        //   Toast.fail('请输入正确手机号')
-        //   return
-        // }
-        // if (this.getSmsCodeIng) return
+        if (this.getSmsCodeIng) return
+        if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
+          Toast.fail('请输入正确手机号')
+          return
+        }
         const res = await sms({ mobile: this.mobile, event: 'paypwd' })
         console.log(res)
         if (res.data.code === 1) {
+          this.refreshCheckState(Date.now())
           Toast.success('发送成功')
         }
       } catch (error) {
         console.log(`* sms error`, error)
+      }
+    },
+    refreshCheckState (getCodeTime) {
+      let that = this
+      if (getCodeTime && (Date.now() - getCodeTime) < 60000) {
+        this.getSmsCodeIng = true
+        this.getSmsCodeBtnText = `${Math.ceil((getCodeTime / 1 + 60000 - Date.now()) / 1000)}秒后重试`
+        setTimeout(function () {
+          mpvue.setStorageSync('paypwd', String(getCodeTime))
+          that.refreshCheckState(getCodeTime)
+        }, 1000)
+      } else {
+        this.getSmsCodeIng = false
+        this.getSmsCodeBtnText = '获取验证码'
       }
     },
     async smsCheck () {
@@ -136,28 +152,6 @@ export default {
         console.log(`* login error`, error)
         Toast.fail(error.data.msg)
       }
-    },
-    onClickGetSmsBtn () {
-      if (!this.mobile) {
-        Toast.fail('手机号不能为空')
-        return
-      }
-      if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-        Toast.fail('请输入正确手机号')
-        return
-      }
-      if (this.getSmsCodeIng) return
-      this.sms()
-      let timer = setInterval(() => {
-        this.getSmsCodeIng = true
-        this.getSmsCodeBtnText = `${this.getSmsCodeClock--}秒后重试`
-        if (this.getSmsCodeClock < 1) {
-          this.getSmsCodeBtnText = '获取验证码'
-          this.getSmsCodeClock = 60
-          this.getSmsCodeIng = false
-          clearInterval(timer)
-        }
-      }, 1000)
     },
     onInputKeyCode (e) {
       this.code = e.mp.detail.trim()

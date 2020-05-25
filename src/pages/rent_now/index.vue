@@ -234,7 +234,7 @@ export default {
     }
   },
   onLoad (options) {
-    console.log(options)
+    console.log('options', options)
     this.id = options.id
     this.is_buy = options.is_buy
     this.goods_format_id_arr = options.goods_format_id_arr

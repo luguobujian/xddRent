@@ -204,6 +204,7 @@ let pnum = null
 export default {
   data () {
     return {
+      goLogin: false,
       routers: {
         comment: `/pages/product/comment/main`,
         order_now: '/pages/order_now/main',
@@ -269,6 +270,7 @@ export default {
         const res = await getCoupons({ goods_id: this.id })
         console.log('* getCoupons', res)
         if (res.data.code === 1) {
+          this.goLogin = false
           var arr = res.data.data
           arr.forEach((item, key) => {
             item.d_rules = parseInt(item.del_rules)
@@ -279,6 +281,9 @@ export default {
         }
       } catch (error) {
         console.log('* getCoupons error', error)
+        if (error === 401) {
+          this.goLogin = true
+        }
       }
     },
     async getGoodsFormat () {
@@ -358,11 +363,29 @@ export default {
       })
     },
     goOrderPage (r, is) {
-      if (this.specificationCombination.length !== this.specification.length) {
-        // Toast.fail('请选择产品规格')
+      console.log(is)
+      // if (this.specificationCombination.length !== this.specification.length) {
+      // Toast.fail('请选择产品规格')
+      if (this.goLogin) {
+        mpvue.showToast({
+          title: '未登录:请先登录',
+          icon: 'none',
+          duration: 2000,
+          success () {
+            mpvue.navigateTo({
+              url: '/pages/login/main'
+            })
+          }
+        })
+        return
+      }
+
+      if (!this.showAttrs) {
         this.showAttrs = true
         return
       }
+
+      // }
       this.is_buy = is
       let idArrStr = this.specificationCombination.join(',')
       let money = null
@@ -372,12 +395,15 @@ export default {
         } else {
           money = this.specificationCom[idArrStr].buyprice
         }
+        console.log('1', this.specificationCom[idArrStr])
       } else {
-        if (this.detail.switch === 1) {
-          money = this.specificationCom[idArrStr].pre_price
-        } else {
-          money = this.specificationCom[idArrStr].price
-        }
+        // if (this.detail.switch === 1) {
+        //   money = this.specificationCom[idArrStr].pre_price
+        // } else {
+        //   money = this.specificationCom[idArrStr].price
+        // }
+        money = this.specificationCom[idArrStr].get_price
+        console.log('0', this.specificationCom[idArrStr])
       }
 
       mpvue.navigateTo({
@@ -620,6 +646,7 @@ image {
 
 .btn-box {
   height: 70px;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 /* ===========popup=========== */
 .attrs-box {
@@ -640,7 +667,7 @@ image {
 .product-info-img img {
   width: 85px;
   height: 85px;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
   margin-right: 10px;
 }
 .product-info-name {

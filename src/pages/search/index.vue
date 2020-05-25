@@ -5,6 +5,7 @@
         <van-search :value="keyword"
                     placeholder="请输入搜索关键词"
                     use-action-slot
+                    focus="true"
                     @change="onChange"
                     @search="onSearch"
                     @clear="onClear"

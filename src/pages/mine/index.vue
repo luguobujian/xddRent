@@ -85,6 +85,7 @@ import { getUserInfo, statusProve } from '@/api/getData'
 export default {
   data () {
     return {
+      goLogin: false,
       detail: null,
       status: null,
       prove: null,
@@ -135,10 +136,14 @@ export default {
         this.showOverlay = false
         console.log(res)
         if (res.data.code === 1) {
+          this.goLogin = false
           this.detail = res.data.data
         }
       } catch (error) {
         this.showOverlay = false
+        if (error === 401) {
+          this.goLogin = true
+        }
         console.log('* getUserInfo error ', error)
       }
     },
@@ -158,7 +163,7 @@ export default {
     goNextPage (t, i) {
       console.log(this[t][i].path)
       let url = this[t][i].path
-      if (this.detail.group_id === 3) {
+      if (this.goLogin) {
         url = '/pages/login/main'
       }
       if (i === 0 && t === 'gridItems' && this.status === 1) {
@@ -176,8 +181,8 @@ export default {
           if (that.$options.data) {
             Object.assign(that.$data, that.$options.data())
           }
-          mpvue.switchTab({
-            url: '/pages/index/main'
+          mpvue.navigateTo({
+            url: '/pages/login/main'
           })
         }
       })
@@ -212,7 +217,7 @@ export default {
 .avatar-box img {
   width: 74px;
   height: 74px;
-  background-color: aquamarine;
+  background-color: skyblue;
   border: 1px solid #fff;
   border-radius: 50%;
 }

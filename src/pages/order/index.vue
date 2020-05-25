@@ -263,7 +263,8 @@ export default {
         }
         console.log(this.dataList)
       } catch (error) {
-
+        console.log('* getOrder error', error)
+        this.showOverlay = false
       }
     },
     onChange (e) {
@@ -327,7 +328,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 4px;
-  background: skyblue;
+  /* background: skyblue; */
 }
 .product-name {
   font-size: 13px;

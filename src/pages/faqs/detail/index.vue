@@ -1,7 +1,11 @@
 <template>
   <div class="container van-hairline--top">
     <div>
-      <div class="title-box">{{title}}</div>
+      <div class="title-box">
+        <div class="title-box-p">
+          <p>{{title}}</p>
+        </div>
+      </div>
       <div class="content-box">
         <wxParse :content="content"
                  @preview="preview"
@@ -57,10 +61,13 @@ export default {
   font-size: 20px;
   color: #333333;
   font-weight: bold;
-  /* text-align: center; */
+  text-align: center;
   margin: 16px 16px 0;
-  word-wrap: break-word;
-  word-break: normal;
+}
+.title-box-p {
+  display: inline-block;
+  text-align: left;
+  word-break: break-all;
 }
 .content-box {
   font-size: 15px;

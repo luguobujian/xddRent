@@ -214,3 +214,8 @@ export default {
   color: #97d700;
 }
 </style>
+<style>
+.van-button--default {
+  color: #666 !important;
+}
+</style>

@@ -3,6 +3,10 @@
 class API {
   constructor () {
     this.baseUrl = 'http://test.shuoxun.com:56083/'
+    this.exclude = [
+      'api/user/getUserInfo',
+      'api/Prove/statusProve'
+    ]
     // this.header = {
     //   'token': '',
     //   'openId': '',
@@ -29,6 +33,8 @@ class API {
   async request (url = '', data = {}, method = 'GET') {
     try {
       const token = await this.getStorageToken(url)
+      const vToken = this.exclude.includes(url)
+      console.log(vToken)
       console.log(`token ${new Date()}`, token)
       return new Promise((resolve, reject) => {
         let header = {
@@ -46,11 +52,19 @@ class API {
           method,
           success: res => {
             if (res.statusCode === 401) {
-              reject(res.statusCode)
-              mpvue.navigateTo({
-                url: '/pages/login/main'
-              })
               console.log('* FAIL  res statusCode 401', res)
+              reject(res.statusCode)
+              if (vToken) return
+              mpvue.showToast({
+                title: '未登录:请先登录',
+                icon: 'none',
+                duration: 2000,
+                success () {
+                  mpvue.navigateTo({
+                    url: '/pages/login/main'
+                  })
+                }
+              })
             } else if (res.statusCode !== 200) {
               reject(res)
               console.log('* FAIL res statusCode !200', res)

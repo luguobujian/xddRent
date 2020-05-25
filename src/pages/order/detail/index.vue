@@ -265,14 +265,14 @@
         </div>
       </div>
     </div>
-    <div class="bottom-btn-box">
-      <div class="">
+    <div class="bottom-btn-box van-hairline--top">
+      <div class="bottom-btn-box-left">
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-r">应付:</span>
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-l Oswald-Medium">¥{{detail.pay_price}}</span>
       </div>
-      <div class=""
+      <div class="bottom-btn-box-right"
            @click="goShare">
         <van-button v-if="mark==='DTH' || mark==='DZF' || mark==='DFH' || mark==='DFH'"
                     plain
@@ -300,6 +300,13 @@
                     custom-style="width: 90px"
                     round
                     type="default">返还</van-button>
+        <van-button v-if="mark==='YTK' "
+                    plain
+                    size="small"
+                    color="#aaa"
+                    custom-style="width: 100px"
+                    round
+                    type="default">查看返还记录</van-button>
         <van-button v-if="mark==='YTK' "
                     plain
                     size="small"
@@ -408,10 +415,11 @@ export default {
   color: #333;
 }
 .container {
-  height: 100%;
+  /* height: 100%; */
 }
 .detail-box {
   flex: 1;
+  overflow-y: auto;
 }
 .p-t-box {
   position: relative;
@@ -670,9 +678,18 @@ export default {
 }
 .bottom-btn-box {
   display: flex;
-  padding: 7px 15px;
+  height: 49px;
   background-color: #fff;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.bottom-btn-box-left {
+  flex: 1;
+  text-indent: 7px;
+  /* height: 35px; */
+}
+.bottom-btn-box-right {
+  padding: 7px 15px;
 }
 .bottom-btn-box .ab-tit {
   min-height: 1px;
@@ -732,7 +749,7 @@ export default {
 .van-button--small {
   /* color: #fff; */
   height: 35px !important;
-  margin-left: 8px;
-  padding: 0 12px !important;
+  /* margin-left: 8px; */
+  /* padding: 0 12px !important; */
 }
 </style>
