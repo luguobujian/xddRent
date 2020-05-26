@@ -277,7 +277,7 @@
         <van-button v-if="mark==='DTH' || mark==='DZF' || mark==='DFH' || mark==='DFH'"
                     plain
                     size="small"
-                    color="#aaa"
+                    color="#ddd"
                     custom-style="width: 90px"
                     round
                     type="default">取消订单</van-button>
@@ -290,7 +290,7 @@
         <van-button v-if="mark==='ZLZ' || mark==='YGH' || mark==='TDJZ' "
                     plain
                     size="small"
-                    color="#aaa"
+                    color="#ddd"
                     custom-style="width: 90px"
                     round
                     type="default">申请售后</van-button>
@@ -303,14 +303,14 @@
         <van-button v-if="mark==='YTK' "
                     plain
                     size="small"
-                    color="#aaa"
+                    color="#ddd"
                     custom-style="width: 100px"
                     round
                     type="default">查看返还记录</van-button>
         <van-button v-if="mark==='YTK' "
                     plain
                     size="small"
-                    color="#aaa"
+                    color="#ddd"
                     custom-style="width: 90px"
                     round
                     type="default">申请开票</van-button>
@@ -747,6 +747,7 @@ export default {
   margin-top: 14px;
 }
 .van-button--small {
+  color: #666 !important;
   /* color: #fff; */
   height: 35px !important;
   /* margin-left: 8px; */

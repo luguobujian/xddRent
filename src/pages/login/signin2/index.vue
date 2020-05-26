@@ -4,6 +4,8 @@
       <div class="main-tit">账号登录</div>
       <div>
         <van-field :value="mobile"
+                   type="number"
+                   maxlength="11"
                    placeholder="请输入手机号"
                    @change="onInputKeyMobile" />
       </div>

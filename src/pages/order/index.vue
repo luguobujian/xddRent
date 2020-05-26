@@ -257,7 +257,13 @@ export default {
             this.dataList[key].statusText = statusText
             this.dataList[key].customMark = customMark
             let timeDown = val.createtime + (12 * 60 * 60) - (new Date().getTime() / 1000)
-            timeDown = timeDown > 0 ? parseInt(timeDown * 1000) : 0
+
+            if (val.status === '1') {
+              timeDown = timeDown > 0 ? parseInt(timeDown * 1000) : 0
+            } else {
+              timeDown = 0
+            }
+
             this.dataList[key].down = timeDown
           })
         }

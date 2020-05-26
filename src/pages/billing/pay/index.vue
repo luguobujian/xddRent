@@ -44,7 +44,7 @@
            class="alipay">
         <van-field :value="address"
                    label-class="label-style"
-                   type="tel"
+                   type="number"
                    label="绑定手机号"
                    placeholder="请输入手机号"
                    input-align="right"

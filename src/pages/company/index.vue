@@ -19,7 +19,6 @@
           <van-cell-group>
             <van-field :value="name"
                        label="公司全称"
-                       right-icon="arrow"
                        placeholder="请输入"
                        input-align="right"
                        @input="onInputNameKey" />
@@ -216,7 +215,7 @@ export default {
   padding: 17px 15px !important;
 }
 .van-cell:after {
-  width: 90% !important;
+  width: 92% !important;
 }
 ._van-icon {
   color: #969799;

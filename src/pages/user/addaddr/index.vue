@@ -9,6 +9,8 @@
                        placeholder="请输入收货人"
                        @change="onNameChange" />
             <van-field :value="mobile"
+                       type="number"
+                       maxlength="11"
                        label="手机号码"
                        placeholder="请输入手机号码"
                        @change="onMobileChange" />

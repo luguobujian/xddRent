@@ -40,6 +40,8 @@
                        input-align="right"
                        @click="showGender=true" />
             <van-field :value="mobile"
+                       maxlength="11"
+                       type="number"
                        label="绑定手机"
                        disabled
                        placeholder="请输入"
@@ -96,8 +98,8 @@ export default {
       showGender: false,
       showArea: false,
       actions: [
-        { code: 0, name: '男', color: '#000' },
-        { code: 1, name: '女', color: '#000' }
+        { code: '0', name: '男', color: '#000' },
+        { code: '1', name: '女', color: '#000' }
       ],
       areaList: AreaList, // 数据格式见 Area 组件文档
       setData (key, value) {
@@ -175,7 +177,7 @@ export default {
           Toast.fail('账号名不能为空')
           return
         }
-        if (!this.showCity.cityid) {
+        if (!this.showCity.name) {
           Toast.fail('所在地区不能为空')
           return
         }
@@ -185,10 +187,6 @@ export default {
         }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
           Toast.fail('请输入正确手机号')
-          return
-        }
-        if (!this.bio) {
-          Toast.fail('个人简介不能为空')
           return
         }
         const res = await refreshInfo({ avatar: this.avatar, username: this.username, gender: this.gender, mobile: this.mobile, bio: this.bio, area: this.showCity.name })

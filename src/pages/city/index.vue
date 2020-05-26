@@ -40,8 +40,8 @@
           <div class="citys-item"
                v-for="(item, index) in hisCitys"
                :key="index"
-               :data-city="itm.name"
-               :data-id="itm.cityid"
+               :data-city="item.name"
+               :data-id="item.cityid"
                @click="chsCitys">{{item.name}}</div>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default {
     mpvue.getStorage({
       key: 'hisCitys',
       success (res) {
-        console.log(res.data)
+        console.log('hisCitys', res.data)
         that.hisCitys = res.data
       }
     })

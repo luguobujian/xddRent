@@ -335,7 +335,7 @@ export default {
         this.specificationCombination[sindex] = id
         this.spcCShow[sindex] = name
       }
-      // this.sCShow = this.spcCShow.join('/')
+      this.sCShow = this.spcCShow.join('/')
       // console.log(this.sCShow)
       this.setPopupChsInfo()
     },
@@ -343,7 +343,8 @@ export default {
       // console.log('---', this.specification.length)
       // console.log('===', this.specIdxArr.length)
       // console.log(this.specificationCombination)
-      this.sCShow = this.spcCShow.join('/')
+
+      // this.sCShow = this.spcCShow.join('/')
 
       let sc = this.specificationCombination.join(',')
       this.popup_pre_price = this.specificationCom[sc] ? this.specificationCom[sc].pre_price : 0
@@ -405,9 +406,9 @@ export default {
         money = this.specificationCom[idArrStr].get_price
         console.log('0', this.specificationCom[idArrStr])
       }
-
+      let image = this.detail.images.split[0]
       mpvue.navigateTo({
-        url: `${this.routers[r]}?id=${this.id}&is_buy=${this.is_buy}&goods_format_id_arr=${idArrStr}&name=${this.detail.name}&img=${this.detail.images}&money=${money}&stepperVal=${this.stepperVal}&house_id=${this.detail.house_id}&transport_id=${this.detail.transport_id}`
+        url: `${this.routers[r]}?id=${this.id}&is_buy=${this.is_buy}&goods_format_id_arr=${idArrStr}&name=${this.detail.name}&img=${image}&money=${money}&stepperVal=${this.stepperVal}&house_id=${this.detail.house_id}&transport_id=${this.detail.transport_id}`
       })
 
       this.showAttrs = false

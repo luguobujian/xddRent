@@ -12,6 +12,9 @@
       </div>
       <div class="input-box">
         <van-field :value="mobile"
+                   type="number"
+                 maxlength="11"
+
                    autosize
                    label="联系方式"
                    input-align="right"

@@ -6,12 +6,15 @@
       </div>
       <div>
         <van-field :value="mobile"
+                   type="number"
+                   maxlength="11"
                    placeholder="请输入手机号"
                    @change="onInputKeyMobile" />
       </div>
       <div class="sms-code-box van-hairline">
         <van-field class="inp-box"
                    :value="code"
+                   type="number"
                    placeholder="请输入验证码"
                    @change="onInputKeyCode" />
         <span class="sms-btn"

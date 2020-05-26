@@ -4,12 +4,15 @@
       <div class="main-tit">绑定手机号</div>
       <div>
         <van-field :value="mobile"
+                   maxlength="11"
+                   type="number"
                    placeholder="请输入手机号"
                    @change="onInputKeyMobile" />
       </div>
       <div class="sms-code-box van-hairline">
         <van-field :value="code"
                    class="inp-box"
+                   type="number"
                    placeholder="请输入验证码"
                    @change="onInputKeyCode" />
         <span class="sms-btn"

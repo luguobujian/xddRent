@@ -92,7 +92,7 @@
       <div class="product-s-box mb10">
         <div class="product-box van-hairline">
           <div class="product-img-box">
-            <img src=""
+            <img :src="productImg"
                  alt="" />
           </div>
           <div class="product-right-box">
@@ -310,6 +310,7 @@ export default {
       transfer_fee: null,
 
       productName: null,
+      productImg: null,
       productId: null,
       productMoney: null,
       productNum: null,
@@ -337,6 +338,7 @@ export default {
     this.house_id = options.house_id
     this.transport_id = options.transport_id
     this.productName = options.name
+    this.productImg = options.img
     this.productId = options.goods_id
     this.productMoney = options.money
     this.productNum = options.stepperVal
@@ -431,9 +433,11 @@ export default {
     addEventListenerChildCoupon (e) {
       console.log(e)
       this.showCoupon = e.showCoupon
-      this.coupon_id = e.couponResult.id
-      this.coupon = e.couponResult.del_price
-      this.couponResult = '-¥' + e.couponResult.del_price
+      if (e.couponResult) {
+        this.coupon_id = e.couponResult.id
+        this.coupon = e.couponResult.del_price
+        this.couponResult = '-¥' + e.couponResult.del_price
+      }
 
       this.calculateFee()
     },
@@ -575,7 +579,7 @@ export default {
 .product-img-box img {
   width: 60px;
   height: 60px;
-  background-color: #97d700;
+  /* background-color: #97d700; */
   border-radius: 2px;
 }
 .product-name {

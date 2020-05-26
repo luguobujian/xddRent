@@ -47,7 +47,7 @@ export default {
   methods: {
     onClose () {
       this.showCoupon = false
-      this.$emit('childEvent', { showCoupon: this.showCoupon, couponResult: this.couponResult })
+      this.$emit('childEvent', { showCoupon: this.showCoupon, couponResult: '' })
     },
     onCouponChecbox (e) {
       console.log(e)
