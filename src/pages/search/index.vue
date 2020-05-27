@@ -79,7 +79,8 @@
       </div>
       <nomoreComponents v-if="reuslts"
                         :tipBoxTop="tipBoxTop"
-                        :tipSrc="tipSrc"
+                        tipSrc="nshousuo.png"
+                        noTip="暂无搜索结果"
                         :dataList="reuslts"></nomoreComponents>
     </div>
     <van-dialog id="van-dialog"

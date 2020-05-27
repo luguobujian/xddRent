@@ -3,7 +3,7 @@
     <div class="main-box">
       <div class="logo-box">
         <img class="logo-img"
-             src="/static/images/108.png"
+             :src="baseUrl + '/PingFangSC/xddmppic/108.png'"
              alt="">
         <div class="logo-tip">箱当当</div>
       </div>
@@ -35,10 +35,12 @@
   </div>
 </template>
 <script>
+import API from '@/api/api'
 import Toast from '../../../static/vant/toast/toast'
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
       checked: true,
       routers: [{
         url: '/pages/login/bind_phone/main'

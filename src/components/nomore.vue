@@ -6,12 +6,13 @@
       <div>
         <div>
           <img class="nomore-skeleton-img"
-               :src="tipSrc?tipSrc:'/static/images/nomore.svg'"
+               :src="baseUrl + '/PingFangSC/xddmppic/' + tipSrc"
                alt="">
         </div>
         <div v-if="dataList"
              class="nomore-skeleton-tip">
-          暂无相关数据
+          <!-- 暂无相关数据 -->
+          {{noTip}}
         </div>
         <div v-else
              class="nomore-skeleton-tip">
@@ -22,11 +23,12 @@
   </div>
 </template>
 <script>
-
+import API from '@/api/api'
 export default {
-  props: ['tipBoxTop', 'tipSrc', 'dataList'],
+  props: ['tipBoxTop', 'tipSrc', 'noTip', 'dataList'],
   data () {
     return {
+      baseUrl: API.baseUrl,
       tipText: '数据加载中。。。'
     }
   },
@@ -45,14 +47,15 @@ export default {
 <style scoped>
 .nomore-skeleton-img {
   display: block;
-  width: 121px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   margin: 0 auto;
 }
 .nomore-skeleton-tip {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 14px;
+  font-size: 15px;
+  color: #333333;
   line-height: 30px;
   text-align: center;
+  margin-top: -60px;
 }
 </style>

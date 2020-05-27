@@ -5,14 +5,14 @@
         <div class="p-t-box">
           <div>
             <img class="top-s-box"
-                 src="/static/images/top-bg.jpg"
+                 :src="baseUrl + '/PingFangSC/xddmppic/top-bg.jpg'"
                  alt="">
           </div>
           <div class="txt-tip-box"
                :style="{top: top}">
             <div class="m-s-box">
-              <van-icon name="warning-o"
-                        size="19px" />{{statusText}}
+              <van-icon :name="ico === 'w'? '/static/icons/await.png':'warning-o'"
+                        size="19px" />{{statusText}}{{detail.is_buy === 1? '(购)': '(租)'}}{{detail.get_methods === 1? '(提)': '(送)'}}
             </div>
             <div v-if="showSubtit"
                  class="cause-box">
@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div v-if="mark === 'TDJZ'"
+        <div v-if="detail.is_buy === 99"
              class="order-mark-box mb10">
           <div class="count-day-box">
             <div class="om-tit">租赁时长</div>
@@ -64,7 +64,7 @@
           </div> -->
         </div>
         <!-- 收货图片 -->
-        <div v-if="mark === 'TDJZ' || mark === 'DTH' || mark === 'ZLZ'"
+        <div v-if="mark === 'TDJZ' || mark === 'ZLZ'"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">收货图片</div>
           <div class="img-items-box">
@@ -123,8 +123,42 @@
             <div class="wi-time">{{detail.address}}</div>
           </div>
         </div>
+
+        <!-- 取货信息 -->
+        <div v-if="mark === 'DZF'"
+             class=" shouhuo-box huanhuo-box wuliu-box mb10">
+          <div class="wuliu-icon">
+            <van-icon name="/static/icons/location.png"
+                      color="#1989fa" />
+          </div>
+          <div class="wuliu-info shouhuo-info huanhuo-info">
+            <div class="sh-info van-hairline">
+              <span class="PingFangSC-Medium">{{detail.get_people}}</span>
+              <span class="">{{detail.get_phone}}</span>
+              <span class="s-t-icon PingFangSC-Medium">取</span>
+            </div>
+            <div class="huanhuo-text-box">
+              <div class="huanhuo-text-t-box van-hairline">
+                <div class="htt-l">取货时间</div>
+                <div class="htt-r">{{detail.get_time}}</div>
+              </div>
+              <div class="huanhuo-text-t-box van-hairline">
+                <div class="htt-l">仓库信息</div>
+                <div class="htt-r">
+                  <div class="htt-r-t">{{detail.house.name}}</div>
+                  <div class="htt-r-b">{{detail.house.area_name}}{{detail.house.areatext}}</div>
+                </div>
+              </div>
+              <div class="huanhuo-text-t-box van-hairline">
+                <div class="htt-l">仓库电话</div>
+                <div class="htt-r">{{detail.house.mobile || ''}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 还货信息 -->
-        <div v-if="detail.get_methods===1"
+        <div v-if="mark === 'DTH'"
              class=" shouhuo-box huanhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
@@ -139,7 +173,7 @@
             <div class="huanhuo-text-box">
               <div class="huanhuo-text-t-box van-hairline">
                 <div class="htt-l">取货时间</div>
-                <div class="htt-r">{{detail.get_phone}}</div>
+                <div class="htt-r">{{detail.get_time}}</div>
               </div>
               <div class="huanhuo-text-t-box van-hairline">
                 <div class="htt-l">仓库信息</div>
@@ -175,9 +209,9 @@
           </div>
         </div>
         <!-- 订单备注 -->
-        <div v-if="mark === 'DTH'"
-             class="order-mark-box mb10">
-          <div class="count-day-box">
+        <div class="order-mark-box mb10">
+          <div class="count-day-box"
+               v-if="detail.is_buy === 0">
             <div class="om-tit">租赁时长</div>
             <div class="cd-n van-hairline">{{detail.use_time}}天</div>
           </div>
@@ -248,7 +282,8 @@
           </div>
         </div>
         <!-- 租金信息 -->
-        <div class="amount-box">
+        <div class="amount-box"
+             v-if="detail.is_buy === 0">
           <div class="ab-tit">
             <span class="PingFangSC-Medium">租金</span>
             <span class="abt-r PingFangSC-Medium">合计：¥20000.00</span>
@@ -319,13 +354,15 @@
   </div>
 </template>
 <script>
-
+import API from '@/api/api'
 import moment from 'moment'
 import { getOrderDetail, getTranspost } from '@/api/getData'
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
       top: '50rpx',
+      ico: null,
       id: null,
       mark: null,
       countDown: null,
@@ -347,11 +384,13 @@ export default {
     this.mark = options.mark
     this.statusText = options.statusText
 
-    if (this.mark === 'DTH' || this.mark === 'DSH' || this.mark === 'DFH' || this.mark === 'YSH' || this.mark === 'YGH' || this.mark === 'YGB' || this.mark === 'TDJZ') {
+    if (this.mark === 'DTH' || this.mark === 'DSH' || this.mark === 'DQR' || this.mark === 'DFH' || this.mark === 'YSH' || this.mark === 'YGH' || this.mark === 'YGB' || this.mark === 'TDJZ') {
       this.top = '66rpx'
       this.showSubtit = false
     }
-
+    if (this.mark === 'DTH') {
+      this.ico = 'w'
+    }
     this.getOrderDetail()
     // this.getTranspost()
   },
@@ -469,7 +508,7 @@ export default {
   width: 81px;
   border-radius: 2px;
   height: 81px;
-  background: skyblue;
+  /* background: skyblue; */
 }
 .img-item div {
   font-size: 12px;
@@ -614,7 +653,7 @@ export default {
   width: 70px;
   height: 70px;
   border-radius: 4px;
-  background-color: skyblue;
+  /* background-color: skyblue; */
 }
 .pbr-t {
   font-size: 13px;
@@ -697,7 +736,7 @@ export default {
 .bottom-btn-box .bbb-l-r,
 .bottom-btn-box .bbb-l-l {
   display: inline-block;
-  line-height: 35px;
+  line-height: 49px;
 }
 
 .bbb-l {

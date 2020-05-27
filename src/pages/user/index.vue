@@ -10,7 +10,7 @@
           </div>
           <div class="fr">
             <img class="avatar"
-                 :src="avatar || '/static/images/user.png'"
+                 :src="avatar || (baseUrl + '/PingFangSC/xddmppic/user.png')"
                  alt=""></div>
         </div>
         <div>
@@ -85,6 +85,8 @@
 </template>
 
 <script>
+import API from '@/api/api'
+
 import Toast from '../../../static/vant/toast/toast'
 import AreaList from '../../../static/vant/area/area'
 import { getUserInfo, refreshInfo } from '@/api/getData'
@@ -92,6 +94,8 @@ let globalThat = null
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
+
       routers: {
         area: '/pages/city/main'
       },
@@ -181,7 +185,7 @@ export default {
           Toast.fail('所在地区不能为空')
           return
         }
-        if (!this.gender) {
+        if (!this.genderDesc) {
           Toast.fail('性别不能为空')
           return
         }

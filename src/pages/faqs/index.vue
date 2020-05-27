@@ -7,7 +7,8 @@
               is-link
               @click="goNextPage" />
     <nomoreComponents :tipBoxTop="tipBoxTop"
-                      :tipSrc="tipSrc"
+                      tipSrc="ndingdan.png"
+                      noTip="暂无记录"
                       :dataList="dataList"></nomoreComponents>
   </div>
 </template>

@@ -3,9 +3,9 @@
     <div class="top-info clearfix"
          @click="goNextPage('userItems', 0)">
       <div class="avatar-box fl">
-        <img :src="detail && detail.avatar"
+        <img :src="(detail && detail.avatar) || (baseUrl + '/PingFangSC/xddmppic/user.png')"
              alt="">
-        <van-icon v-if="detail &&detail.gender === 1"
+        <van-icon v-if="detail&&detail.gender===1"
                   class="gender-i"
                   name="/static/icons/female.png"
                   size="16px" />
@@ -81,10 +81,12 @@
 </template>
 
 <script>
+import API from '@/api/api'
 import { getUserInfo, statusProve } from '@/api/getData'
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
       goLogin: false,
       detail: null,
       status: null,

@@ -4,7 +4,7 @@
       <div class="p-t-box">
         <div>
           <img class="top-s-box"
-               src="/static/images/top-bg.jpg"
+               :src="baseUrl + '/PingFangSC/xddmppic/top-bg.jpg'"
                alt="">
         </div>
         <div class="txt-tip-box"
@@ -60,10 +60,12 @@
   </div>
 </template>
 <script>
+import API from '@/api/api'
 import { statusProve } from '@/api/getData'
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
       detail: null,
       top: '66rpx',
       status: null,

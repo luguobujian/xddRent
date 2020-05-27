@@ -7,7 +7,8 @@
           <div class="city PingFangSC-Medium">{{showCity.name}}</div>
           <van-icon name="/static/icons/arrow-down.png" />
         </div>
-        <div class="search-btn-box">
+        <div class="search-btn-box"
+             @click="goSearch">
           <div class="search-btn">
             <van-icon name="/static/icons/search.png" />
             输入箱子名称进行搜索
@@ -48,7 +49,8 @@
       </div>
     </div>
     <nomoreComponents :tipBoxTop="tipBoxTop"
-                      :tipSrc="tipSrc"
+                      tipSrc="noshangping.png"
+                      noTip="暂无相关商品"
                       :dataList="reuslts"></nomoreComponents>
   </div>
 </template>
@@ -135,6 +137,11 @@ export default {
     goChsCitys () {
       mpvue.navigateTo({
         url: `/pages/city/main?city=${this.showCity.name}&cityid=${this.showCity.cityid}`
+      })
+    },
+    goSearch () {
+      mpvue.navigateTo({
+        url: `/pages/search/main?city=${this.showCity.name}&cityid=${this.showCity.cityid}`
       })
     },
     goNextPage (e) {

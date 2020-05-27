@@ -11,7 +11,7 @@
             </div>
             <div class="fr">
               <img class="avatar"
-                   :src="images || '/static/images/upload.png'"
+                   :src="images || baseUrl + '/PingFangSC/xddmppic/upload.png'"
                    alt=""></div>
           </div>
         </div>
@@ -65,6 +65,8 @@ import { companyProve, statusProve } from '@/api/getData'
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
+
       name: '',
       phone: '',
       address: '',

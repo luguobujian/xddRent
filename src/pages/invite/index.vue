@@ -26,7 +26,8 @@
       </div>
     </div>
     <nomoreComponents :tipBoxTop="tipBoxTop"
-                      :tipSrc="tipSrc"
+                      tipSrc="nshangping.png"
+                      noTip="暂无归还记录"
                       :dataList="dataList"></nomoreComponents>
     <van-toast id="van-toast" />
   </div>

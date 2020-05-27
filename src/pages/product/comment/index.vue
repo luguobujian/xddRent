@@ -111,12 +111,14 @@
       </div>
 
     </div>
-    <nomore :dataList="dataList"></nomore>
+    <nomoreComponents :dataList="dataList"
+            tipSrc="ndianping.png"
+            noTip="暂未发布点评"></nomoreComponents>
   </div>
 </template>
 <script>
 import { getGoodsValuation } from '@/api/getData'
-import nomore from '@/components/nomore'
+import nomoreComponents from '@/components/nomore'
 
 export default {
   data () {
@@ -135,7 +137,7 @@ export default {
     this.getGoodsValuation()
   },
   components: {
-    nomore
+    nomoreComponents
   },
   methods: {
     async getGoodsValuation () {

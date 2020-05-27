@@ -36,7 +36,8 @@
         </van-radio-group>
       </div>
       <nomoreComponents :tipBoxTop="tipBoxTop"
-                        :tipSrc="tipSrc"
+                        tipSrc="ndizhi.png"
+                        noTip="您还未添加地址"
                         :dataList="dataList"></nomoreComponents>
     </div>
 

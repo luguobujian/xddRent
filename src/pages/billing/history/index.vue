@@ -23,7 +23,8 @@
              class="some-info-box fail">提现失败原因：{{item.text}}</div>
       </div>
       <nomoreComponents :tipBoxTop="tipBoxTop"
-                        :tipSrc="tipSrc"
+                        tipSrc="nshouyi.png"
+                        noTip="暂无收益信息"
                         :dataList="detailList"></nomoreComponents>
     </div>
 

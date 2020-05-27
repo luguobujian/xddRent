@@ -2,7 +2,7 @@
   <div class="container">
     <div class="main-box">
       <div class="logo-box">
-        <img src="/static/images/108.png"
+        <img :src="baseUrl + '/PingFangSC/xddmppic/108.png'"
              alt="">
       </div>
       <div class="title">箱当当</div>
@@ -22,8 +22,13 @@
   </div>
 </template>
 <script>
+import API from '@/api/api'
 export default {
-
+  data () {
+    return {
+      baseUrl: API.baseUrl
+    }
+  }
 }
 </script>
 <style lang="">

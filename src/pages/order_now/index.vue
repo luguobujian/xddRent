@@ -156,8 +156,36 @@
                    input-align='right'
                    right-icon="arrow"
                    input-class="coupon-value-style"
-                   @click="showCoupon = true" />
+                   @click="onShowCoupon" />
       </div>
+
+      <van-popup :show="showDate"
+                 position="bottom"
+                 @cancel="showDate = false">
+        <van-datetime-picker type="date"
+                             :value="currentDate"
+                             :formatter="formatter"
+                             title="取货时间"
+                             @input="onInput"
+                             @confirm="onDateConfirm"
+                             @cancel="showDate = false" />
+      </van-popup>
+      <van-popup :show="showPicker"
+                 position="bottom"
+                 @cancel="showPicker = false">
+        <van-picker show-toolbar
+                    title="租赁时长"
+                    :columns="columns"
+                    @cancel="showPicker = false"
+                    @confirm="onPickerConfirm" />
+      </van-popup>
+
+      <couponComponent :couponDatas="nextCouponDatas"
+                       :showCoupon="showCoupon"
+                       @childEvent="addEventListenerChildCoupon"></couponComponent>
+      <van-toast id="van-toast" />
+      <van-dialog id="van-dialog"
+                  confirmButtonColor="#97D700" />
     </div>
     <!-- <van-popup :show="showDate"
                position="bottom"
@@ -180,9 +208,6 @@
                   @confirm="onPickerConfirm" />
     </van-popup> -->
 
-    <couponComponent :couponDatas="couponDatas"
-                     :showCoupon="showCoupon"
-                     @childEvent="addEventListenerChildCoupon"></couponComponent>
     <!-- <van-popup :show="showCoupon"
                custom-style="height: 60%;width: 100%"
                closeable
@@ -213,26 +238,7 @@
         </div>
       </div>
     </van-popup> -->
-    <van-popup :show="showDate"
-               position="bottom"
-               @cancel="showDate = false">
-      <van-datetime-picker type="date"
-                           :value="currentDate"
-                           :formatter="formatter"
-                           title="取货时间"
-                           @input="onInput"
-                           @confirm="onDateConfirm"
-                           @cancel="showDate = false" />
-    </van-popup>
-    <van-popup :show="showPicker"
-               position="bottom"
-               @cancel="showPicker = false">
-      <van-picker show-toolbar
-                  title="租赁时长"
-                  :columns="columns"
-                  @cancel="showPicker = false"
-                  @confirm="onPickerConfirm" />
-    </van-popup>
+
     <div class="bottom-btn-box">
       <div class="bbb-l">
         <span class="bbb-l-r">合计:</span>
@@ -247,9 +253,7 @@
                     @click="submit">提交订单</van-button>
       </div>
     </div>
-    <van-toast id="van-toast" />
-    <van-dialog id="van-dialog"
-                confirmButtonColor="#97D700" />
+
   </div>
 </template>
 <script>
@@ -320,6 +324,7 @@ export default {
       allMoney: null,
 
       couponDatas: [],
+      nextCouponDatas: [],
       coupon_id: '',
       coupon: '',
       couponResult: '',
@@ -376,17 +381,44 @@ export default {
         const res = await getCoupons({ goods_id: this.id })
         console.log('* getCoupons', res)
         if (res.data.code === 1) {
-          let arr = res.data.data
-          arr.forEach((item, key) => {
-            item.del_price = parseInt(item.del_price)
-            item.del_rules = parseInt(item.del_rules)
-          })
-          console.log(arr)
-          this.couponDatas = arr
+          this.couponDatas = res.data.data
+          this.setCoupons()
         }
       } catch (error) {
         console.log('* getCoupons error', error)
       }
+    },
+    setCoupons () {
+      let arr = this.couponDatas
+      let tArr = []
+
+      // console.log(arr)
+      if (arr.length === 0) {
+        this.couponResult = `0张可用`
+      } else {
+        let money = parseInt(this.productNum) * parseInt(this.productMoney)
+
+        for (let i = 0; i < arr.length; i++) {
+          let item = arr[i]
+          console.log(money)
+          console.log(parseInt(item.del_rules))
+          if (parseInt(money) >= parseInt(item.del_rules)) {
+            console.log(item)
+            item.del_price = parseInt(item.del_price)
+            item.del_rules = parseInt(item.del_rules)
+            tArr.push(item)
+          }
+        }
+        arr = tArr
+
+        this.couponResult = `${arr.length}张可用`
+      }
+      // console.log(arr)
+      this.nextCouponDatas = arr
+    },
+    onShowCoupon () {
+      if (this.couponDatas.length === 0) return
+      this.showCoupon = true
     },
     onSwitchBtn (i) {
       this.switchIdx = i
@@ -394,6 +426,7 @@ export default {
     onChange (event) {
       this.productNum = event.mp.detail
       this.allMoney = `¥${parseInt(this.productNum) * parseInt(this.productMoney)}.00`
+      this.setCoupons()
       this.calculateFee()
       if (!this.transfer_unit_fee) return
       this.transfer_fee = `¥${parseInt(this.productNum) * parseInt(this.transfer_unit_fee)}.00`
@@ -454,10 +487,35 @@ export default {
       this.orderPrice = `¥${money + (transferFee * parseInt(this.productNum)) - coupon}`
     },
     async submit () {
-      if (!this.address.id) {
-        Toast.fail('请选择地址')
-        return
+      if (this.switchIdx === 1) {
+        if (!this.warehouse.id) {
+          Toast.fail('请选择仓库')
+          return
+        }
+        if (!this.date) {
+          Toast.fail('请选择取货时间')
+          return
+        }
+        if (!this.get_people) {
+          Toast.fail('请输入取货人')
+          return
+        }
+        if (!this.get_phone) {
+          Toast.fail('请输入联系方式')
+          return
+        }
+      } else {
+        if (!this.address.id) {
+          Toast.fail('请选择地址')
+          return
+        }
+        this.warehouse.id = this.house_id
       }
+
+      // if (!this.long) {
+      //   Toast.fail('请选择租赁时长')
+      //   return
+      // }
       console.log(this.coupon_id)
       try {
         let data = {
@@ -504,7 +562,9 @@ export default {
 </script>
 <style scoped>
 .main-box {
-  margin-bottom: 65px;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
 }
 .sbb-cell-box {
   position: relative;
@@ -621,9 +681,9 @@ export default {
   display: flex;
   padding: 0 15px;
   background-color: #fff;
-  position: fixed;
+  /* position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: 0; */
 }
 
 .bbb-l {

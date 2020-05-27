@@ -113,16 +113,16 @@
                                  type="warning"
                                  plain="true"
                                  size="small"
-                                 @click="goOrderPage('order_now',1)" />
+                                 @click="openPop('order_now',1)" />
         <van-goods-action-button text="租赁"
                                  color="#97D700"
                                  size="small"
-                                 @click="goOrderPage('rent_now',0)" />
+                                 @click="openPop('rent_now',0)" />
       </van-goods-action>
     </div>
     <van-popup :show="showAttrs"
                position="bottom"
-               custom-style="height: 78%;width: 100%;border-radius: 8px !important"
+               custom-style="height: 78%;width: 100%;border-radius: 8px  8px 0 0!important"
                z-index="999"
                round
                closeable
@@ -176,7 +176,15 @@
           </div>
         </div>
         <div class="btn-box">
-          <van-goods-action>
+          <div class="bottom-btn-margin">
+            <van-button color="#97D700"
+                        size="small"
+                        round
+                        block
+                        @click="goOrderPage">确定</van-button>
+
+          </div>
+          <!-- <van-goods-action>
             <van-goods-action-button text="立即购买"
                                      color="#fff"
                                      text-class="goods-button-left"
@@ -188,7 +196,7 @@
                                      color="#97D700"
                                      size="small"
                                      @click="goOrderPage('rent_now', 0)" />
-          </van-goods-action>
+          </van-goods-action> -->
         </div>
       </div>
     </van-popup>
@@ -236,7 +244,7 @@ export default {
       spcCShow: [],
       sCShow: '',
 
-      is_buy: null
+      is_buy: 0
     }
   },
   components: {
@@ -363,10 +371,10 @@ export default {
         url: `${this.routers[r]}`
       })
     },
-    goOrderPage (r, is) {
+    openPop (a, is) {
       console.log(is)
-      // if (this.specificationCombination.length !== this.specification.length) {
-      // Toast.fail('请选择产品规格')
+      this.is_buy = is
+
       if (this.goLogin) {
         mpvue.showToast({
           title: '未登录:请先登录',
@@ -383,19 +391,24 @@ export default {
 
       if (!this.showAttrs) {
         this.showAttrs = true
-        return
       }
+    },
+    goOrderPage () {
+      // if (this.specificationCombination.length !== this.specification.length) {
+      // Toast.fail('请选择产品规格')
 
       // }
-      this.is_buy = is
+      // this.is_buy = is
       let idArrStr = this.specificationCombination.join(',')
       let money = null
-      if (is === 1) {
+      let url = ''
+      if (this.is_buy === 1) {
         if (this.detail.switch === 1) {
           money = this.specificationCom[idArrStr].pre_buyprice
         } else {
           money = this.specificationCom[idArrStr].buyprice
         }
+        url = '/pages/order_now/main'
         console.log('1', this.specificationCom[idArrStr])
       } else {
         // if (this.detail.switch === 1) {
@@ -404,11 +417,12 @@ export default {
         //   money = this.specificationCom[idArrStr].price
         // }
         money = this.specificationCom[idArrStr].get_price
+        url = '/pages/rent_now/main'
         console.log('0', this.specificationCom[idArrStr])
       }
-      let image = this.detail.images.split[0]
+      let image = this.detail.images.split(',')[0]
       mpvue.navigateTo({
-        url: `${this.routers[r]}?id=${this.id}&is_buy=${this.is_buy}&goods_format_id_arr=${idArrStr}&name=${this.detail.name}&img=${image}&money=${money}&stepperVal=${this.stepperVal}&house_id=${this.detail.house_id}&transport_id=${this.detail.transport_id}`
+        url: `${url}?id=${this.id}&is_buy=${this.is_buy}&goods_format_id_arr=${idArrStr}&name=${this.detail.name}&img=${image}&money=${money}&stepperVal=${this.stepperVal}&house_id=${this.detail.house_id}&transport_id=${this.detail.transport_id}`
       })
 
       this.showAttrs = false
@@ -638,15 +652,16 @@ image {
   font-size: 15px;
   color: #333333;
   line-height: 28px;
+  overflow: hidden;
 }
 .text-content img {
-  height: 176px;
+  /* height: 176px; */
   border-radius: 4px;
   padding: 8px 0;
 }
 
 .btn-box {
-  height: 70px;
+  height: 73px;
   padding-bottom: env(safe-area-inset-bottom);
 }
 /* ===========popup=========== */
@@ -728,6 +743,9 @@ image {
 .attrs-lists:nth-child(4n) {
   margin-right: 0;
 }
+.bottom-btn-margin {
+  padding: 15px 0 !important;
+}
 </style>
 <style>
 .wxParse {
@@ -777,5 +795,9 @@ image {
   margin-top: 15px !important;
   margin-bottom: 15px !important;
   margin-right: 15px !important;
+}
+.van-button--small {
+  color: #fff;
+  height: 40px !important;
 }
 </style>

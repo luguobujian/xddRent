@@ -6,7 +6,7 @@
            :key="index"
            @click="onClick(item.order_id, item.customMark, item.statusText)">
         <div class="order-no-info-box van-hairline">
-          <div class="order-no-box">订单编号：{{item.order_id}}</div>
+          <div class="order-no-box">订单编号：{{item.order_id}}{{item.is_buy === 1? '(购)': '(租)'}}{{item.get_methods === 1? '(提)': '(送)'}}</div>
           <div class="order-status-box PingFangSC-Medium">{{ item.statusText}}</div>
         </div>
         <div class="product-info-box van-hairline"
@@ -71,7 +71,7 @@
                         type="primary">返还</van-button>
           </div>
           <div class="btns-box"
-               v-if="item.status === '9'">
+               v-if="item.customMark === 'YTK'">
             <div class="return-box money">
               <div class="return-box-tit">已返还金额:</div>
               <div class="money-tip">¥</div>{{item.get_price}}
@@ -85,7 +85,8 @@
         </div>
       </div>
       <nomoreComponents :tipBoxTop="tipBoxTop"
-                        :tipSrc="tipSrc"
+                        tipSrc="ndingdan.png"
+                        noTip="暂无订单"
                         :dataList="dataList"></nomoreComponents>
     </div>
   </div>
@@ -143,7 +144,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 4px;
-  background: skyblue;
+  /* background: skyblue; */
 }
 .product-name {
   font-size: 13px;

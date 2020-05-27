@@ -121,35 +121,31 @@
           </van-collapse-item>
         </van-collapse>
       </div>
+      <van-popup :show="showDate"
+                 position="bottom"
+                 @cancel="showDate = false">
+        <van-datetime-picker type="date"
+                             :value="currentDate"
+                             :formatter="formatter"
+                             title="取货时间"
+                             @input="onInput"
+                             @confirm="onDateConfirm"
+                             @cancel="showDate = false" />
+      </van-popup>
+      <van-popup :show="showPicker"
+                 position="bottom"
+                 @cancel="showPicker = false">
+        <van-picker show-toolbar
+                    title="租赁时长"
+                    :columns="columns"
+                    @cancel="showPicker = false"
+                    @confirm="onPickerConfirm" />
+      </van-popup>
+      <van-toast id="van-toast" />
+      <van-dialog id="van-dialog"
+                  confirmButtonColor="#97D700" />
     </div>
-    <van-popup :show="showDate"
-               position="bottom"
-               @cancel="showDate = false">
-      <van-datetime-picker type="date"
-                           :value="currentDate"
-                           :formatter="formatter"
-                           title="取货时间"
-                           @input="onInput"
-                           @confirm="onDateConfirm"
-                           @cancel="showDate = false" />
-    </van-popup>
-    <van-popup :show="showPicker"
-               position="bottom"
-               @cancel="showPicker = false">
-      <van-picker show-toolbar
-                  title="租赁时长"
-                  :columns="columns"
-                  @cancel="showPicker = false"
-                  @confirm="onPickerConfirm" />
-    </van-popup>
-    <!-- <div v-if="!showDate && !showPicker"
-         class="bottom-btn">
-      <van-submit-bar :price="2000000"
-                      button-text="提交订单"
-                      bind:submit="onSubmit"
-                      price-class="b-b-price"
-                      button-class="b-b-btn" />
-    </div> -->
+
     <div class="bottom-btn-box">
       <div class="bbb-l">
         <span class="bbb-l-r">合计:</span>
@@ -164,9 +160,6 @@
                     @click="submit">提交订单</van-button>
       </div>
     </div>
-    <van-toast id="van-toast" />
-    <van-dialog id="van-dialog"
-                confirmButtonColor="#97D700" />
   </div>
 </template>
 <script>
@@ -385,7 +378,9 @@ export default {
 </script>
 <style scoped>
 .main-box {
-  margin-bottom: 65px;
+  flex: 1;
+  margin-bottom: 10px;
+  overflow-y: auto;
 }
 .sbb-cell-box {
   position: relative;
@@ -497,9 +492,9 @@ export default {
   display: flex;
   padding: 0 15px;
   background-color: #fff;
-  position: fixed;
+  /* position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: 0; */
 }
 
 .bbb-l {

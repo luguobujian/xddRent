@@ -46,29 +46,32 @@
     </div>
     <div class="items-box">
       <div class="item"
-           @click="goNextPage('product', {title: '汽车领域', fromCode: 3, type: 2})">
+           :class="{itemBg : chsItemIdx===0}"
+           @click="onClickItem(0)">
         <div class="item-tit PingFangSC-Medium">汽车领域</div>
         <div class="sub-item-tit">Automotive field</div>
         <div class="item-img">
-          <img src="/static/images/item1.png"
+          <img :src="chsItemIdx===0? baseUrl +'/PingFangSC/xddmppic/item1-act.png': baseUrl +'/PingFangSC/xddmppic/item1.png'"
                alt="">
         </div>
       </div>
-      <div class="item item-bg item-middle"
-           @click="goNextPage('product', {title: '零售领域', fromCode: 3, type: 3})">
+      <div class="item item-middle"
+           :class="{itemBg : chsItemIdx===1}"
+           @click="onClickItem(1)">
         <div class="item-tit PingFangSC-Medium">零售领域</div>
         <div class="sub-item-tit">Retail area</div>
         <div class="item-img">
-          <img src="/static/images/item2.png"
+          <img :src="chsItemIdx===1? baseUrl +'/PingFangSC/xddmppic/item2-act.png': baseUrl +'/PingFangSC/xddmppic/item2.png'"
                alt="">
         </div>
       </div>
-      <div class="item item-bg"
-           @click="goNextPage('product', {title: '运输领域', fromCode: 3, type: 4})">
+      <div class="item"
+           :class="{itemBg : chsItemIdx===2}"
+           @click="onClickItem(2)">
         <div class="item-tit PingFangSC-Medium">运输领域</div>
         <div class="sub-item-tit">Transportation field</div>
         <div class="item-img">
-          <img src="/static/images/item3.png"
+          <img :src="chsItemIdx===2? baseUrl +'/PingFangSC/xddmppic/item3-act.png': baseUrl +'/PingFangSC/xddmppic/item3.png'"
                alt="">
         </div>
       </div>
@@ -84,14 +87,14 @@
 </template>
 
 <script>
-// import API from '@/api/api'
-
+import API from '@/api/api'
 import citys from '../city/city'
 import { exchangeCode, getBanner, getGoodsType } from '@/api/getData'
 let that = null
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
       routers: {
         citys: '/pages/city/main',
         search: '/pages/search/main',
@@ -111,7 +114,8 @@ export default {
         name: '北京市',
         cityid: 2
       },
-      showOverlay: true
+      showOverlay: true,
+      chsItemIdx: 0
     }
   },
   onLoad () {
@@ -131,6 +135,16 @@ export default {
     this.primaryListData = tempData
   },
   methods: {
+    onClickItem (i) {
+      this.chsItemIdx = i
+      if (i === 0) {
+        this.goNextPage('product', { title: '汽车领域', fromCode: 3, type: 2 })
+      } else if (i === 1) {
+        this.goNextPage('product', { title: '零售领域', fromCode: 3, type: 3 })
+      } else if (i === 2) {
+        this.goNextPage('product', { title: '运输领域', fromCode: 3, type: 4 })
+      }
+    },
     /**
     *用户登录凭证（有效期五分钟）。开发者需要在开发者服务器后台调用 auth.code2Session，使用 code 换取 openid 和 session_key 等信息
     */
@@ -395,13 +409,13 @@ image {
   padding: 15px;
   background: #fff;
 }
-.item-bg {
+.itemBg {
   background: #97d700;
 }
 .item-middle {
   /* margin: 0 7.5px; */
 }
-.item-bg .item-tit {
+.itemBg .item-tit {
   color: #fff;
 }
 .sub-item-tit {
