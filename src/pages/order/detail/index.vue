@@ -107,7 +107,7 @@
                       size="12px" />
           </div>
         </div>
-        <!-- 收货信息 -->
+        <!------------- 收货信息 --------------->
         <div v-if="detail.get_methods===2"
              class=" shouhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
@@ -124,8 +124,8 @@
           </div>
         </div>
 
-        <!-- 取货信息 -->
-        <div v-if="mark === 'DZF'"
+        <!-------------- 取货信息 --------------->
+        <div v-if="detail.get_methods === 1"
              class=" shouhuo-box huanhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
@@ -158,7 +158,7 @@
         </div>
 
         <!-- 还货信息 -->
-        <div v-if="mark === 'DTH'"
+        <div v-if="mark === 'DTH11'"
              class=" shouhuo-box huanhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
@@ -300,7 +300,8 @@
         </div>
       </div>
     </div>
-    <div class="bottom-btn-box van-hairline--top">
+    <div class="bottom-btn-box van-hairline--top"
+         v-if="mark !== 'DSH'">
       <div class="bottom-btn-box-left">
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-r">应付:</span>
