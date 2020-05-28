@@ -165,11 +165,14 @@ export default {
           this.dataList.forEach((val, key) => {
             let statusText = null
             let customMark = null
-            if (val.status === '1') {
+            if (val.is_del === 2) {
+              statusText = '已取消'
+              customMark = 'YQX'
+            } else if (val.status === '1') {
               statusText = '待支付'
               customMark = 'DZF'
             } else if (val.is_buy === 1 && val.get_methods === 1 && (val.status === '3' || val.status === '2' || val.status === '4')) {
-              statusText = '待提货'
+              statusText = '待取货'
               customMark = 'DTH'
             } else if (val.is_buy === 1 && val.status === '2') {
               statusText = '待发货'
@@ -177,17 +180,17 @@ export default {
             } else if (val.is_buy === 1 && val.status === '3') {
               statusText = '待收货'
               customMark = 'DSH'
-            } else if (val.is_buy === 1 && val.status === '') {
+            } else if (val.is_buy === 1 && val.status === '0') {
               statusText = '已关闭'
               customMark = 'YGB'
             } else if (val.status === '11' || val.status === '12') {
               statusText = '待确认'
               customMark = 'DQR'
             } else if (val.is_buy === 1) {
-              statusText = '已收货'
-              customMark = 'YSH'
+              statusText = '已完成' // 已收货
+              customMark = 'YWC'
             } else if (val.is_buy === 0 && val.get_methods === 1 && (val.status === '3' || val.status === '2' || val.status === '4')) {
-              statusText = '待提货'
+              statusText = '待取货' // 待提货
               customMark = 'DTH'
             } else if (val.is_buy === 0 && val.status === '2') {
               statusText = '待发货'
@@ -195,18 +198,12 @@ export default {
             } else if (val.is_buy === 0 && val.status === '3') {
               statusText = '待收货'
               customMark = 'DSH'
-            } else if (val.is_buy === 0 && val.status === '5') {
-              statusText = '租赁中'
-              customMark = 'ZLZ'
-            } else if (val.is_buy === 0 && val.status === '5') {
-              statusText = '租赁中'
-              customMark = 'ZLZ'
-            } else if (val.is_buy === 0 && val.status === '6') {
+            } else if (val.is_buy === 0 && (val.status === '5' || val.status === '6')) {
               statusText = '租赁中'
               customMark = 'ZLZ'
             } else if (val.is_buy === 0 && val.status === '7') {
-              statusText = '已归还'
-              customMark = 'YGH'
+              statusText = '租赁中'
+              customMark = 'ZLZ'
             } else if (val.is_buy === 0 && val.status === '8') {
               statusText = '退定金中'
               customMark = 'TDJZ'
@@ -216,43 +213,12 @@ export default {
             } else if (val.is_buy === 0 && val.status === '10') {
               statusText = '已归还'
               customMark = 'YGH'
-            } else if (val.is_buy === 0 && val.status === 0) {
+            } else if (val.is_buy === 0 && val.status === '0') {
               statusText = '已关闭'
               customMark = 'YGB'
-            } else {
-              statusText = '未知'
             }
-            // switch (parseInt(item.status)) {
-            //   case 1:
-            //     statusText = '待支付'
-            //     break
-            //   case 2:
-            //     statusText = '待发货'
-            //     break
-            //   case 3:
-            //     statusText = '待收货'
-            //     break
-            //   case 4:
-            //     statusText = '待确认收货'
-            //     break
-            //   case 5:
-            //     statusText = '租赁中'
-            //     break
-            //   case 6:
-            //     statusText = '租赁中'
-            //     break
-            //   case 7:
-            //     statusText = '已归还'
-            //     break
-            //   case 8:
-            //     statusText = '退定金中'
-            //     break
-            //   case 9:
-            //     statusText = '已退款'
-            //     break
-            //   default:
-            //     statusText = '已关闭'
-            //     break
+            // else if(){
+            //   statusText = '未知'
             // }
             this.dataList[key].statusText = statusText
             this.dataList[key].customMark = customMark

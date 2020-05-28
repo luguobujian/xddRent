@@ -112,8 +112,8 @@
 
     </div>
     <nomoreComponents :dataList="dataList"
-            tipSrc="ndianping.png"
-            noTip="暂未发布点评"></nomoreComponents>
+                      tipSrc="ndianping.png"
+                      noTip="暂未发布点评"></nomoreComponents>
   </div>
 </template>
 <script>
@@ -132,7 +132,7 @@ export default {
     }
   },
   onLoad (options) {
-    console.log(options)
+    console.log('options', options)
     this.id = options.id
     this.getGoodsValuation()
   },
@@ -268,6 +268,7 @@ export default {
   color: #333333;
   line-height: 24px;
   margin: 8px 0;
+  word-break: break-all;
 }
 .rm-imgs {
   margin-bottom: 9px;

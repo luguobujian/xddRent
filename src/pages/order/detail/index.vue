@@ -11,8 +11,9 @@
           <div class="txt-tip-box"
                :style="{top: top}">
             <div class="m-s-box">
-              <van-icon :name="ico === 'w'? '/static/icons/await.png':'warning-o'"
-                        size="19px" />{{statusText}}{{detail.is_buy === 1? '(购)': '(租)'}}{{detail.get_methods === 1? '(提)': '(送)'}}
+              <van-icon :name="ico"
+                        size="19px" />{{statusText}}
+              <!-- {{detail.is_buy === 1? '(购)': '(租)'}}{{detail.get_methods === 1? '(提)': '(送)'}} -->
             </div>
             <div v-if="showSubtit"
                  class="cause-box">
@@ -21,12 +22,21 @@
                 <van-count-down :time="countDown"
                                 format="HH 时 mm 分" /> 自动关闭订单</div>
               <div v-if="mark === 'YTK'">定金已于{{push_goods_time}}退还</div>
-              <div v-if="mark === 'ZLZ'">已使用30天</div>
+              <div v-if="mark === 'ZLZ'">已使用{{0}}天</div>
             </div>
+          </div>
+          <div class="top-see-btn"
+               v-if="mark==='YTK'">
+            <van-button size="small"
+                        color="#97D700"
+                        round
+                        plain
+                        type="default"
+                        @click="goShare">查看返还记录</van-button>
           </div>
         </div>
         <!-- 还货图片 -->
-        <div v-if="mark === 'TDJZ'"
+        <div v-if="(mark === 'TDJZ' || mark === 'YTK') && returnimages && returnimages.length !== 0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">还货图片</div>
           <div class="img-items-box">
@@ -39,7 +49,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="mark === 'TDJZ'"
+        <div v-if="(mark === 'TDJZ' || mark==='YTK' || mark==='ZLZ') &&  detail.bad_images.new_images && detail.bad_images.new_images.length !==0 "
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -52,19 +62,24 @@
             </div>
           </div>
         </div>
-        <div v-if="detail.is_buy === 99"
+        <div v-if="mark==='ZLZ'"
              class="order-mark-box mb10">
           <div class="count-day-box">
             <div class="om-tit">租赁时长</div>
             <div class="cd-n van-hairline">{{detail.use_time}}天</div>
           </div>
-          <!-- <div class="order-mark-info">
+          <div class="order-mark-info"
+               v-if="pullimagestime">
+            <div class="om-tit">开始时间</div>
+            <div class="omi-c PingFangSC-Medium">{{pullimagestime}}</div>
+          </div>
+          <div class="order-mark-info">
             <div class="om-tit">订单备注</div>
             <div class="omi-c PingFangSC-Medium">{{detail.text}}</div>
-          </div> -->
+          </div>
         </div>
         <!-- 收货图片 -->
-        <div v-if="mark === 'TDJZ' || mark === 'ZLZ'"
+        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark === 'YWC' || mark==='YTK') && getimages && getimages.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">收货图片</div>
           <div class="img-items-box">
@@ -77,7 +92,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="mark === 'TDJZ'"
+        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark==='YTK') && detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -91,7 +106,7 @@
           </div>
         </div>
         <!-- 物流信息 -->
-        <div v-if="mark === 'TDJZ'"
+        <div v-if="detail.get_methods === 2"
              class="wuliu-box mb10"
              @click="goNextPage">
           <div class="wuliu-icon">
@@ -204,14 +219,26 @@
               <div class="pbr-b">
                 <div class="pbrb-l PingFangSC-Medium">¥{{item.price}}</div>
                 <div class="pbrb-r">x{{item.goods_num}}</div>
+                <div>
+                  <van-button class="pj-btn"
+                              v-if="mark==='YTK'"
+                              size="small"
+                              color="#97D700"
+                              custom-style="width: 64px;font-size: 11px;"
+                              round
+                              plain
+                              type="default"
+                              @click="goShare">评价商品</van-button>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <!-- 订单备注 -->
-        <div class="order-mark-box mb10">
+        <div class="order-mark-box mb10"
+             v-if="mark!=='ZLZ'">
           <div class="count-day-box"
-               v-if="detail.is_buy === 0">
+               v-if="detail.is_buy === 0 && mark!=='YTK' ">
             <div class="om-tit">租赁时长</div>
             <div class="cd-n van-hairline">{{detail.use_time}}天</div>
           </div>
@@ -226,7 +253,7 @@
             <span class="some-time-title">订单编号：</span>
             <span class="PingFangSC-Medium">{{detail.order_id}}</span>
           </div>
-          <div>
+          <div v-if="createtime">
             <span class="some-time-title">创建时间：</span>
             <span class="PingFangSC-Medium">{{createtime}}</span>
           </div>
@@ -242,7 +269,7 @@
             <span class="some-time-title">还货时间：</span>
             <span class="PingFangSC-Medium">{{returntime}}</span>
           </div>
-          <div v-if="detail.push_goods_time && detail.push_goods_time !=='0'">
+          <div v-if="detail.push_goods_time && this.is_buy === 0">
             <span class="some-time-title">返款时间：</span>
             <span class="PingFangSC-Medium">{{push_goods_time}}</span>
           </div>
@@ -286,7 +313,7 @@
              v-if="detail.is_buy === 0">
           <div class="ab-tit">
             <span class="PingFangSC-Medium">租金</span>
-            <span class="abt-r PingFangSC-Medium">合计：¥20000.00</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥{{detail.price}}</span>
           </div>
           <div class="one-info-box"
                v-for="(item, index) in detail.son"
@@ -295,13 +322,13 @@
               <span class="oil-l">{{item.goods_name}}</span>
               <span class="PingFangSC-Medium">x{{item.goods_num}}</span>
             </div>
-            <div class="oi-r PingFangSC-Medium">¥5000.00</div>
+            <div class="oi-r PingFangSC-Medium">¥{{item.price}}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="bottom-btn-box van-hairline--top"
-         v-if="mark !== 'DSH'">
+         v-if="mark === 'YWC'  || mark === 'DQR' || mark === 'DZF' || mark === 'DFH' || mark==='ZLZ' || mark === 'DQH' || (mark === 'YTK' && detail.status === '9' && detail.ticket === '2') ">
       <div class="bottom-btn-box-left">
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-r">应付:</span>
@@ -310,20 +337,28 @@
       </div>
       <div class="bottom-btn-box-right"
            @click="goShare">
-        <van-button v-if="mark==='DTH' || mark==='DZF' || mark==='DFH' || mark==='DFH'"
+        <van-button class="cancel-btn"
+                    v-if="mark==='DTH' || mark==='DZF' || mark==='DFH' || mark==='DFH' ||mark==='DQR'"
                     plain
                     size="small"
                     color="#ddd"
                     custom-style="width: 90px"
                     round
                     type="default">取消订单</van-button>
+        <van-button v-if="mark==='DQR'"
+                    plain
+                    size="small"
+                    color="#97d700"
+                    custom-style="width: 100px"
+                    round
+                    type="primary">上传支付凭证</van-button>
         <van-button v-if="mark==='DZF' && detail.get_methods === 2"
                     size="small"
                     color="#97D700"
                     custom-style="width: 90px"
                     round
                     type="default">立即付款</van-button>
-        <van-button v-if="mark==='ZLZ' || mark==='YGH' || mark==='TDJZ' "
+        <van-button v-if="mark==='ZLZ' || mark==='YGH' || mark==='YWC'  || mark==='TDJZ' "
                     plain
                     size="small"
                     color="#ddd"
@@ -333,17 +368,17 @@
         <van-button v-if="mark==='ZLZ'"
                     size="small"
                     color="#97D700"
-                    custom-style="width: 90px"
+                    custom-style="width: 90px; margin-left: 10px"
                     round
                     type="default">返还</van-button>
-        <van-button v-if="mark==='YTK' "
+        <!-- <van-button v-if="mark==='YTK' "
                     plain
                     size="small"
                     color="#ddd"
                     custom-style="width: 100px"
                     round
-                    type="default">查看返还记录</van-button>
-        <van-button v-if="mark==='YTK' "
+                    type="default">查看返还记录</van-button> -->
+        <van-button v-if="mark==='YTK'  && detail.status === '9' && detail.ticket === '2'"
                     plain
                     size="small"
                     color="#ddd"
@@ -363,7 +398,7 @@ export default {
     return {
       baseUrl: API.baseUrl,
       top: '50rpx',
-      ico: null,
+      ico: '/static/icons/await.png',
       id: null,
       mark: null,
       countDown: null,
@@ -377,7 +412,8 @@ export default {
       paytime: null,
       get_time: null,
       returntime: null,
-      push_goods_time: null
+      push_goods_time: null,
+      pullimagestime: null
     }
   },
   onLoad (options) {
@@ -385,15 +421,18 @@ export default {
     this.mark = options.mark
     this.statusText = options.statusText
 
-    if (this.mark === 'DTH' || this.mark === 'DSH' || this.mark === 'DQR' || this.mark === 'DFH' || this.mark === 'YSH' || this.mark === 'YGH' || this.mark === 'YGB' || this.mark === 'TDJZ') {
+    if (this.mark === 'DTH' || this.mark === 'DSH' || this.mark === 'DQR' || this.mark === 'DFH' || this.mark === 'YSH' || this.mark === 'YQX' || this.mark === 'YGH' || this.mark === 'YGB' || this.mark === 'TDJZ' || this.mark === 'YWC') {
       this.top = '66rpx'
       this.showSubtit = false
     }
-    if (this.mark === 'DTH') {
-      this.ico = 'w'
+    if (this.mark === 'YGB' || this.mark === 'YQX') {
+      this.ico = '/static/icons/order-close.png'
+    }
+    if (this.mark === 'YWC' || this.mark === 'YTK') {
+      this.ico = '/static/icons/order-over.png'
     }
     this.getOrderDetail()
-    // this.getTranspost()
+    this.getTranspost()
   },
   mounted () {
 
@@ -410,8 +449,9 @@ export default {
           this.createtime = moment(result.createtime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 创建时间
           this.paytime = moment(result.paytime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 支付时间
           // this.get_time = moment(result.get_time * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 取货时间
-          this.returntime = moment(result.returntime * 1000).format('YYYY-MM-DD HH:mm:ss ') // 还货时间
-          this.push_goods_time = moment(result.push_goods_time * 1000).format('YYYY-MM-DD HH:mm:ss ') // 返款时间
+          this.returntime = moment(result.returntime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 还货时间
+          this.push_goods_time = moment(result.push_goods_time * 1000).format('YYYY.MM.DD ') // 返款时间
+          this.pullimagestime = result.pullimagestime ? moment(result.pullimagestime * 1000).format('YYYY.MM.DD ') : '' // 开始租赁（收货时间）
 
           this.getimages = result.getimages && result.getimages.split(',')
           this.returnimages = result.returnimages && result.returnimages.split(',')
@@ -447,6 +487,11 @@ export default {
         url: '/pages/share/main'
       })
     }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
+    }
   }
 }
 </script>
@@ -463,6 +508,12 @@ export default {
 }
 .p-t-box {
   position: relative;
+}
+.top-see-btn {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
 }
 .top-s-box {
   width: 100%;
@@ -573,7 +624,7 @@ export default {
   line-height: 18px;
   background: rgba(151, 215, 0, 0.2);
   border-radius: 6px 0 6px 0;
-  vertical-align: 20%;
+  vertical-align: 10%;
 }
 .sh-info span {
   margin-right: 15px;
@@ -729,7 +780,7 @@ export default {
   /* height: 35px; */
 }
 .bottom-btn-box-right {
-  padding: 7px 15px;
+  padding: 7px 15px 7px 0;
 }
 .bottom-btn-box .ab-tit {
   min-height: 1px;
@@ -783,14 +834,36 @@ export default {
   width: 11px !important;
   height: 13px !important;
 }
+.shouhuo-box ._van-icon {
+  margin-top: 3px;
+}
 .huanhuo-box ._van-icon {
-  margin-top: 14px;
+  margin-top: 12px;
+}
+.top-see-btn .van-button--small.van-button--plain {
+  width: 110px !important;
+  height: 35px !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 0.5px solid #ffffff !important;
+}
+.pj-btn .van-button--small.van-button--plain {
+  color: #97d700 !important;
+  height: 22px !important;
+  margin-left: 20px !important;
 }
 .van-button--small {
-  color: #666 !important;
+  /* color: #666 !important; */
   /* color: #fff; */
   height: 35px !important;
   /* margin-left: 8px; */
   /* padding: 0 12px !important; */
+}
+.van-button--small.van-button--plain {
+  color: #666 !important;
+}
+.cancel-btn .van-button--plain {
+  margin-right: 10px !important;
 }
 </style>

@@ -98,6 +98,15 @@ export default {
         const res = await login({ account: this.mobile, password: this.password })
         console.log(res)
         if (res.data.code === 1) {
+          if (res.data.data.userinfo.group_id !== 0) {
+            Toast.fail('请去APP端管理员工')
+            setTimeout(() => {
+              mpvue.navigateTo({
+                url: '/pages/share/main'
+              })
+            }, 1500)
+            return
+          }
           mpvue.setStorage({
             key: 'token',
             data: res.data.data.userinfo.token

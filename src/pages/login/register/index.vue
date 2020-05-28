@@ -2,7 +2,7 @@
   <div class="container">
     <div class="main-box">
       <div class="main-tit">注册</div>
-      <div class="sub-tit">已有账号？<div>点击登录</div>
+      <div class="sub-tit">已有账号？<div @click="goNextLogo()">点击登录</div>
       </div>
       <div>
         <van-field :value="mobile"
@@ -156,6 +156,9 @@ export default {
         console.log(`* submit error`, error)
         Toast.fail(error.data.msg)
       }
+    },
+    goNextLogo () {
+      mpvue.navigateBack()
     },
     onInputKeyCode (e) {
       this.code = e.mp.detail.trim()

@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/web_view/main",
     "pages/search/main",
     "pages/city/main",
     "pages/order/main",

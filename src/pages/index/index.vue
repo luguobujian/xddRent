@@ -8,7 +8,10 @@
         <block v-for="(item, index) in background"
                :key="index">
           <swiper-item>
-            <view class="swiper-item">
+            <view class="swiper-item"
+                  :data-type="item.type"
+                  :data-uid="item.url_id"
+                  @click="goFromBanner">
               <img :src="item.smallimage"
                    alt=""></view>
           </swiper-item>
@@ -193,7 +196,7 @@ export default {
         const res = await getBanner()
         console.log('page', res)
         this.showOverlay = false
-        this.background = res.data.data
+        this.background = res.data.data.length > 5 ? res.data.data.slice(0, 5) : res.data.data
       } catch (error) {
         console.log('* error getBanner', error)
       }
@@ -204,6 +207,21 @@ export default {
         console.log('page', res)
       } catch (error) {
         console.log('* error', error)
+      }
+    },
+    goFromBanner (e) {
+      console.log(e)
+      let type = e.mp.currentTarget.dataset.type
+      let urlId = e.mp.currentTarget.dataset.uid
+
+      if (type === '1') {
+        mpvue.navigateTo({
+          url: `/pages/product/detail/main?id=${urlId}`
+        })
+      } else if (type === '2') {
+        mpvue.navigateTo({
+          url: `/pages/web_view/main?id=${urlId}`
+        })
       }
     },
     /**

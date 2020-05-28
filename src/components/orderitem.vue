@@ -6,7 +6,10 @@
            :key="index"
            @click="onClick(item.order_id, item.customMark, item.statusText)">
         <div class="order-no-info-box van-hairline">
-          <div class="order-no-box">订单编号：{{item.order_id}}{{item.is_buy === 1? '(购)': '(租)'}}{{item.get_methods === 1? '(提)': '(送)'}}</div>
+          <div class="order-no-box">订单编号：{{item.order_id}}
+            <!-- |{{item.id}} -->
+            <!-- {{item.is_buy === 1? '(购)': '(租)'}}{{item.get_methods === 1? '(提)': '(送)'}} -->
+          </div>
           <div class="order-status-box PingFangSC-Medium">{{ item.statusText}}</div>
         </div>
         <div class="product-info-box van-hairline"

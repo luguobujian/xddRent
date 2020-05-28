@@ -484,7 +484,8 @@ export default {
       let coupon = this.coupon ? parseInt(this.coupon) : 0
       let money = parseInt(this.productNum) * parseInt(this.productMoney)
 
-      this.orderPrice = `¥${money + (transferFee * parseInt(this.productNum)) - coupon}`
+      let calcRes = money + (transferFee * parseInt(this.productNum)) - coupon
+      this.orderPrice = `¥${calcRes > 0 ? calcRes : 0}`
     },
     async submit () {
       if (this.switchIdx === 1) {

@@ -82,8 +82,7 @@
                         readonly="true"
                         color="#97D700;"
                         void-color="#eee"
-                        void-icon="star"
-                        bind:change="onChange" />{{detail.goods_valuation}}分
+                        void-icon="star" />{{detail.goods_valuation}}分
             </div>
           </div>
           <div>
@@ -127,7 +126,7 @@
                round
                closeable
                @clickOverlay="showAttrs = false"
-               @close="showAttrs = false">
+               @close="closeShowAttrs">
       <div class="attrs-box">
         <div class="product-info-box">
           <div class="product-info-img">
@@ -264,7 +263,7 @@ export default {
     async getGoodsInfo () {
       try {
         const res = await getGoodsInfo({ goods_id: this.id })
-        console.log(res)
+        console.log('getGoodsInfo', res)
         this.detail = res.data.data
         this.background = res.data.data.images.split(',')
         this.valuation = Number.isInteger(res.data.data.goods_valuation) ? res.data.data.goods_valuation : parseInt(res.data.data.goods_valuation) + 0.5
@@ -328,6 +327,10 @@ export default {
         value: event.detail
       })
     },
+    closeShowAttrs () {
+      this.sCShow = this.spcCShow.join('/')
+      this.showAttrs = false
+    },
     chsSpecItem (e) {
       let have = e.mp.currentTarget.dataset.have
       if (!have) return
@@ -368,7 +371,7 @@ export default {
     },
     goNextPage (r) {
       mpvue.navigateTo({
-        url: `${this.routers[r]}`
+        url: `${this.routers[r]}?id=${this.id}`
       })
     },
     openPop (a, is) {
