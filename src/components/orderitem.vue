@@ -87,18 +87,18 @@
                           format="HH 时 mm 分" />后关闭
         </div>
       </div>
-      <nomoreComponents :tipBoxTop="tipBoxTop"
-                        tipSrc="ndingdan.png"
-                        noTip="暂无订单"
-                        :dataList="dataList"></nomoreComponents>
     </div>
+    <!-- <nomoreComponents :tipBoxTop="tipBoxTop"
+                      tipSrc="ndingdan.png"
+                      noTip="暂无订单"
+                      :dataList="dataList"></nomoreComponents> -->
   </div>
 </template>
 
 <script>
 import nomoreComponents from '@/components/nomore'
 export default {
-  props: ['dataList'],
+  props: ['dataList', 'tipBoxTop'],
   components: {
     nomoreComponents
   },

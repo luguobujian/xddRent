@@ -22,7 +22,7 @@
                 <van-count-down :time="countDown"
                                 format="HH 时 mm 分" /> 自动关闭订单</div>
               <div v-if="mark === 'YTK'">定金已于{{push_goods_time}}退还</div>
-              <div v-if="mark === 'ZLZ'">已使用{{0}}天</div>
+              <div v-if="mark === 'ZLZ'">已使用{{dday || 0}}天</div>
             </div>
           </div>
           <div class="top-see-btn"
@@ -401,6 +401,7 @@ export default {
       ico: '/static/icons/await.png',
       id: null,
       mark: null,
+      dday: 0,
       countDown: null,
       statusText: null,
       showSubtit: true,
@@ -445,6 +446,11 @@ export default {
         if (res.data.code === 1) {
           let result = res.data.data
           this.detail = res.data.data
+
+          console.log()
+          this.dday = (new Date().getTime() - parseInt(res.data.data.pullimagestime) * 1000) / 1000 / 60 / 60 / 24
+          this.dday = this.dday < 1 ? 1 : this.dday
+
           this.get_methods = res.data.data.get_methods
           this.createtime = moment(result.createtime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 创建时间
           this.paytime = moment(result.paytime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 支付时间

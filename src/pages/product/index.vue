@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <nomoreComponents :tipBoxTop="tipBoxTop"
+    <nomoreComponents tipBoxTop="258%"
                       tipSrc="noshangping.png"
                       noTip="暂无相关商品"
                       :dataList="reuslts"></nomoreComponents>
@@ -299,6 +299,7 @@ export default {
 }
 .search-btn ._van-icon {
   margin-right: 5px;
+  vertical-align: -2%;
 }
 .location-box .van-icon__image {
   vertical-align: -12%;

@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="nomore-component">
     <div v-if="!dataList || dataList.length === 0"
          class="nomore-skeleton-box"
-         :style="{marginTop:tipBoxTop || '50px'}">
+         :style="{top: tipBoxTop || '50%'}">
       <div>
         <div>
           <img class="nomore-skeleton-img"
@@ -32,6 +32,9 @@ export default {
       tipText: '数据加载中。。。'
     }
   },
+  onLoad () {
+    // console.log(tipBoxTop)
+  },
   mounted () {
     this.setTipText()
   },
@@ -45,6 +48,16 @@ export default {
 }
 </script>
 <style scoped>
+.nomore-component {
+  flex: 1;
+}
+.nomore-skeleton-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
 .nomore-skeleton-img {
   display: block;
   width: 200px;

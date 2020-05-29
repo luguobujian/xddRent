@@ -88,7 +88,7 @@ export default {
   margin: 16px 16px 0;
 }
 .wxParse {
-  /* padding: 15px; */
+  padding: 15px;
   word-wrap: break-word;
   word-break: normal;
 }

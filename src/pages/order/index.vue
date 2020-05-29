@@ -9,6 +9,7 @@
               @change="onChange">
       <van-tab title="全部">
         <orderItemComponent :dataList="dataList"
+                            tipBoxTop="144px"
                             @childEvent="goNextPage"></orderItemComponent>
         <!-- <div class="items-box">
           <div class="item"
@@ -96,21 +97,29 @@
       </van-tab>
       <van-tab title="未支付">
         <orderItemComponent :dataList="dataList"
+                            tipBoxTop="144px"
                             @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
       <van-tab title="未收货">
         <orderItemComponent :dataList="dataList"
+                            tipBoxTop="144px"
                             @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
       <van-tab title="租赁中">
         <orderItemComponent :dataList="dataList"
+                            tipBoxTop="144px"
                             @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
       <van-tab title="已还货">
         <orderItemComponent :dataList="dataList"
+                            tipBoxTop="144px"
                             @childEvent="goNextPage"></orderItemComponent>
       </van-tab>
     </van-tabs>
+    <nomoreComponents :tipBoxTop="tipBoxTop"
+                      tipSrc="ndingdan.png"
+                      noTip="暂无订单"
+                      :dataList="dataList"></nomoreComponents>
     <van-overlay :show="showOverlay"
                  custom-style="background: rgba(0,0,0,.3)">
       <view class="wrapper">
@@ -123,6 +132,8 @@
 
 <script>
 import orderItemComponent from '@/components/orderItem'
+import nomoreComponents from '@/components/nomore'
+
 import { getOrder } from '@/api/getData'
 export default {
   data () {
@@ -152,7 +163,8 @@ export default {
     this.getOrder()
   },
   components: {
-    orderItemComponent
+    orderItemComponent,
+    nomoreComponents
   },
   methods: {
     async getOrder () {
@@ -368,6 +380,7 @@ export default {
 .van-hairline--top-bottom::after {
   border-top: none !important;
 }
+
 .van-tabs__line {
   width: 20 !important;
   background-color: #97d700 !important;

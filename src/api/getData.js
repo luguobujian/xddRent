@@ -311,6 +311,12 @@ export const getProblemInfo = (data) =>
   API.request('api/Problems/problemInfo', data, 'post')
 
 /**
+*获取联系我们数据
+*/
+export const contactUs = (data) =>
+  API.request('api/Problems/contactUs', data, 'post')
+
+/**
 *图片上传
 */
 export const upload = (data) =>

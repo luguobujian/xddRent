@@ -69,7 +69,16 @@
             <div class="time-rate-some">
               <div class="time-box">{{item.createtime}}</div>
               <div>
-                <van-icon v-if="item.all_num >= 1"
+                <van-rate class="rate-box"
+                          :value="item.starN"
+                          size="12"
+                          allow-half
+                          color="#97D700"
+                          void-color="#fff"
+                          void-icon="star"
+                          readonly="true"
+                          bind:change="onChange" />
+                <!-- <van-icon v-if="item.all_num >= 1"
                           name="star"
                           color="#97d700"
                           size="12px" />
@@ -94,7 +103,7 @@
                   <van-icon name="star"
                             color="#97d700"
                             size="12px" />
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="rm-text">
@@ -112,6 +121,7 @@
 
     </div>
     <nomoreComponents :dataList="dataList"
+                      tipBoxTop="58%"
                       tipSrc="ndianping.png"
                       noTip="暂未发布点评"></nomoreComponents>
   </div>
@@ -148,6 +158,7 @@ export default {
         let dataList = res.data.data.list
         dataList.forEach((item, key) => {
           dataList[key].imgsArr = item.picimages.split(',')
+          dataList[key].starN = Number.isInteger(item.all_num) ? item.all_num : parseInt(item.all_num) + 0.5
         })
         this.dataList = dataList
       } catch (error) {

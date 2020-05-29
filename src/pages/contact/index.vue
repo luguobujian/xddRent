@@ -4,7 +4,7 @@
       <div>
         <div class="logo-box">
           <img class="logo"
-               src=""
+               :src="baseUrl + '/PingFangSC/xddmppic/108.png'"
                alt="">
         </div>
       </div>
@@ -25,12 +25,36 @@
   </div>
 </template>
 <script>
+import API from '@/api/api'
+
+import { contactUs } from '@/api/getData'
 export default {
   data () {
     return {
-      tel: '400-283-9282',
-      email: 'pm@apicloud.com',
-      web: 'www.apicloud.com'
+      baseUrl: API.baseUrl,
+      logo: '',
+      tel: '',
+      email: '',
+      web: ''
+    }
+  },
+  onLoad () {
+    this.getData()
+  },
+  methods: {
+    async getData () {
+      try {
+        const res = await contactUs()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.logo = res.data.data.images
+          this.tel = res.data.data.mobile
+          this.web = res.data.data.address
+          this.email = res.data.data.email
+        }
+      } catch (err) {
+
+      }
     }
   }
 }
@@ -51,7 +75,7 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 5px;
-  background-color: #97d700;
+  /* background-color: #97d700; */
   margin: 0 auto;
 }
 .cell-group-box {

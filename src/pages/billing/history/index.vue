@@ -22,7 +22,7 @@
         <div v-if="item.status === '2'"
              class="some-info-box fail">提现失败原因：{{item.text}}</div>
       </div>
-      <nomoreComponents :tipBoxTop="tipBoxTop"
+      <nomoreComponents tipBoxTop="42%"
                         tipSrc="nshouyi.png"
                         noTip="暂无收益信息"
                         :dataList="detailList"></nomoreComponents>

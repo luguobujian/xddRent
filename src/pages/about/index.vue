@@ -4,7 +4,7 @@
       <div>
         <div class="logo-box">
           <img class="logo"
-               src=""
+               :src="baseUrl + '/PingFangSC/xddmppic/108.png'"
                alt="">
         </div>
         <div class="version-box">V1.1.0</div>
@@ -23,9 +23,13 @@
   </div>
 </template>
 <script>
+import API from '@/api/api'
+
 export default {
   data () {
     return {
+      baseUrl: API.baseUrl,
+
       cellItems: [
         { text: '功能介绍' },
         { text: '法律声明' },
@@ -57,7 +61,7 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 5px;
-  background-color: #97d700;
+  /* background-color: #97d700; */
   margin: 0 auto;
 }
 .version-box {
