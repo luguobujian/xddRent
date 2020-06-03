@@ -310,7 +310,7 @@
         </div>
         <!-- 租金信息 -->
         <div class="amount-box"
-             v-if="detail.is_buy === 0">
+             v-if="mark==='YGH'">
           <div class="ab-tit">
             <span class="PingFangSC-Medium">租金</span>
             <span class="abt-r PingFangSC-Medium">合计：¥{{detail.price}}</span>
@@ -393,11 +393,15 @@
                     type="default">申请开票</van-button>
       </div>
     </div>
+    <van-dialog id="van-dialog"
+                confirmButtonColor="#97D700" />
   </div>
 </template>
 <script>
 import API from '@/api/api'
 import moment from 'moment'
+import Dialog from '../../../../static/vant/dialog/dialog'
+
 import { getOrderDetail, getTranspost } from '@/api/getData'
 export default {
   data () {
@@ -495,6 +499,15 @@ export default {
       })
     },
     goShare () {
+      if (this.mark === 'DTH') {
+        Dialog.alert({
+          title: '下载提示',
+          message: '使用APP端可进行订单管理'
+        }).then(() => {
+          // mpvue.navigateBack()
+        })
+        return
+      }
       mpvue.navigateTo({
         url: '/pages/share/main'
       })
