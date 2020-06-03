@@ -17,6 +17,7 @@
             <van-field :value="addressone"
                        label="所在地区"
                        placeholder="请选择所在地区"
+                       disabled
                        readonly
                        clickable
                        name="area"
@@ -25,7 +26,7 @@
             <van-field :value="addresstwo"
                        type="textarea"
                        label="详细地址"
-                       placeholder="请输入详细地址"
+                       :placeholder="!showArea?'请输入详细地址': ''"
                        @change="onAddresstwoChange" />
           </van-cell-group>
           <van-popup :show="showArea"
