@@ -68,7 +68,7 @@ export default {
       getSmsCodeIng: false,
       getSmsCodeClock: 60,
 
-      checked: true,
+      checked: false,
 
       mobile: null,
       code: null,

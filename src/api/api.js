@@ -1,4 +1,5 @@
 // const app = getApp()
+import Toast from '../../static/vant/toast/toast'
 
 class API {
   constructor () {
@@ -70,6 +71,8 @@ class API {
               console.log('* FAIL res statusCode !200', res)
             } else {
               if (res.data.code === 0) {
+                Toast.fail(res.data.msg)
+
                 reject(res)
                 console.log(`* FAIL res Code 0 Url:${url}`, res)
                 console.log(`* FAIL res Code 0 Url:${url}DATA:`, data)

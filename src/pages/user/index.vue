@@ -190,7 +190,7 @@ export default {
           return
         }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
         const res = await refreshInfo({ avatar: this.avatar, username: this.username, gender: this.gender, mobile: this.mobile, bio: this.bio, area: this.showCity.name })

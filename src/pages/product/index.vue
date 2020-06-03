@@ -151,6 +151,11 @@ export default {
         url: `/pages/product/detail/main?id=${id}`
       })
     }
+  },
+  onReachBottom () {
+    this.page_size += 8
+    console.log(this.page_size)
+    this.getGoodsList()
   }
 }
 </script>

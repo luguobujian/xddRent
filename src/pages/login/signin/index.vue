@@ -66,7 +66,7 @@ export default {
       }, {
         url: '/pages/login/detail/main?f=2'
       }],
-      checked: true,
+      checked: false,
       getSmsCodeBtnText: '获取验证码',
       getSmsCodeIng: false,
       getSmsCodeClock: 60,
@@ -85,7 +85,7 @@ export default {
       try {
         if (this.getSmsCodeIng) return
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
 
@@ -124,7 +124,7 @@ export default {
           return
         }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
 
@@ -157,7 +157,7 @@ export default {
           return
         }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
         if (!this.code) {

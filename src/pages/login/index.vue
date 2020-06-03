@@ -41,7 +41,7 @@ export default {
   data () {
     return {
       baseUrl: API.baseUrl,
-      checked: true,
+      checked: false,
       routers: [{
         url: '/pages/login/bind_phone/main'
       }, {

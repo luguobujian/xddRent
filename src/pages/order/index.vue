@@ -156,6 +156,7 @@ export default {
   },
   onPullDownRefresh () {
     // this.page_size += 8
+    this.showOverlay = true
     this.getOrder()
   },
   onReachBottom () {
@@ -169,6 +170,7 @@ export default {
   methods: {
     async getOrder () {
       try {
+        setTimeout(() => { wx.stopPullDownRefresh() }, 1200)
         const res = await getOrder({ type: this.active, page: this.page, page_size: this.page_size })
         this.dataList = res.data.data
         this.showOverlay = false
@@ -184,7 +186,7 @@ export default {
               statusText = '待支付'
               customMark = 'DZF'
             } else if (val.is_buy === 1 && val.get_methods === 1 && (val.status === '3' || val.status === '2' || val.status === '4')) {
-              statusText = '待取货'
+              statusText = '待提货' // 待取货
               customMark = 'DTH'
             } else if (val.is_buy === 1 && val.status === '2') {
               statusText = '待发货'
@@ -199,10 +201,10 @@ export default {
               statusText = '待确认'
               customMark = 'DQR'
             } else if (val.is_buy === 1) {
-              statusText = '已完成' // 已收货
+              statusText = '已收货' // 已完成
               customMark = 'YWC'
             } else if (val.is_buy === 0 && val.get_methods === 1 && (val.status === '3' || val.status === '2' || val.status === '4')) {
-              statusText = '待取货' // 待提货
+              statusText = '待提货' // 待取货
               customMark = 'DTH'
             } else if (val.is_buy === 0 && val.status === '2') {
               statusText = '待发货'

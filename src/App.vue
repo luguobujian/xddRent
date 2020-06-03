@@ -1,6 +1,7 @@
 <script>
 // import { exchangeCode } from '@/api/getData'
 import API from '@/api/api'
+
 export default {
   created () {
     // 调用API从本地缓存中获取数据

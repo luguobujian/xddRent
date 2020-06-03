@@ -345,7 +345,7 @@ export default {
           goods_format_id_arr: this.goods_format_id_arr,
           goods_num: this.productNum,
           use_time: parseInt(this.long),
-          text: this.text,
+          text: this.text || '',
           coupons: this.coupon_id,
           is_buy: this.is_buy,
           house_id: this.warehouse.id || this.house_id,

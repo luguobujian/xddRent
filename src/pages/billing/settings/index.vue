@@ -63,7 +63,7 @@ export default {
       try {
         if (this.getSmsCodeIng) return
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
         const res = await sms({ mobile: this.mobile, event: 'paypwd' })
@@ -98,7 +98,7 @@ export default {
           return
         }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
         if (!this.code) {
@@ -132,7 +132,7 @@ export default {
         //   return
         // }
         // if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-        //   Toast.fail('请输入正确手机号')
+        //   Toast.fail('手机号错误')
         //   return
         // }
         // if (!this.code) {

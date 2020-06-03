@@ -18,11 +18,11 @@
       <div class="fl">
         <div class="name-box">{{(detail && detail.username) || '未登录'}}</div>
         <div v-if="detail && detail.area"
-             class="city-box">{{detail && detail.area}}</div>
+             class="city-box"> {{detail && detail.area}}</div>
         <div v-if="detail && detail.group_id === 0"
              class="company-box">
           <div class="company-info-box clearfix"
-               v-if="status === 1">
+               v-if="prove === '1'">
             <img class="company-icon fl"
                  src="/static/icons/m-mark.png"
                  alt="">
@@ -155,7 +155,7 @@ export default {
         console.log('statusProve', res)
         if (res.data.code === 1) {
           this.status = res.data.data.status
-          this.Prove = res.data.data.msg && res.data.data.msg.status
+          this.prove = res.data.data.msg && res.data.data.msg.status
           this.company = res.data.data.msg && res.data.data.msg.name
         }
       } catch (error) {

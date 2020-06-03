@@ -58,7 +58,7 @@ export default {
       }, {
         url: '/pages/login/detail/main?f=2'
       }],
-      checked: true,
+      checked: false,
       getSmsCodeBtnText: '获取验证码',
       getSmsCodeIng: false,
       getSmsCodeClock: 60,
@@ -76,7 +76,7 @@ export default {
       try {
         if (this.getSmsCodeIng) return
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
 
@@ -88,6 +88,8 @@ export default {
         }
       } catch (error) {
         console.log(`* sms error`, error)
+        this.refreshCheckState(Date.now())
+        Toast.fail(error.data.msg)
       }
     },
     refreshCheckState (getCodeTime) {
@@ -112,7 +114,7 @@ export default {
           return
         }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
         console.log({ captcha: this.code, mobile: this.mobile, event: 'register' })
@@ -125,7 +127,7 @@ export default {
         }
       } catch (error) {
         console.log(`* smsCheck error`, error)
-        Toast.fail(error.data.msg)
+        // Toast.fail(error.data.msg)
       }
     },
     openPage (i) {

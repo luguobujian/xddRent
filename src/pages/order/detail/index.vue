@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="top-see-btn"
-               v-if="mark==='YTK'">
+               v-if="mark==='YTK' || mark==='YGH'">
             <van-button size="small"
                         color="#97D700"
                         round
@@ -36,7 +36,7 @@
           </div>
         </div>
         <!-- 还货图片 -->
-        <div v-if="(mark === 'TDJZ' || mark === 'YTK') && returnimages && returnimages.length !== 0"
+        <div v-if="(mark === 'TDJZ' || mark === 'YTK' || mark==='YGH') && returnimages && returnimages.length !== 0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">还货图片</div>
           <div class="img-items-box">
@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="(mark === 'TDJZ' || mark==='YTK' || mark==='ZLZ') &&  detail.bad_images.new_images && detail.bad_images.new_images.length !==0 "
+        <div v-if="(mark === 'TDJZ' || mark==='YTK' || mark==='ZLZ' || mark==='YGH') &&  detail.bad_images.new_images && detail.bad_images.new_images.length !==0 "
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -75,11 +75,11 @@
           </div>
           <div class="order-mark-info">
             <div class="om-tit">订单备注</div>
-            <div class="omi-c PingFangSC-Medium">{{detail.text}}</div>
+            <div class="omi-c PingFangSC-Medium">{{detail.text === "null "? '无': (detail.text || '无')}}</div>
           </div>
         </div>
         <!-- 收货图片 -->
-        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark === 'YWC' || mark==='YTK') && getimages && getimages.length !==0"
+        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark === 'YWC' || mark==='YTK' || mark==='YGH') && getimages && getimages.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">收货图片</div>
           <div class="img-items-box">
@@ -92,7 +92,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark==='YTK') && detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
+        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark==='YTK' || mark==='YGH') && detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -244,7 +244,7 @@
           </div>
           <div class="order-mark-info">
             <div class="om-tit">订单备注</div>
-            <div class="omi-c PingFangSC-Medium">{{detail.text}}</div>
+            <div class="omi-c PingFangSC-Medium">{{detail.text === "null "? '无': (detail.text || '无')}}</div>
           </div>
         </div>
         <!-- 订单时间相关 -->
@@ -261,9 +261,9 @@
             <span class="some-time-title">支付时间：</span>
             <span class="PingFangSC-Medium">{{paytime}}</span>
           </div>
-          <div v-if="detail.get_time && detail.get_time !=='0'">
+          <div v-if="detail.pullimagestime && detail.pullimagestime !=='0'">
             <span class="some-time-title">取货时间：</span>
-            <span class="PingFangSC-Medium">{{detail.get_time}}</span>
+            <span class="PingFangSC-Medium">{{pullimagestime}}</span>
           </div>
           <div v-if="detail.returntime && detail.returntime !=='0'">
             <span class="some-time-title">还货时间：</span>
@@ -328,7 +328,7 @@
       </div>
     </div>
     <div class="bottom-btn-box van-hairline--top"
-         v-if="mark === 'YWC'  || mark === 'DQR' || mark === 'DZF' || mark === 'DFH' || mark==='ZLZ' || mark === 'DQH' || (mark === 'YTK' && detail.status === '9' && detail.ticket === '2') ">
+         v-if="mark === 'YWC'  || mark === 'DQR' || mark === 'DZF' || mark === 'DTH' || mark === 'DFH' || mark==='YGH' || mark==='ZLZ' || mark === 'DQH' || (mark === 'YTK' && detail.status === '9' && detail.ticket === '2') ">
       <div class="bottom-btn-box-left">
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-r">应付:</span>
@@ -365,12 +365,18 @@
                     custom-style="width: 90px"
                     round
                     type="default">申请售后</van-button>
-        <van-button v-if="mark==='ZLZ'"
+        <van-button v-if="mark==='ZLZ' "
                     size="small"
                     color="#97D700"
                     custom-style="width: 90px; margin-left: 10px"
                     round
                     type="default">返还</van-button>
+        <van-button v-if="mark==='YGH'"
+                    size="small"
+                    color="#97D700"
+                    custom-style="width: 90px; margin-left: 10px"
+                    round
+                    type="default">支付</van-button>
         <!-- <van-button v-if="mark==='YTK' "
                     plain
                     size="small"

@@ -66,7 +66,7 @@ export default {
       }, {
         url: '/pages/login/detail/main?f=2'
       }],
-      checked: true,
+      checked: false,
       hidepass: true,
 
       // mobile: null,
@@ -84,7 +84,7 @@ export default {
           return
         }
         if (!(/^1[3456789]\d{9}$/.test(this.mobile))) {
-          Toast.fail('请输入正确手机号')
+          Toast.fail('手机号错误')
           return
         }
         if (!this.password) {
