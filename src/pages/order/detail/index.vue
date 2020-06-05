@@ -91,6 +91,19 @@
             </div>
           </div>
         </div>
+        <!-- 发货图片 -->
+        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark === 'YWC' || mark==='YTK' || mark==='YGH') && pullimages && pullimages.length !==0"
+             class="img-box">
+          <div class="img-tit PingFangSC-Medium">发货图片</div>
+          <div class="img-items-box">
+            <div class="img-item"
+                 v-for="(item, index) in pullimages"
+                 :key="index">
+              <img :src="item"
+                   alt="">
+            </div>
+          </div>
+        </div>
         <!-- 破损图片 -->
         <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark==='YTK' || mark==='YGH') && detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
              class="img-box">
@@ -291,6 +304,23 @@
             <div class="oi-r PingFangSC-Medium">¥{{item.get_price}}</div>
           </div>
         </div>
+        <!-- 金额合计 -->
+        <div v-if="detail.is_buy === 1"
+             class="amount-box">
+          <div class="ab-tit">
+            <span class="PingFangSC-Medium">金额合计</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥{{detail.pay_price}}</span>
+          </div>
+          <div class="one-info-box"
+               v-for="(item, index) in detail.son"
+               :key="index">
+            <div class="oi-l">
+              <span class="oil-l">{{item.goods_name}}</span>
+              <span class="PingFangSC-Medium">x{{item.goods_num}}</span>
+            </div>
+            <div class="oi-r PingFangSC-Medium">¥{{item.pay_price}}</div>
+          </div>
+        </div>
         <!-- 运费信息 -->
         <div class="amount-box"
              v-if="detail.get_methods === 2">
@@ -310,7 +340,7 @@
         </div>
         <!-- 租金信息 -->
         <div class="amount-box"
-             v-if="detail.is_buy === 0">
+             v-if="mark==='YGH'">
           <div class="ab-tit">
             <span class="PingFangSC-Medium">租金</span>
             <span class="abt-r PingFangSC-Medium">合计：¥{{detail.price}}</span>
@@ -414,6 +444,7 @@ export default {
       detail: null,
       get_methods: null,
       getimages: null,
+      pullimages: null,
       returnimages: null,
       createtime: null,
       paytime: null,
@@ -466,6 +497,7 @@ export default {
           this.pullimagestime = result.pullimagestime ? moment(result.pullimagestime * 1000).format('YYYY.MM.DD ') : '' // 开始租赁（收货时间）
 
           this.getimages = result.getimages && result.getimages.split(',')
+          this.pullimages = result.pullimages && result.pullimages.split(',')
           this.returnimages = result.returnimages && result.returnimages.split(',')
 
           if (this.mark === 'DZF') {

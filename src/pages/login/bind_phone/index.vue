@@ -151,6 +151,11 @@ export default {
     onChange (e) {
       this.checked = e.mp.detail
     }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
+    }
   }
 }
 </script>

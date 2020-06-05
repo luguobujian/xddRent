@@ -75,18 +75,7 @@ export default {
   onLoad (options) {
     console.log(options)
     this.status = options.status
-    switch (parseInt(options.status)) {
-      case 1:
-        this.statusText = '已认证'
-        break
-      case 2:
-        this.statusText = '未通过'
-        this.top = '50rpx'
-        break
-      case 0:
-        this.statusText = '审核中'
-        break
-    }
+
     this.statusProve()
   },
   methods: {
@@ -96,6 +85,18 @@ export default {
         console.log(res)
         if (res.data.code === 1) {
           this.detail = res.data.data.msg
+          switch (parseInt(this.detail.status)) {
+            case 1:
+              this.statusText = '已认证'
+              break
+            case 2:
+              this.statusText = '未通过'
+              this.top = '50rpx'
+              break
+            case 0:
+              this.statusText = '审核中'
+              break
+          }
         }
       } catch (error) {
         console.log('* statusProve error ', error)

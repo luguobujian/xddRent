@@ -32,7 +32,7 @@
           <div class="info-p-box Oswald-Medium">合计:¥{{item.pay_price}}</div>
           <div class="btns-box"
                v-if="item.status !== '9'">
-            <van-button v-if="item.status === '1' || item.status === '2' "
+            <van-button v-if="item.is_del !== 2 && (item.status === '1' || item.status === '2') "
                         plain
                         size="small"
                         color="#DDDDDD"
