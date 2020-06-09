@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+import { getTranspost } from '@/api/getData'
 export default {
   data () {
     return {
@@ -43,6 +44,19 @@ export default {
           desc: '2019.08.21 17:21 到达'
         }
       ]
+    }
+  },
+  onLoad () {
+    this.getData()
+  },
+  methods: {
+    async getData () {
+      try {
+        const res = await getTranspost()
+        console.log(res)
+      } catch (error) {
+
+      }
     }
   }
 }

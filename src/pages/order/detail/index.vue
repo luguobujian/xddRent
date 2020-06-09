@@ -119,7 +119,7 @@
           </div>
         </div>
         <!-- 物流信息 -->
-        <div v-if="detail.get_methods === 2"
+        <div v-if="detail.get_methods === 2 && logistics.length"
              class="wuliu-box mb10"
              @click="goNextPage">
           <div class="wuliu-icon">
@@ -127,8 +127,8 @@
                       color="#1989fa" />
           </div>
           <div class="wuliu-info">
-            <div class="wi-addr">【北京市】快件已到达 北京海淀运转中心…</div>
-            <div class="wi-time">2020.1.7 15:30到达</div>
+            <div class="wi-addr">{{logistics[0].location}}</div>
+            <div class="wi-time">{{logistics[0].dataTime}}到达</div>
           </div>
           <div class="arrow-box">
             <van-icon name="/static/icons/arrow.png"
@@ -234,7 +234,7 @@
                 <div class="pbrb-r">x{{item.goods_num}}</div>
                 <div>
                   <van-button class="pj-btn"
-                              v-if="mark==='YTK'"
+                              v-if="mark==='YTK' || mark==='YWC'"
                               size="small"
                               color="#97D700"
                               custom-style="width: 64px;font-size: 11px;"
@@ -275,10 +275,10 @@
             <span class="PingFangSC-Medium">{{paytime}}</span>
           </div>
           <div v-if="detail.pullimagestime && detail.pullimagestime !=='0'">
-            <span class="some-time-title">取货时间：</span>
+            <span class="some-time-title">{{ detail.is_buy === 0? '取货': '收货'}}时间：</span>
             <span class="PingFangSC-Medium">{{pullimagestime}}</span>
           </div>
-          <div v-if="detail.returntime && detail.returntime !=='0'">
+          <div v-if="detail.returntime && detail.returntime !=='0' && this.is_buy === 0">
             <span class="some-time-title">还货时间：</span>
             <span class="PingFangSC-Medium">{{returntime}}</span>
           </div>
@@ -309,7 +309,7 @@
              class="amount-box">
           <div class="ab-tit">
             <span class="PingFangSC-Medium">金额合计</span>
-            <span class="abt-r PingFangSC-Medium">合计：¥{{detail.pay_price}}</span>
+            <span class="abt-r PingFangSC-Medium">合计：¥{{detail.price}}</span>
           </div>
           <div class="one-info-box"
                v-for="(item, index) in detail.son"
@@ -318,7 +318,7 @@
               <span class="oil-l">{{item.goods_name}}</span>
               <span class="PingFangSC-Medium">x{{item.goods_num}}</span>
             </div>
-            <div class="oi-r PingFangSC-Medium">¥{{item.pay_price}}</div>
+            <div class="oi-r PingFangSC-Medium">¥{{item.price}}</div>
           </div>
         </div>
         <!-- 运费信息 -->
@@ -451,7 +451,8 @@ export default {
       get_time: null,
       returntime: null,
       push_goods_time: null,
-      pullimagestime: null
+      pullimagestime: null,
+      logistics: null
     }
   },
   onLoad (options) {
@@ -513,9 +514,9 @@ export default {
     async getTranspost () {
       try {
         const res = await getTranspost({ order_id: this.id })
-        console.log(res)
+        console.log('getTranspost', res)
         if (res.data.code === 1) {
-
+          this.logistics = res.data.data
         }
       } catch (error) {
 
@@ -523,7 +524,7 @@ export default {
     },
     goNextPage () {
       mpvue.navigateTo({
-        url: '/pages/order/transport/main'
+        url: '/pages/order/transport/main?'
       })
     },
     goShare () {
@@ -903,6 +904,9 @@ export default {
   height: 35px !important;
   /* margin-left: 8px; */
   /* padding: 0 12px !important; */
+}
+.van-button--plain.van-button--primary {
+  color: #97d700 !important;
 }
 .van-button--small.van-button--plain {
   color: #666 !important;

@@ -95,6 +95,10 @@ export default {
           Toast.fail('密码格式错误')
           return
         }
+        if (!this.checked) {
+          Toast('您还未同意隐私政策和用户协议')
+          return
+        }
         const res = await login({ account: this.mobile, password: this.password })
         console.log(res)
         if (res.data.code === 1) {
@@ -151,6 +155,11 @@ export default {
       mpvue.redirectTo({
         url: this.routers[i].url
       })
+    },
+    onUnload () {
+      if (this.$options.data) {
+        Object.assign(this.$data, this.$options.data())
+      }
     }
   }
 }
