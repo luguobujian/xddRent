@@ -112,7 +112,9 @@ export default {
 
       console.log(prev)
 
-      setTimeout(() => { mpvue.navigateBack() }, 1000)
+      mpvue.navigateBack()
+
+      // setTimeout(() => { mpvue.navigateBack() }, 1000)
     },
     onCheckboxAddress (e) {
       this.addressResult = e.mp.detail
