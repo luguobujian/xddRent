@@ -7,17 +7,17 @@
       </div>
       <div class="wuliu-info shouhuo-info">
         <div class="sh-info">
-          <span class="">李先生</span>
-          <span class="">18632763762</span>
+          <span class="">{{detail.address_name}}</span>
+          <span class="">{{detail.address_mobile}}</span>
           <span class="s-t-icon">收</span>
         </div>
-        <div class="wi-time">北京市海淀区龙翔路甲一号泰祥商务楼208室</div>
+        <div class="wi-time">{{detail.address}}</div>
       </div>
     </div>
     <div class="box">
       <div class="tit">物流详情</div>
-      <van-steps :steps=" steps"
-                 :active=" active"
+      <van-steps :steps="steps"
+                 :active="active"
                  direction="vertical"
                  active-color="#97D700"
                  inactive-color="#97D700"
@@ -26,36 +26,48 @@
   </div>
 </template>
 <script>
-import { getTranspost } from '@/api/getData'
+import { getOrderDetail, getTranspost } from '@/api/getData'
 export default {
   data () {
     return {
-      steps: [
-        {
-          text: '【北京市】快件已到达 北京海淀运转中心',
-          desc: '2019.08.21 17:21 到达'
-        },
-        {
-          text: '【北京市】快件已到达北京石景山区京西分部运转中心',
-          desc: '2019.08.21 17:21 到达'
-        },
-        {
-          text: '包裹正在等待揽收',
-          desc: '2019.08.21 17:21 到达'
-        }
-      ]
+      id: null,
+      detail: null,
+      steps: []
     }
   },
-  onLoad () {
+  onLoad (options) {
+    console.log(options)
+    this.id = options.id
+    this.getOrderDetail()
     this.getData()
   },
   methods: {
+    async getOrderDetail () {
+      try {
+        const res = await getOrderDetail({ order_id: this.id })
+        console.log('getOrderDetail', res)
+        if (res.data.code === 1) {
+          this.detail = res.data.data
+        }
+      } catch (error) {
+        console.log('* error getOrderDetail', error)
+      }
+    },
     async getData () {
       try {
-        const res = await getTranspost()
+        const res = await getTranspost({ order_id: this.id })
         console.log(res)
+        let result = res.data.data
+        let arr = []
+        result.forEach((item, key) => {
+          arr.push({
+            text: item.location,
+            desc: item.datatime
+          })
+        })
+        this.steps = arr
       } catch (error) {
-
+        console.log('* error', error)
       }
     }
   }
@@ -63,8 +75,10 @@ export default {
 </script>
 <style lang="">
 .box {
+  flex: 1;
   padding: 15px;
   background: #fff;
+  overflow: auto;
 }
 .tit {
   padding: 15px 0;

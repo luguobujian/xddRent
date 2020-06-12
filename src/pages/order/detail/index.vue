@@ -36,7 +36,7 @@
           </div>
         </div>
         <!-- 还货图片 -->
-        <div v-if="(mark === 'TDJZ' || mark === 'YTK' || mark==='YGH') && returnimages && returnimages.length !== 0"
+        <div v-if="returnimages && returnimages.length !== 0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">还货图片</div>
           <div class="img-items-box">
@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="(mark === 'TDJZ' || mark==='YTK' || mark==='ZLZ' || mark==='YGH') &&  detail.bad_images.new_images && detail.bad_images.new_images.length !==0 "
+        <div v-if="detail.bad_images.new_images && detail.bad_images.new_images.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -78,10 +78,10 @@
             <div class="omi-c PingFangSC-Medium">{{detail.text === "null "? '无': (detail.text || '无')}}</div>
           </div>
         </div>
-        <!-- 收货图片 -->
-        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark === 'YWC' || mark==='YTK' || mark==='YGH') && getimages && getimages.length !==0"
+        <!-- 发货图片 -->
+        <div v-if="getimages && getimages.length !==0"
              class="img-box">
-          <div class="img-tit PingFangSC-Medium">收货图片</div>
+          <div class="img-tit PingFangSC-Medium">发货图片</div>
           <div class="img-items-box">
             <div class="img-item"
                  v-for="(item, index) in getimages"
@@ -91,10 +91,10 @@
             </div>
           </div>
         </div>
-        <!-- 发货图片 -->
-        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark === 'YWC' || mark==='YTK' || mark==='YGH') && pullimages && pullimages.length !==0"
+        <!-- 收货图片 -->
+        <div v-if="pullimages && pullimages.length !==0"
              class="img-box">
-          <div class="img-tit PingFangSC-Medium">发货图片</div>
+          <div class="img-tit PingFangSC-Medium">收货图片</div>
           <div class="img-items-box">
             <div class="img-item"
                  v-for="(item, index) in pullimages"
@@ -105,7 +105,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="(mark === 'TDJZ' || mark === 'ZLZ' || mark==='YTK' || mark==='YGH') && detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
+        <div v-if="detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -128,7 +128,7 @@
           </div>
           <div class="wuliu-info">
             <div class="wi-addr">{{logistics[0].location}}</div>
-            <div class="wi-time">{{logistics[0].dataTime}}到达</div>
+            <div class="wi-time">{{logistics[0].datatime}}到达</div>
           </div>
           <div class="arrow-box">
             <van-icon name="/static/icons/arrow.png"
@@ -487,7 +487,7 @@ export default {
 
           console.log()
           this.dday = (new Date().getTime() - parseInt(res.data.data.pullimagestime) * 1000) / 1000 / 60 / 60 / 24
-          this.dday = this.dday < 1 ? 1 : this.dday
+          this.dday = this.dday < 1 ? 1 : Math.ceil(this.dday)
 
           this.get_methods = res.data.data.get_methods
           this.createtime = moment(result.createtime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 创建时间
@@ -495,7 +495,7 @@ export default {
           // this.get_time = moment(result.get_time * 1000)).format('YYYY-MM-DD HH:mm:ss ') // 取货时间
           this.returntime = moment(result.returntime * 1000).format('YYYY.MM.DD HH:mm:ss ') // 还货时间
           this.push_goods_time = moment(result.push_goods_time * 1000).format('YYYY.MM.DD ') // 返款时间
-          this.pullimagestime = result.pullimagestime ? moment(result.pullimagestime * 1000).format('YYYY.MM.DD ') : '' // 开始租赁（收货时间）
+          this.pullimagestime = result.pullimagestime ? moment(result.pullimagestime * 1000).format('YYYY.MM.DD HH:mm:ss') : '' // 开始租赁（收货时间）
 
           this.getimages = result.getimages && result.getimages.split(',')
           this.pullimages = result.pullimages && result.pullimages.split(',')
@@ -524,7 +524,7 @@ export default {
     },
     goNextPage () {
       mpvue.navigateTo({
-        url: '/pages/order/transport/main?'
+        url: `/pages/order/transport/main?id=${this.id}`
       })
     },
     goShare () {
@@ -602,9 +602,11 @@ export default {
   margin: 0;
 }
 .img-item img {
+  display: block;
   width: 81px;
   border-radius: 2px;
   height: 81px;
+  margin: 0 auto;
   /* background: skyblue; */
 }
 .img-item div {

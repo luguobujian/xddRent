@@ -7,6 +7,12 @@ export const exchangeCode = (data) =>
   API.request('api/user/wxxtLogin', data, 'POST')
 
 /**
+ *小程序 微信获取unionid等信息
+ */
+export const xxWxLogin = (data) =>
+  API.request('index/pcWxLogin/xxWxLogin', data, 'POST')
+
+/**
  *发送短信
  */
 export const sms = (data) =>

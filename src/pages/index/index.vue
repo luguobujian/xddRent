@@ -92,7 +92,7 @@
 <script>
 import API from '@/api/api'
 import citys from '../city/city'
-import { exchangeCode, getBanner, getGoodsType } from '@/api/getData'
+import { xxWxLogin, exchangeCode, getBanner, getGoodsType } from '@/api/getData'
 let that = null
 export default {
   data () {
@@ -126,6 +126,7 @@ export default {
     // this.privateWxLogin()
     //   .then(r => this.exchangeCode(r.code))
     //   .then(r => this.getBanner())
+    this.exchangeCode()
     this.getBanner()
     this.wxGetSetting()
   },
@@ -166,13 +167,16 @@ export default {
         })
       })
     },
+
     /**
     *code登录获取openid
     */
     async exchangeCode () {
       try {
         const code = await this.privateWxLogin()
+        const ucode = await xxWxLogin({ code })
         const res = await exchangeCode({ code })
+        console.log(`ucode`, ucode)
         console.log(`App:exchangeCode ${new Date().getTime()}`, res)
         mpvue.setStorage({
           key: 'token',
