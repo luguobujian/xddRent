@@ -1,6 +1,7 @@
 <template>
   <div class="container van-hairline--top">
-    <div class="info-box">
+    <div class="info-box"
+         @click="showPayout = true">
       <div class="info-tit-box">收款账户</div>
       <div v-if="radio === 'alipay'"
            class="o-info-box">支付宝账户</div>
@@ -12,20 +13,18 @@
     </div>
     <van-icon class="chs-btn"
               size="14"
-              name="arrow"
-              @click="showPayout = true" />
+              name="arrow" />
     <div class="form-box">
       <div>
         <van-field type="number"
                    label="￥"
                    placeholder="请输入提现金额"
                    label-width="22px"
-                   custom-style="font-family:'Oswald-Medium'"
+                   custom-style="font-family:'Oswald-Medium',font-size: '24px'"
                    :value="money"
                    @input="onInputMoneyKey" />
       </div>
-      <div class="
-                   tip-box">当前余额：¥{{haveMoney}} <span class="colorBtn"
+      <div class="tip-box">当前余额：¥{{haveMoney}} <span class="colorBtn"
               @click="getAll">全部提现</span>
       </div>
     </div>
@@ -164,7 +163,7 @@ export default {
       type: null,
       number: null,
       money: null,
-      haveMoney: null,
+      haveMoney: '',
       show: false,
       hasPassword: null,
       password: null
@@ -276,7 +275,7 @@ export default {
         return
       }
 
-      if (this.money > this.haveMoney) {
+      if (parseInt(this.money) > parseInt(this.haveMoney)) {
         Toast.fail('提现金额不可大于当前金额')
         return
       }
@@ -295,6 +294,11 @@ export default {
       mpvue.navigateTo({
         url: '/pages/billing/settings/main?from=getPass'
       })
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }
@@ -329,6 +333,7 @@ export default {
 }
 .colorBtn {
   color: #97d700;
+  padding-left: 10px;
 }
 .bottom-btn-margin {
   margin: 36px 15px !important;
@@ -371,7 +376,6 @@ export default {
   font-size: 13px;
   line-height: 18px;
   margin-top: 5px;
-  /* justify-content: space-between; */
 }
 .small-tit {
   width: 70px;
@@ -390,7 +394,26 @@ export default {
 <style>
 .van-cell {
   font-size: 24px !important;
-  padding: 22px 16px 10px !important;
+  padding: 22px 0 !important;
+}
+.van-cell:after {
+  width: 100% !important;
+  left: 2px !important;
+}
+.form-box .van-cell__title,
+.form-box .van-cell__value {
+  font-size: 24px !important;
+}
+.inp-box .van-cell {
+  font-size: 24px !important;
+  padding: 22px 0 12px !important;
+}
+.form-box .van-field__input {
+  min-height: 24px !important;
+}
+.van-popup--center {
+  -webkit-transform: translate(-50%, -63%) !important;
+  transform: translate(-50%, -63%) !important;
 }
 .van-cell__title {
   flex: none !important;
@@ -415,7 +438,6 @@ export default {
   margin-top: 27px;
 }
 .wxpay .small-tit {
-  /* width: auto; */
 }
 .inp-box {
   margin: 0 30px;

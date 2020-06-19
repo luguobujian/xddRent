@@ -45,9 +45,9 @@
           <div class="hot-items-box">
             <div v-for="(item, index) in hots"
                  :key="index"
-                 class="item"
-                 @click="chsItem(item.name)">
-              {{item.name}}
+                 @click="chsItem(item.card)">
+              <div v-if="item.switch === 0"
+                   class="item">{{item.card}}</div>
             </div>
           </div>
         </div>
@@ -288,6 +288,9 @@ export default {
 }
 .unit-box span {
   font-size: 11px;
+}
+.hot-items-box > div {
+  display: inline-block;
 }
 </style>
 <style>

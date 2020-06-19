@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="title-box clearfix">
-          <div class="fl">{{item.money}}</div>
+          <div class="fl">￥{{item.money}}</div>
           <div class="fr"
                :class="[{'fail': item.status === '2'}, {'success': item.status === '1'}, {'warning': item.status === '0'}]">{{item.statusText}}</div>
         </div>

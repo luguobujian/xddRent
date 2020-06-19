@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="top-box">
       <div class="tip-box">我的邀请码</div>
       <div class="code-box Oswald-Medium">{{detail.code}}</div>
@@ -11,7 +11,7 @@
              class="items-m clearfix">
           <div class="avatar-box fl">
             <img class="avatar"
-                 :src="item.user.avatar"
+                 :src="item.user.avatar || '/static/icons/nophoto.png'"
                  alt="">
           </div>
           <div class="tl fl">
@@ -20,7 +20,7 @@
           </div>
           <div class="tr fl">
             <div class="title-box PingFangSC-Medium">奖励：{{item.del_price}}</div>
-            <div class="sub-title-box">注册时间：{{item.use_time}}</div>
+            <div class="sub-title-box">注册时间：{{item.ymdhms}}</div>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-
+import moment from 'moment'
 import { getMyCode } from '@/api/getData'
 import Toast from '../../../static/vant/toast/toast'
 import nomoreComponents from '@/components/nomore'
@@ -58,6 +58,11 @@ export default {
         console.log(res)
         this.detail = res.data.data
         this.dataList = res.data.data.list
+        let arr = res.data.data.list
+        arr.forEach((item, key) => {
+          item.ymdhms = moment(item.jointime * 1000).format('YYYY-MM-DD HH:mm:ss ')
+        })
+        this.detailList = arr
       } catch (error) {
         Toast.fail(error.data.msg)
       }
@@ -103,16 +108,16 @@ export default {
 .avatar-box .avatar {
   width: 40px;
   height: 40px;
-  background: seagreen;
+  /* background: seagreen; */
   border-radius: 50%;
 }
 .tl {
-  width: 171px;
+  width: 145px;
   margin-left: 10px;
 }
 .tr .title-box,
 .tr .sub-title-box {
-  width: 124px;
+  width: 145px;
 }
 .title-box,
 .sub-title-box {
@@ -121,8 +126,8 @@ export default {
   color: #333333;
   line-height: 20px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* text-overflow: ellipsis;
+  white-space: nowrap; */
 }
 .sub-title-box {
   font-size: 12px;

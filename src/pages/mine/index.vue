@@ -325,7 +325,8 @@ export default {
   border-bottom: none !important;
 }
 
-.van-button--small {
+.bottom-btn-box .van-button--small {
   height: 39px !important;
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 </style>

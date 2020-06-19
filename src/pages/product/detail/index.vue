@@ -25,12 +25,13 @@
           <div class="pri-info-box">
             <div class="pri-info">
               <div>¥</div>
-              <div class="prb Oswald-Medium">{{detail.pre_price}}</div>
+              <div class="prb Oswald-Medium">{{detail.switch===1? detail.pre_price: detail.price}}</div>
               <div>/天</div>
             </div>
             <div v-if="detail.switch === 1"
                  class="tag">特价</div>
-            <div class="o-cost ">¥{{detail.price}}/天</div>
+            <div v-if="detail.switch === 1"
+                 class="o-cost ">¥{{detail.price}}/天</div>
           </div>
           <div class="dingj">定金：¥{{detail.get_price}}/个</div>
         </div>

@@ -11,7 +11,21 @@ export const exchangeCode = (data) =>
  */
 export const xxWxLogin = (data) =>
   API.request('index/pcWxLogin/xxWxLogin', data, 'POST')
-
+/**
+ *小程序 获取返回值
+ */
+export const decryptData = (data) =>
+  API.request('index/pcWxLogin/decryptData', data, 'POST')
+/**
+ *小程序 第三方登录
+ */
+export const qqWxIosLogin = (data) =>
+  API.request('api/user/qqWxIosLogin', data, 'POST')
+/**
+ *小程序 绑定手机号（第三方登录）
+ */
+export const thirdLogin = (data) =>
+  API.request('api/user/thirdLogin', data, 'POST')
 /**
  *发送短信
  */
@@ -35,6 +49,12 @@ export const wxxBindMobile = (data) =>
 */
 export const mobilelogin = (data) =>
   API.request('api/user/mobilelogin', data, 'POST')
+
+/**
+*分享页
+*/
+export const share = (data) =>
+  API.request('api/Problems/share', {}, 'POST')
 
 /**
 *注册

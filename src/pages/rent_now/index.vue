@@ -560,14 +560,21 @@ export default {
 .quhuo-addr .van-cell::after {
   border: none;
 }
-
 .van-stepper__minus,
 .van-stepper__input,
 .van-stepper__plus {
   background-color: #fff !important;
   border: 1px solid #e1e1e5 !important;
-  border-radius: 2px !important;
+  /* border-radius: 2px !important; */
   margin: 0 !important;
+}
+.van-stepper__minus {
+  border-top-left-radius: 2px !important;
+  border-bottom-left-radius: 2px !important;
+}
+.van-stepper__plus {
+  border-top-right-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
 }
 .van-stepper__input {
   border-left: none !important;

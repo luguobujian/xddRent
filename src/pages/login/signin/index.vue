@@ -307,6 +307,7 @@ export default {
 
 .van-button--small {
   color: #fff;
+  font-size: 15px !important;
   height: 39px !important;
 }
 

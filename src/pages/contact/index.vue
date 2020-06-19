@@ -4,7 +4,7 @@
       <div>
         <div class="logo-box">
           <img class="logo"
-               :src="baseUrl + '/PingFangSC/xddmppic/108.png'"
+               :src="logo"
                alt="">
         </div>
       </div>

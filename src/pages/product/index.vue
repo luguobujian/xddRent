@@ -40,11 +40,12 @@
         </div>
         <div class="per-address-box">
           <div class="unit-box Oswald-Medium">
-            <span>¥</span>{{item.pre_price}}<span>/天</span>
+            <span>¥</span>{{item.switch===1? item.pre_price: item.price}}<span>/天</span>
           </div>
           <div v-if="item.switch===1"
                class="tag PingFangSC-Medium">特价</div>
-          <div class="o-cost">¥{{item.price}}/天</div>
+          <div v-if="item.switch===1"
+               class="o-cost">¥{{item.price}}/天</div>
         </div>
       </div>
     </div>

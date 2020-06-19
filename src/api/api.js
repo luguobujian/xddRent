@@ -24,7 +24,7 @@ class API {
           resolve(res.data)
         },
         fail (res) {
-          console.log(`* FAIL getStorageToken ${url}`, res)
+          // console.log(`* FAIL getStorageToken ${url}`, res)
           resolve('')
         }
       })
@@ -35,8 +35,8 @@ class API {
     try {
       const token = await this.getStorageToken(url)
       const vToken = this.exclude.includes(url)
-      console.log(vToken)
-      console.log(`token ${new Date()}`, token)
+      // console.log(vToken)
+      // console.log(`token ${new Date()}`, token)
       return new Promise((resolve, reject) => {
         let header = {
           'token': token,
@@ -71,9 +71,10 @@ class API {
               console.log('* FAIL res statusCode !200', res)
             } else {
               if (res.data.code === 0) {
+                reject(res)
+
                 Toast.fail(res.data.msg)
 
-                reject(res)
                 console.log(`* FAIL res Code 0 Url:${url}`, res)
                 console.log(`* FAIL res Code 0 Url:${url}DATA:`, data)
                 return

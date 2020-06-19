@@ -4,7 +4,7 @@
       <div>
         <div class="logo-box">
           <img class="logo"
-               :src="baseUrl + '/PingFangSC/xddmppic/108.png'"
+               :src="detail.images"
                alt="">
         </div>
         <div class="version-box">V1.1.0</div>
@@ -19,11 +19,12 @@
       </div>
 
     </div>
-    <div class="web-box">www.apicloud.com</div>
+    <div class="web-box">{{detail.address}}</div>
   </div>
 </template>
 <script>
 import API from '@/api/api'
+import { contactUs } from '@/api/getData'
 
 export default {
   data () {
@@ -34,10 +35,26 @@ export default {
         { text: '功能介绍' },
         { text: '法律声明' },
         { text: '用户协议' }
-      ]
+      ],
+
+      detail: null
     }
   },
+  onLoad () {
+    this.getData()
+  },
   methods: {
+    async getData () {
+      try {
+        const res = await contactUs()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.detail = res.data.data
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    },
     goNextPage (i) {
       mpvue.navigateTo({
         url: `/pages/about/detail/main?idx=${i + 1}&tit=${this.cellItems[i].text}`

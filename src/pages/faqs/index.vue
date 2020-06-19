@@ -1,5 +1,5 @@
 <template>
-  <div class="container van-hairline-top">
+  <div class="container van-hairline--top">
     <van-cell v-for="(item, index) in dataList"
               :key="index"
               :title="item.titlle"

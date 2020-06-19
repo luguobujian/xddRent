@@ -2,11 +2,11 @@
   <div class="container">
     <div class="main-box">
       <div class="logo-box">
-        <img :src="baseUrl + '/PingFangSC/xddmppic/108.png'"
+        <img :src="detail.image"
              alt="">
       </div>
-      <div class="title">箱当当</div>
-      <div>这里是app说明这里是app说明这里是app说明这里是app说明，这里是app说明这里是app说明这里是app说明这里是app说明这里是app说明这里是app说明，这里是app说明这里是app说明这里是app说明这里是app说明这里是app说明这里是app说明这里是app说明这里是app说明这里是app说明。</div>
+      <div class="title">{{detail.name}}</div>
+      <div>{{detail.content}}</div>
     </div>
 
     <div class="bottom-btn-box van-hairline--top">
@@ -22,11 +22,44 @@
   </div>
 </template>
 <script>
-import API from '@/api/api'
+// import API from '@/api/api'
+import { contactUs, share } from '@/api/getData'
+
 export default {
   data () {
     return {
-      baseUrl: API.baseUrl
+      detail: null
+    }
+  },
+  onLoad () {
+    this.share()
+    // this.getData()
+  },
+  methods: {
+    async share () {
+      try {
+        const res = await share()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.detail = res.data.data
+        }
+      } catch (error) {
+
+      }
+    },
+    async getData () {
+      try {
+        const res = await contactUs()
+        console.log(res)
+        if (res.data.code === 1) {
+          this.logo = res.data.data.images
+          this.tel = res.data.data.mobile
+          this.web = res.data.data.address
+          this.email = res.data.data.email
+        }
+      } catch (err) {
+
+      }
     }
   }
 }
@@ -47,7 +80,7 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 4px;
-  background-color: skyblue;
+  /* background-color: skyblue; */
   margin: 40px auto 15px;
 }
 .title {

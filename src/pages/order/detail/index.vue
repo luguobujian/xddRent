@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="detail.bad_images.new_images && detail.bad_images.new_images.length !==0"
+        <div v-if="detail && detail.bad_images && detail.bad_images.new_images && detail.bad_images.new_images.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -105,7 +105,7 @@
           </div>
         </div>
         <!-- 破损图片 -->
-        <div v-if="detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
+        <div v-if="detail && detail.bad_images && detail.bad_images.old_images && detail.bad_images.old_images.length !==0"
              class="img-box">
           <div class="img-tit PingFangSC-Medium">破损图片</div>
           <div class="img-items-box">
@@ -119,7 +119,7 @@
           </div>
         </div>
         <!-- 物流信息 -->
-        <div v-if="detail.get_methods === 2 && logistics.length"
+        <div v-if="detail && detail.get_methods === 2 && logistics && logistics.length"
              class="wuliu-box mb10"
              @click="goNextPage">
           <div class="wuliu-icon">
@@ -136,7 +136,7 @@
           </div>
         </div>
         <!------------- 收货信息 --------------->
-        <div v-if="detail.get_methods===2"
+        <div v-if="detail &&detail.get_methods===2"
              class=" shouhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
@@ -153,7 +153,7 @@
         </div>
 
         <!-------------- 取货信息 --------------->
-        <div v-if="detail.get_methods === 1"
+        <div v-if="detail && detail.get_methods === 1"
              class=" shouhuo-box huanhuo-box wuliu-box mb10">
           <div class="wuliu-icon">
             <van-icon name="/static/icons/location.png"
@@ -363,7 +363,7 @@
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
               class="bbb-l-r">应付:</span>
         <span v-if="mark==='DZF' || mark==='DQR' || mark==='YGH'"
-              class="bbb-l-l Oswald-Medium">¥{{detail.pay_price}}</span>
+              class="bbb-l-l Oswald-Medium">¥{{detail.is_buy === 1? detail.pay_price : (detail.status === '10'? detail.back_pay_money: detail.get_price)}}</span>
       </div>
       <div class="bottom-btn-box-right"
            @click="goShare">
@@ -375,7 +375,8 @@
                     custom-style="width: 90px"
                     round
                     type="default">取消订单</van-button>
-        <van-button v-if="mark==='DQR'"
+        <van-button class="dqr"
+                    v-if="mark==='DQR'"
                     plain
                     size="small"
                     color="#97d700"
@@ -532,6 +533,7 @@ export default {
       })
     },
     goShare () {
+      console.log(111)
       if (this.mark === 'DTH') {
         Dialog.alert({
           title: '下载提示',
@@ -919,6 +921,9 @@ export default {
   height: 35px !important;
   /* margin-left: 8px; */
   /* padding: 0 12px !important; */
+}
+.dqr .van-button--small.van-button--plain {
+  color: #97d700 !important;
 }
 .van-button--plain.van-button--primary {
   color: #97d700 !important;

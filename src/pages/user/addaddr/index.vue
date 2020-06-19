@@ -212,6 +212,9 @@ export default {
 .van-cell:after {
   width: 90% !important;
 }
+.van-cell__title {
+  /* line-height: 15px !important; */
+}
 ._van-icon {
   color: #969799;
   margin-top: 22px !important;

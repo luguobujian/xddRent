@@ -49,7 +49,6 @@
                        @input="onInputMobileKey" />
             <van-field :value="bio"
                        label="个人简介"
-                       right-icon="arrow"
                        placeholder="请输入"
                        input-align="right"
                        @input="onInputBioKey" />
@@ -69,7 +68,7 @@
       <div class="bottom-btn-margin">
         <van-button color="#97D700"
                     size="small"
-                    custon-style="font-size: 15px"
+                    custom-style="font-size: 15px"
                     round
                     block
                     @click="submit">保存</van-button>

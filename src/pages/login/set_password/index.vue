@@ -16,7 +16,7 @@
                       size="small"
                       round
                       block
-                      @click="wxxBindMobile">提交</van-button>
+                      @click="register">提交</van-button>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import { wxxBindMobile } from '@/api/getData'
+import { register } from '@/api/getData'
 import Toast from '../../../../static/vant/toast/toast'
 export default {
   data () {
@@ -32,16 +32,20 @@ export default {
       hidepass: true,
       mobile: null,
       code: null,
-      password: null
+      password: null,
+      name_pic: null,
+      unionId: null
     }
   },
   onLoad (options) {
     console.log(options)
     this.mobile = options.mobile
     this.code = options.code
+    this.unionId = options.unionId
+    this.name_pic = options.name_pic
   },
   methods: {
-    async wxxBindMobile () {
+    async register () {
       try {
         if (!this.password) {
           Toast.fail('请输入密码')
@@ -51,10 +55,24 @@ export default {
           Toast.fail('密码格式错误')
           return
         }
-        const res = await wxxBindMobile({ code: this.code, mobile: this.mobile, password: this.password })
+        const res = await register({ code: this.code, mobile: this.mobile, password: this.password, type: 2, user_code: '', openid: this.unionId, name_pic: this.name_pic })
         console.log(res)
         if (res.data.code === 1) {
           Toast('设置成功')
+          if (res.data.data.userinfo.group_id !== 0) {
+            Toast.fail('请去APP端管理员工')
+            setTimeout(() => {
+              mpvue.navigateTo({
+                url: '/pages/share/main'
+              })
+            }, 1500)
+            return
+          }
+          mpvue.setStorage({
+            key: 'token',
+            data: res.data.data.userinfo.token
+          })
+          Toast('注册成功')
           mpvue.switchTab({
             url: '/pages/index/main'
           })
@@ -77,6 +95,11 @@ export default {
     },
     onInputKeyPassword (e) {
       this.password = e.mp.detail
+    }
+  },
+  onUnload () {
+    if (this.$options.data) {
+      Object.assign(this.$data, this.$options.data())
     }
   }
 }

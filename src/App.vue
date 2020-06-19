@@ -98,7 +98,8 @@ export default {
 <style>
 @import "../static/vant/common/index.wxss";
 * {
-  font-family: "PingFangSC-Regular";
+  font-family: "PingFangSC-Regular", "PingFang SC", "Helvetica Neue", "Arial",
+    sans-serif;
 }
 page {
   height: 100%;
@@ -154,7 +155,7 @@ page {
 }
 
 .van-cell:after {
-  width: 90% !important;
+  width: 92% !important;
 }
 .van-hairline {
   position: relative;

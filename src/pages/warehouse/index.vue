@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container van-hairline--top">
     <div class="main-box">
       <div v-for="(item, index) in dataList"
            :key="index"
@@ -81,5 +81,9 @@ export default {
   color: #999999;
   line-height: 18px;
   margin-left: 5px;
+}
+
+._van-icon {
+  vertical-align: 6% !important;
 }
 </style>

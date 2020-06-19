@@ -13,7 +13,8 @@
                     type="info"
                     round
                     block
-                    @click="openPage(0)">微信登录</van-button>
+                    open-type="getUserInfo"
+                    @getuserinfo="getuserinfo">微信登录</van-button>
       </div>
       <div class="bottom-tip-btn">
         <div @click="openPage(1)">手机账号登录/注册</div>
@@ -36,6 +37,8 @@
 </template>
 <script>
 import API from '@/api/api'
+import { decryptData, qqWxIosLogin } from '@/api/getData'
+
 import Toast from '../../../static/vant/toast/toast'
 export default {
   data () {
@@ -50,19 +53,86 @@ export default {
         url: '/pages/login/detail/main?f=1'
       }, {
         url: '/pages/login/detail/main?f=2'
-      }]
+      }],
+      unionId: null,
+      name_pic: null
     }
   },
   methods: {
+    getuserinfo (e) {
+      let that = this
+      that.name_pic = `${e.mp.detail.userInfo.nickName}^${e.mp.detail.userInfo.avatarUrl}`
+      if (!this.checked) {
+        Toast('您还未同意隐私政策和用户协议')
+        return
+      }
+
+      mpvue.login({
+        success (res) {
+          console.log(e)
+          console.log('privateWxLogin', res)
+          if (res.code) {
+            decryptData({
+              code: res.code,
+              encryptedData: e.mp.detail.encryptedData,
+              iv: e.mp.detail.iv
+            })
+              .then(r => {
+                that.unionId = r.data.unionId
+                qqWxIosLogin({ type: 2, openid: r.data.unionId })
+                  .then((r) => {
+                    console.log(`qqWxIosLogin`, r)
+                    if (r.data.code === 1) {
+                      if (r.data.data.userinfo.group_id !== 0) {
+                        Toast.fail('请去APP端管理员工')
+                        setTimeout(() => {
+                          mpvue.navigateTo({
+                            url: '/pages/share/main'
+                          })
+                        }, 1500)
+                        return
+                      }
+                      mpvue.setStorage({
+                        key: 'token',
+                        data: r.data.data.userinfo.token
+                      })
+                      Toast('登录成功')
+
+                      mpvue.switchTab({
+                        url: '/pages/index/main'
+                      })
+                    } else {
+                      Toast.fail(r.data.msg)
+                    }
+                  }).catch(r => {
+                    console.log(`decryptData111`, r)
+                    if (r.data.code === 0) {
+                      mpvue.navigateTo({
+                        url: `/pages/login/bind_phone/main?unionId=${that.unionId}&name_pic=${that.name_pic}`
+                      })
+                    }
+                  })
+              })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        }
+      })
+
+      // decryptData({
+      //   encryptedData: e.mp.detail.encryptedData,
+      //   iv: e.mp.detail.iv
+      // })
+      //   .then(r => {
+      //     Toast('出错了')
+      //     console.log(`decryptData`, r)
+      //   })
+    },
     onChange (e) {
       console.log(e)
       this.checked = e.mp.detail
     },
     openPage (i) {
-      if (!this.checked) {
-        Toast('您还未同意隐私政策和用户协议')
-        return
-      }
       mpvue.navigateTo({
         url: this.routers[i].url
       })

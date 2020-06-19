@@ -130,16 +130,17 @@ export default {
       Dialog.confirm({
         title: '提示',
         message: '确认删除该地址信息？'
-      }).then(() => {
+      }).then((r) => {
         // on confirm
         this.addressResult = ''
         this.addressIndex = ''
-        const res = delAddress({ id })
-        console.log('delAddress', res)
-        if (res['_v'].data.code === 1) {
-          Toast.success('删除成功')
-          this.getMyAddress()
-        }
+        delAddress({ id }).then(r => {
+          console.log('delAddress', r)
+          if (r.data.code === 1) {
+            Toast.success('删除成功')
+            this.getMyAddress()
+          }
+        })
       }).catch(() => {
         // on cancel
       })

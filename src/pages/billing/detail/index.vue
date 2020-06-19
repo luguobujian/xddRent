@@ -1,24 +1,26 @@
 <template>
   <div class="container van-hairline--top">
-    <div class="billing-detail-box">
+    <div class="billing-detail-box"
+         v-for="(item, index) in detailList"
+         :key="index">
       <div class="title-box clearfix">
-        <div class="fl">提成收益</div>
-        <div class="fr">+¥200.00</div>
+        <div class="fl">{{item.code_type === 1? '提现': '提成收益'}}</div>
+        <div class="fr">{{item.code_type === 1? '-¥': '+¥'}}{{item.money}}</div>
       </div>
       <div class="user-info-box">
         <div class="small-avatar-box">
           <img class="avatar"
-               src=""
+               :src="item.userInfo.avatar || '/static/icons/nophoto.png'"
                alt="">
         </div>
-        <span class="name-box">马小哈</span>
-        <span class="tel-box">13333333333</span>
+        <span class="name-box">{{item.userInfo.username}}</span>
+        <span class="tel-box">{{item.userInfo.mobile}}</span>
       </div>
-      <div class="some-info-box">订单号：283721946129</div>
-      <div class="some-info-box">订单金额：¥3000.00</div>
-      <div class="some-info-box">订单日期：2020.01.21</div>
+      <div class="some-info-box">订单号：{{item.order}}</div>
+      <div class="some-info-box">订单金额：¥{{item.ymdhms}}</div>
+      <div class="some-info-box">订单日期：{{item.ymdhms}}</div>
     </div>
-    <div class="itmes-box">
+    <!-- <div class="itmes-box">
       <div v-for="(item, index) in detailList"
            :key="index"
            class="item">
@@ -29,7 +31,7 @@
         <div class="some-info-box">订单号：{{item.order}}</div>
         <div class="some-info-box">订单日期：{{item.ymdhms}}</div>
       </div>
-    </div>
+    </div> -->
     <nomoreComponents :tipBoxTop="tipBoxTop"
                       :tipSrc="tipSrc"
                       :dataList="detailList"></nomoreComponents>
@@ -97,7 +99,7 @@ export default {
 .small-avatar-box .avatar {
   width: 25px;
   height: 25px;
-  background-color: seagreen;
+  /* background-color: seagreen; */
   border-radius: 50%;
 }
 .name-box {

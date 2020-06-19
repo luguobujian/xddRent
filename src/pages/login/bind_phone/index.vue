@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-import { sms, smsCheck } from '@/api/getData'
+import { decryptData, xxWxLogin, sms, smsCheck, thirdLogin } from '@/api/getData'
 import Toast from '../../../../static/vant/toast/toast'
 export default {
   data () {
@@ -63,15 +63,43 @@ export default {
       getSmsCodeIng: false,
       getSmsCodeClock: 60,
 
+      name_pic: null,
       mobile: null,
-      code: null
+      code: null,
+      unionId: null
     }
   },
-  onLoad () {
+  onLoad (options) {
     let getCodeTime = mpvue.getStorageSync('register')
     this.refreshCheckState(getCodeTime)
+    // this.privateWxLogin()
+    this.unionId = options.unionId
+    this.name_pic = options.name_pic
   },
   methods: {
+    async privateWxLogin () {
+      return new Promise((resolve, reject) => {
+        mpvue.login({
+          success (res) {
+            console.log('privateWxLogin', res)
+            if (res.code) {
+              resolve(res.code)
+              decryptData({ code: res.code })
+                .then(r => {
+                  console.log(`decryptData`, r)
+                })
+              xxWxLogin({ code: res.code })
+                .then(r => {
+                  console.log(`ucode`, r)
+                })
+            } else {
+              reject(res)
+              console.log('登录失败！' + res.errMsg)
+            }
+          }
+        })
+      })
+    },
     async sms () {
       try {
         if (this.getSmsCodeIng) return
@@ -80,7 +108,7 @@ export default {
           return
         }
 
-        const res = await sms({ mobile: this.mobile, event: 'register' })
+        const res = await sms({ mobile: this.mobile, event: 'bindmobile' })
         console.log(res)
         if (res.data.code === 1) {
           this.refreshCheckState(Date.now())
@@ -117,17 +145,58 @@ export default {
           Toast.fail('手机号错误')
           return
         }
-        console.log({ captcha: this.code, mobile: this.mobile, event: 'register' })
-        const res = await smsCheck({ captcha: this.code, mobile: this.mobile, event: 'register' })
+        console.log({ captcha: this.code, mobile: this.mobile, event: 'bindmobile' })
+        const res = await smsCheck({ captcha: this.code, mobile: this.mobile, event: 'bindmobile' })
         console.log(res)
         if (res.data.code === 1) {
-          this.openPage(0)
+          // this.openPage(0)
+          this.thirdLogin()
         } else {
           Toast.fail(res.data.msg)
         }
       } catch (error) {
         console.log(`* smsCheck error`, error)
         // Toast.fail(error.data.msg)
+      }
+    },
+    async thirdLogin () {
+      try {
+        const res = await thirdLogin({
+          openid: this.unionId,
+          type: 2,
+          phone: this.mobile,
+          name_pic: this.name_pic
+        })
+        console.log(res)
+        if (res.data.code === 1) {
+          if (res.data.data.userinfo.group_id !== 0) {
+            Toast.fail('请去APP端管理员工')
+            setTimeout(() => {
+              mpvue.navigateTo({
+                url: '/pages/share/main'
+              })
+            }, 1500)
+            return
+          }
+          mpvue.setStorage({
+            key: 'token',
+            data: res.data.data.userinfo.token
+          })
+          Toast('登录成功')
+
+          mpvue.switchTab({
+            url: '/pages/index/main'
+          })
+        } else {
+          Toast.fail(res.data.msg)
+        }
+      } catch (error) {
+        console.log(`thirdLogin`, error)
+        if (error.data.code === 0) {
+          mpvue.navigateTo({
+            url: `/pages/login/set_password/main?mobile=${this.mobile}&unionId=${this.unionId}&name_pic=${this.name_pic}&code=${this.code}`
+          })
+        }
       }
     },
     openPage (i) {
