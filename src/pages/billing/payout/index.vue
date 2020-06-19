@@ -55,22 +55,31 @@
               <div class="type-item-left">
                 <div class="type-item-tit">银行卡</div>
                 <div class="type-item-cell">
-                  <div class="small-tit">持卡人</div>
-                  <div>{{cardInfo && cardInfo.name}}</div>
+                  <div v-if="!cardInfo"
+                       class="">暂无银行卡账户信息</div>
+                  <div v-if="cardInfo"
+                       class="small-tit">持卡人</div>
+                  <div v-if="cardInfo">{{cardInfo && cardInfo.name}}</div>
                 </div>
-                <div class="type-item-cell">
+                <div v-if="cardInfo"
+                     class="type-item-cell">
                   <div class="small-tit">开户行</div>
                   <div>{{cardInfo &&cardInfo.address}}</div>
                 </div>
-                <div class="type-item-cell">
+                <div v-if="cardInfo"
+                     class="type-item-cell">
                   <div class="small-tit">银行卡号</div>
                   <div>{{cardInfo &&cardInfo.number}}</div>
                 </div>
               </div>
               <div class="type-item-right">
-                <van-radio class="type-item-radio"
+                <van-radio v-if="alipayInfo"
+                           class="type-item-radio"
                            checked-color="#97D700"
                            name="card"></van-radio>
+                <div v-if="!cardInfo"
+                     class="add-button"
+                     @click="goNextPage">去添加</div>
               </div>
             </div>
             <div class="type-item alipay"
@@ -78,18 +87,28 @@
               <div class="type-item-left">
                 <div class="type-item-tit">支付宝</div>
                 <div class="type-item-cell">
-                  <div class="small-tit">绑定手机</div>
-                  <div>{{alipayInfo && alipayInfo.address}}</div>
+                  <div v-if="!alipayInfo"
+                       class="">暂无支付宝账户信息</div>
+                  <div v-if="alipayInfo"
+                       class="small-tit">绑定手机</div>
+                  <div v-if="alipayInfo">{{alipayInfo && alipayInfo.address}}</div>
                 </div>
-                <div class="type-item-cell">
+
+                <div v-if="alipayInfo"
+                     class="type-item-cell">
                   <div class="small-tit">帐号</div>
                   <div>{{alipayInfo && alipayInfo.number}}</div>
                 </div>
+
               </div>
               <div class="type-item-right">
-                <van-radio class="type-item-radio"
+                <van-radio v-if="alipayInfo"
+                           class="type-item-radio"
                            checked-color="#97D700"
                            name="alipay"></van-radio>
+                <div v-if="!alipayInfo"
+                     class="add-button"
+                     @click="goNextPage">去添加</div>
               </div>
             </div>
             <div class="type-item wxpay"
@@ -98,7 +117,7 @@
                 <div class="type-item-tit">微信</div>
                 <div class="type-item-cell">
                   <div v-if="!wxpayInfo"
-                       class="small-tit">暂无微信账户信息</div>
+                       class="">暂无微信账户信息</div>
                   <div v-if="wxpayInfo"
                        class="small-tit">绑定手机</div>
                   <div v-if="wxpayInfo">{{wxpayInfo && wxpayInfo.address}}</div>
@@ -115,7 +134,8 @@
                            checked-color="#97D700"
                            name="wxpay"></van-radio>
                 <div v-if="!wxpayInfo"
-                     class="add-button">去添加</div>
+                     class="add-button"
+                     @click="goNextPage">去添加</div>
               </div>
             </div>
           </van-radio-group>
@@ -290,6 +310,11 @@ export default {
 
       this.showPayout = false
     },
+    goNextPage () {
+      mpvue.navigateTo({
+        url: '/pages/billing/affiliate/main'
+      })
+    },
     goGetPassPage () {
       mpvue.navigateTo({
         url: '/pages/billing/settings/main?from=getPass'
@@ -402,14 +427,15 @@ export default {
 }
 .form-box .van-cell__title,
 .form-box .van-cell__value {
-  font-size: 24px !important;
+  font-size: 23px !important;
 }
 .inp-box .van-cell {
   font-size: 24px !important;
   padding: 22px 0 12px !important;
 }
 .form-box .van-field__input {
-  min-height: 24px !important;
+  line-height: 26px !important;
+  min-height: 26px !important;
 }
 .van-popup--center {
   -webkit-transform: translate(-50%, -63%) !important;
